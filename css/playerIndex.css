@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'Naturaly';
+    src: url('../fonts/Naturaly.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Mono';
+    src: url(../fonts/Mono.ttf) format('truetype');
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #261952;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size: 15vw;
+    font-family: 'Mono';
+}
+
+body {
+    background: linear-gradient(0deg, #422a91, #262fa5, #2c67c0);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-picture {
+    width: 70vw;
+    height: 70vw;
+    margin-top: 20vw;
+    border: 1vw solid black;
+    border-radius: 50%;
+    background-color: rgb(30, 44, 105);
+    object-fit: cover;
+}
+
+.player-name {
+    width: 70vw;
+    height: 10vw;
+    margin-top: 5vw;
+    font-size: 8vw;
+    border-radius: 2vw;
+    border: 0.7vw solid;
+    color: white;
+    border-color: #152c94 #122268 #122268 #152c94;
+    text-align: center;
+    font-family: 'Naturaly';
+    background: linear-gradient(160deg, #2147c2, #031891);
+}
+
+.player-name::placeholder {
+    color: rgb(184, 253, 255);
+    font-family: 'Naturaly';
+}
+
+.join-game-button {
+    width: 70vw;
+    height: 18vw;
+    margin-top: 13vw;
+    font-size: 8.5vw;
+    text-align: center;
+    font-family: 'Naturaly';
+    background-color: #583ABD;
+    border: 2vw solid;
+    border-radius: 1.5vw;
+    border-color: #352274 #241a47 #241a47 #352274;
+    color: white;
+    cursor: pointer;
+}

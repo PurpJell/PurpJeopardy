@@ -1,0 +1,6 @@
+node_modules/
+build/
+fonts/
+images/
+boardData1.js
+boardData2.js

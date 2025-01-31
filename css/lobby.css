@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'Naturaly';
+    src: url('../fonts/Naturaly.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Mono';
+    src: url(../fonts/Mono.ttf) format('truetype');
+}
+
+body {
+    background-color: #845dfa;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #261952;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size: 15vw;
+    font-family: 'Mono';
+}
+
+.player-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1vw;
+    padding: 2vw;
+}
+
+.player-card {
+    height: 15vw;
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.6vw;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    background-color: #583ABD;
+    transition: background-color 0.1s;
+    cursor: default;
+}
+
+.player-info {
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.player-picture img {
+    width: 14vw;
+    height: 14vw;
+    margin-top: 0.5vw;
+    border: 0.2vw solid black;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #2c085c;
+    transition: filter 0.1s;
+}
+
+.player-name {
+    flex-grow: 1;
+    padding-top: 5vw;
+    font-size: 4vw;
+    text-align: center;
+    font-family: 'Naturaly';
+}
+
+.player-count {
+    position: fixed;
+    bottom: 4vw;
+    width: 20%;
+    margin-left: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+    padding: 0.8vw;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+    border:rgb(41, 1, 73) 0.3vw solid;
+    border-radius: 0.6vw;
+
+    background-color: #5824a0;
+    font-size: 2.5vw;
+    color: white;
+    font-family: 'Naturaly';
+}

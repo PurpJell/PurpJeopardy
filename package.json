@@ -1,0 +1,38 @@
+{
+  "name": "purpjeopardy",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^34.0.1",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "build": {
+    "appId": "purpjeopardy.game",
+    "productName": "PurpJeopardy",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "html/**/*",
+      "css/**/*",
+      "js/**/*",
+      "images/**/*",
+      "fonts/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "images/icons/game_icon.ico"
+    }
+  }
+}

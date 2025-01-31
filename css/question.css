@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'Mono';
+    src: url(../fonts/Mono.ttf) format('truetype');
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(130deg, #6a38ff, #b0a1ff, #6a38ff);
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #261952;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size: 15vw;
+    font-family: 'Mono';
+}
+
+.title {
+    text-align: center;
+}
+
+h1 {
+    margin-top: 1.5vw;
+    margin-bottom: 0.1vw;
+    font-size: 4vw;
+    font-family: 'Impact';
+}
+
+h2 {
+    margin-top: 0.1vw;
+    font-size: 4vw;
+    font-family: 'Mono';
+    color: rgb(202, 176, 226);
+    margin-bottom: 1.5vw;
+}
+
+.board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0vw;
+    margin-left: 7vw;
+    width: 70%;
+    height: 45vh;
+}
+
+.question-card {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 2vw;
+    background-color: white;
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    /* font-family: 'Mono'; */
+    font-family: 'Ink Free';
+    font-weight: bold;
+    font-size: 3.5vw;
+}
+
+.question-image {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+    /* border: 0.3vw solid black; */
+    border-radius: 0.6vw;
+}
+
+.bottom-bar {
+    display: flex;
+    margin-top: 1vw;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    gap: 3vw;
+}
+
+.player-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 1vw;
+}
+
+.player-picture img {
+    width: 9vw;
+    height: 9vw;
+    border-radius: 50%;
+    border: solid 0.4vw black;
+    background-color: #6a38ff;
+    object-fit: cover;
+}
+
+.timer {
+    width: 2vw;
+    margin-left: 4vw;
+    font-size: 10vw;
+    font-family: 'Mono';
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.score-change {
+    position: absolute;
+    font-size: 2.5vw;
+    font-family: 'Mono';
+    animation: fadeUp 1s ease-out forwards;
+    pointer-events: none;
+}
