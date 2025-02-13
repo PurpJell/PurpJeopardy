@@ -139,14 +139,14 @@ function createWindow() {
 
     ipcMain.on('retrievePlayerDataResponse', (event, response) => {
         const players = response.players;
-        const currentBoard_ = response.currentBoard;
+        const currentBoardID_ = response.currentBoardID;
         if (hostSocket) {
             hostSocket.send(JSON.stringify(
                 { 
                     type: 'gameData',
                     data: {
                         playerData: players,
-                        currentBoard: currentBoard_
+                        currentBoardID: currentBoardID_
                     } 
                 }
             ));

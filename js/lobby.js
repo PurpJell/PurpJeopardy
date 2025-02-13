@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retrieve player data from localStorage
     localStorage.removeItem('playerData');
     let playerData = [];
-    localStorage.setItem('currentBoard', 1);
+    localStorage.setItem('currentBoardID', 1);
     localStorage.removeItem('clickedQuestions');
 
     // Function to render player list
@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for messages from the server
     ipcRenderer.on('retrievePlayerData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoard = localStorage.getItem('currentBoard') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoard: serverCurrentBoard });
+        servercurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: servercurrentBoardID });
     });
 
     ipcRenderer.on('addPlayer', function(event, playerData_) {

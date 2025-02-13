@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const playerList = document.getElementById('playerList');
 
     let players = [];
-    let currentBoard = 1;
+    let currentBoardID = 1;
     let playerPictures = [];
     let boardData = [];
+    let currentBoard;
 
     let questionPrice = JSON.parse(localStorage.getItem('questionPrice')) || 0;
     let state = 'lobby';
@@ -36,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (message.type === 'gameData') {
                 players = [];
                 players_ = message.data.playerData;
-                currentBoard = message.data.currentBoard;
-                localStorage.setItem('currentBoard', currentBoard);
+                currentBoardID = message.data.currentBoardID;
+                localStorage.setItem('currentBoardID', currentBoardID);
                 fetchBoardData();
                 if (players_.length === 0) {
                     players = players_;
@@ -56,16 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchBoardData() {
-        fetch(`../js/boardData${currentBoard}.js`)
+        fetch(`../js/boardData.json`)
             .then(response => response.json())
             .then(boardData_ => {
                 boardData = boardData_;
                 categories = [];
                 prices = [];
-                boardData.forEach(category => {
-                    categories.push(category.category);
+                currentBoard = boardData.boards[currentBoardID - 1];
+                currentBoard.categories.forEach(category => {
+                    categories.push(category.name);
                 });
-                boardData[0].questions.forEach(question => {
+                currentBoard.categories[0].questions.forEach(question => {
                     prices.push(question.price);
                 });
                 if (state === 'board') {
@@ -169,16 +171,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(openQuestionButton);
 
         openQuestionButton.addEventListener('click', function() {
-            const categoryName = boardData[categorySelect.value - 1].category;
+            const categoryName = currentBoard.categories[categorySelect.value - 1].name;
             const category = categorySelect.value;
             const price = priceSelect.value;
             socket.send(JSON.stringify({ type: 'openQuestion', data: { category, price } }));
             localStorage.setItem('categoryName', JSON.stringify(categoryName));
             localStorage.setItem('questionPrice', JSON.stringify(price));
             
-            const questionContent = boardData[category - 1].questions.find(q => q.price === `$${price}`).content;
+            const questionContent = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`).content;
             localStorage.setItem('questionContent', JSON.stringify(questionContent));
-            const answer = boardData[category - 1].questions.find(q => q.price === `$${price}`).answer;
+            const answer = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`).answer;
             localStorage.setItem('answer', JSON.stringify(answer));
             changeToQuestionView();
             
@@ -191,8 +193,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         nextBoardButton.addEventListener('click', function() {
             socket.send(JSON.stringify({ type: 'nextBoard' }));
-            currentBoard++;
-            localStorage.setItem('currentBoard', currentBoard);
+            currentBoardID++;
+            localStorage.setItem('currentBoardID', currentBoardID);
             fetchBoardData();
             // changeToBoardView();
         });

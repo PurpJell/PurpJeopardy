@@ -59,44 +59,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render player cards initially
     renderPlayerCards();
 
-    let currentBoard = localStorage.getItem('currentBoard') || 1;
+    let currentBoardID = localStorage.getItem('currentBoardID') || 1;
     let boardData = [];
+    let currentBoard;
 
     // Retrieve clicked questions from localStorage
     let clickedQuestions = JSON.parse(localStorage.getItem('clickedQuestions')) || [];
     // let clickedQuestions = [];
 
     function renderBoard() {
-        fetch(`../js/boardData${currentBoard}.js`)
-            .then(response => response.json())
+        const filePath = `../js/boardData.json`;
+        console.log(`Attempting to fetch board data from: ${filePath}`);
+    
+        fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(boardData_ => {
                 boardData = boardData_;
-                console.log("fetched board data", boardData[4].questions[0].content);
-                drawBoard(boardData_);
+                console.log("Fetched board data:", boardData);
+                currentBoard = boardData.boards[currentBoardID - 1];
+                drawBoard(currentBoard);
             })
             .catch(error => console.error('Error loading board data:', error));
     }
 
     // Function to render the board
-    function drawBoard(boardData) {
+    function drawBoard(currentBoard) {
         board.innerHTML = '';
         const categoriesContainer = document.createElement('div');
         categoriesContainer.className = 'categories';
 
-        boardData.forEach(category => {
+        currentBoard.categories.forEach(category => {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
-            categoryDiv.textContent = category.category;
+            categoryDiv.textContent = category.name;
             categoriesContainer.appendChild(categoryDiv);
         });
 
         board.appendChild(categoriesContainer);
 
-        boardData[0].questions.forEach((_, questionIndex) => {
+        currentBoard.categories[0].questions.forEach((_, questionIndex) => {
             const questionsRow = document.createElement('div');
             questionsRow.className = 'questions';
 
-            boardData.forEach((category, categoryIndex) => {
+            currentBoard.categories.forEach((category, categoryIndex) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 questionDiv.setAttribute('data-category', categoryIndex + 1);
@@ -105,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.setAttribute('answer', category.questions[questionIndex].answer);
                 const questionImage = category.questions[questionIndex].questionImage;
                 questionDiv.setAttribute('questionImage', questionImage);
+                const answerImage = category.questions[questionIndex].answerImage;
+                questionDiv.setAttribute('answerImage', answerImage);
                 const questionKey = `${categoryIndex + 1}-${category.questions[questionIndex].price}`.replace('$', '');
                 questionDiv.textContent = clickedQuestions.includes(questionKey) ? '' : category.questions[questionIndex].price;
                 questionsRow.appendChild(questionDiv);
@@ -114,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Check if all questions have been clicked
-        if (Object.keys(clickedQuestions).length === 20) {
+        if (Object.keys(clickedQuestions).length === currentBoard.categories.length * currentBoard.categories[0].questions.length) {
             showNextBoardWindow();
         }
     }
@@ -134,8 +146,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle request to open question
     ipcRenderer.on('retrievePlayerData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoard = localStorage.getItem('currentBoard') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoard: serverCurrentBoard });
+        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID });
     });
 
     ipcRenderer.on('openQuestion', function(event, data) {
@@ -149,12 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
         if (question) {
             question.textContent = '';
-            localStorage.setItem('category', boardData[category - 1].category);
+            localStorage.setItem('category', currentBoard.categories[category - 1].name);
             localStorage.setItem('price', question.getAttribute('data-price'));
             localStorage.setItem('content', question.getAttribute('content'));
             localStorage.setItem('answer', question.getAttribute('answer'));
             localStorage.setItem('questionImage', question.getAttribute('questionImage'));
-            
+            localStorage.setItem('answerImage', question.getAttribute('answerImage'));            
         }
         window.location.href = 'question.html';
     });
@@ -162,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle request to go to the next board
     ipcRenderer.on('nextBoard', function() {
         localStorage.removeItem('clickedQuestions');
-        localStorage.setItem('currentBoard', parseInt(currentBoard) + 1);
+        localStorage.setItem('currentBoardID', parseInt(currentBoardID) + 1);
         // renderBoard();
         window.location.reload();
     });
@@ -171,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('resetBoard', function() {
         clickedQuestions = [];
         localStorage.removeItem('clickedQuestions');
-        currentBoard = localStorage.getItem('currentBoard') || 1;
+        currentBoardID = localStorage.getItem('currentBoardID') || 1;
         renderBoard();
     });
 

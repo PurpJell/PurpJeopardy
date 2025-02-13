@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const content = localStorage.getItem('content');
     const questionImage = localStorage.getItem('questionImage');
     const questionCard = document.getElementById('questionCard');
+    const answer = localStorage.getItem('answer');
+    const answerImage = localStorage.getItem('answerImage');
 
     // Update the category name and question price
     if (categoryName) {
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (content) {
         questionCard.innerHTML = `<b>${content}</b>`;
     }
+
 
     const bottomBar = document.getElementById('bottomBar');
 
@@ -87,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for messages from the main process
     ipcRenderer.on('retrievePlayerData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoard = localStorage.getItem('currentBoard') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoard: serverCurrentBoard });
+        servercurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: servercurrentBoardID });
     });
 
     ipcRenderer.on('buzzIn', function(event, playerData_) {
@@ -149,7 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ipcRenderer.on('revealAnswer', function() {
         console.log('revealAnswer');
-        questionCard.textContent = 'Atsakymas: ' + localStorage.getItem('answer');
+        if (answerImage !== "null") {
+            questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
+        } else {
+        questionCard.textContent = 'Atsakymas: ' + answer;
+        }
     });
 
     ipcRenderer.on('backToBoard', function() {
