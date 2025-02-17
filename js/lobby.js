@@ -1,9 +1,26 @@
 const { ipcRenderer } = require('electron');
 
 document.addEventListener('DOMContentLoaded', function() {
-    // const startGameButton = document.getElementById('startGameButton');
+    const ipAddress = document.getElementById('ipAddress');
     const playerList = document.getElementById('playerList');
     const playerCount = document.getElementById('playerCount');
+    const hideButton = document.getElementById('hideButton');
+
+    let hideIpAddress = true;
+    ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
+
+    hideButton.addEventListener('click', function() {
+        if (hideIpAddress) {
+            hideIpAddress = false;
+            ipAddress.textContent = process.env.IP_ADDRESS;
+            ipAddress.textContent += ':3000';
+            hideButton.src = '../images/icons/hide.png';
+        } else {
+            ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
+            hideIpAddress = true;
+            hideButton.src = '../images/icons/unhide.png';
+        }
+    });
 
     // Retrieve player data from localStorage
     localStorage.removeItem('playerData');
