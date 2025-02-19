@@ -72,12 +72,12 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 
 2. **Connect as the host:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.  
     \**note that every device has to be connected to the same network*
 
-3. **Connect as a player:**
+4. **Connect as a player:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.  
     \**note that every device has to be connected to the same network*
 
 ## Usage for developers
@@ -90,15 +90,15 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 
 2. **Open the host interface:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.  
     \**note that every device has to be connected to the same network*
 
-3. **Open the player interface:**
+4. **Open the player interface:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.  
     \**note that every device has to be connected to the same network*
 
-4. **Building the application** (optional)**:** 
+5. **Building the application** (optional)**:** 
 
     ```bash
     npm run build
