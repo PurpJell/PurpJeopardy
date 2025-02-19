@@ -1,0 +1,174 @@
+@font-face {
+    font-family: 'Naturaly';
+    src: url('../fonts/Naturaly.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Mono Polz';
+    src: url('../fonts/Mono Polz.ttf') format('truetype');
+}
+
+body {
+    background-color: #227494;
+    height: 97.3vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Naturaly';
+    font-size: 8vw;
+    color: rgb(43, 196, 243);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    margin-top: 2.5vw;
+    margin-bottom: 1vw;
+    text-shadow: 
+        -2px -2px 0 #000,  
+        2px -2px 0 #000,
+        -2px  2px 0 #000,
+        2px  2px 0 #000,
+        -3px -3px 0 #000,  
+        3px -3px 0 #000,
+        -3px  3px 0 #000,
+        3px  3px 0 #000,
+        -4px -4px 0 #000,
+        4px -4px 0 #000,
+        -4px  4px 0 #000,
+        4px  4px 0 #000;
+    animation: bounce 3s infinite;
+}
+
+@keyframes bounce {
+    0%, 85%, 100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    30% {
+        transform: translateY(-1vw) scale(1.15);
+    }
+    45% {
+        transform: translateY(0.6vw) scale(1.07);
+    }
+    60% {
+        transform: translateY(-1.5vw) scale(1.25);
+    }
+    90% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(0) rotate(360deg);
+    }
+}
+
+.play-button {
+    width: 20vw;
+    height: 6vw;
+    font-family: 'Naturaly';
+    font-size: 4vw;
+    background: linear-gradient(130deg, #e72e66, #e96485, #e0a195, #8bd6db, #2a87ac, #186c8d);
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.2vw;
+    padding-right: 0.7vw;
+    margin-top: 2vw;
+    text-align: center;
+}
+
+.create-board-button {
+    width: 20vw;
+    height: 6vw;
+    font-family: 'Naturaly';
+    font-size: 3.4vw;
+    background: radial-gradient(circle, #4496b6, #063b50);
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.2vw;
+    padding-right: 0.7vw;
+    margin-top: 2vw;
+    text-align: center;
+}
+
+.options-button {
+    width: 20vw;
+    height: 6vw;
+    font-family: 'Naturaly';
+    font-size: 3.4vw;
+    background: radial-gradient(circle, #4496b6, #063b50);
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.2vw;
+    padding-right: 0.7vw;
+    margin-top: 2vw;
+    text-align: center;
+}
+
+.exit-button {
+    width: 20vw;
+    height: 6vw;
+    font-family: 'Naturaly';
+    font-size: 3.4vw;
+    background: radial-gradient(circle, #f80303, #440303);
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.2vw;
+    padding-right: 0.7vw;
+    margin-top: 2vw;
+    text-align: center;
+}
+
+button {
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(130deg, #ffffff00, #ffffff00, #ffffff00, #ffffff79, #ffffff00);
+    transform: translate(-50%, -50%);
+}
+
+button:hover::before {
+    background: linear-gradient(130deg, #ffffff00, #ffffff79, #ffffff00, #ffffff00, #ffffff00);
+}
+
+button:hover {
+    filter: brightness(1.4);
+    border: 0.3vw solid rgb(255, 255, 255);
+}
+
+.bubbles {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bubble {
+    display: none;
+    position: absolute;
+    bottom: 15px;
+    width: 2vw;
+    height: 2vw;
+}
+
+@keyframes bubbleRise {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}

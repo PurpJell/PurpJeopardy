@@ -22,7 +22,7 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile('./html/lobby.html');
+    mainWindow.loadFile('./html/title.html');
 
     // Configure body-parser to handle larger payloads
     serverApp.use(bodyParser.json({ limit: '10mb' }));

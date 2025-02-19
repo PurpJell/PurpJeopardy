@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const playerList = document.getElementById('playerList');
     const playerCount = document.getElementById('playerCount');
     const hideButton = document.getElementById('hideButton');
+    const backButton = document.getElementById('backButton');
 
     let hideIpAddress = true;
     ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
@@ -65,6 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Render player list initially
     renderPlayerList();
+
+    backButton.addEventListener('click', function() {
+        window.location.href = 'title.html';
+    });
 
     // Listen for messages from the server
     ipcRenderer.on('retrievePlayerData', function(event) {
