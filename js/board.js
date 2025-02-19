@@ -113,10 +113,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.setAttribute('data-price', category.questions[questionIndex].price);
                 questionDiv.setAttribute('content', category.questions[questionIndex].content);
                 questionDiv.setAttribute('answer', category.questions[questionIndex].answer);
-                const questionImage = category.questions[questionIndex].questionImage;
+                const questionImage = category.questions[questionIndex].questionImage || null;
                 questionDiv.setAttribute('questionImage', questionImage);
-                const answerImage = category.questions[questionIndex].answerImage;
+                const answerImage = category.questions[questionIndex].answerImage || null;
                 questionDiv.setAttribute('answerImage', answerImage);
+                const isDailyDouble = category.questions[questionIndex].dailyDouble || false;
+                questionDiv.setAttribute('dailyDouble', isDailyDouble);
                 const questionKey = `${categoryIndex + 1}-${category.questions[questionIndex].price}`.replace('$', '');
                 questionDiv.textContent = clickedQuestions.includes(questionKey) ? '' : category.questions[questionIndex].price;
                 questionsRow.appendChild(questionDiv);
@@ -166,7 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('content', question.getAttribute('content'));
             localStorage.setItem('answer', question.getAttribute('answer'));
             localStorage.setItem('questionImage', question.getAttribute('questionImage'));
-            localStorage.setItem('answerImage', question.getAttribute('answerImage'));            
+            localStorage.setItem('answerImage', question.getAttribute('answerImage')); 
+            localStorage.setItem('dailyDouble', question.getAttribute('dailyDouble'));           
         }
         window.location.href = 'question.html';
     });

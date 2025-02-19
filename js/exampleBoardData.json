@@ -12,36 +12,29 @@
                             "price": "$100",
                             "content": "Question 1",
                             "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "questionImage": "../images/default_player.jpg",
+                            "answerImage": "../images/default_player.jpg",
+                            "dailyDouble": true
                         },
                         {
                             "price": "$200",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$300",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$400",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$500",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -52,37 +45,27 @@
                         {
                             "price": "$100",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$200",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$300",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$400",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$500",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -93,37 +76,27 @@
                         {
                             "price": "$100",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$200",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$300",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$400",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$500",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -134,37 +107,27 @@
                         {
                             "price": "$100",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$200",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$300",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$400",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$500",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -175,37 +138,27 @@
                         {
                             "price": "$100",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$200",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$300",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$400",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$500",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 }
@@ -221,37 +174,27 @@
                         {
                             "price": "$200",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$400",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$600",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$800",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$1000",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -262,37 +205,27 @@
                         {
                             "price": "$200",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$400",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$600",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$800",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$1000",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -303,37 +236,27 @@
                         {
                             "price": "$200",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$400",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$600",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$800",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$1000",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -344,37 +267,27 @@
                         {
                             "price": "$200",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$400",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$600",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$800",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$1000",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 },
@@ -385,37 +298,27 @@
                         {
                             "price": "$200",
                             "content": "Question 1",
-                            "answer": "Answer 1",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 1"
                         },
                         {
                             "price": "$400",
                             "content": "Question 2",
-                            "answer": "Answer 2",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 2"
                         },
                         {
                             "price": "$600",
                             "content": "Question 3",
-                            "answer": "Answer 3",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 3"
                         },
                         {
                             "price": "$800",
                             "content": "Question 4",
-                            "answer": "Answer 4",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 4"
                         },
                         {
                             "price": "$1000",
                             "content": "Question 5",
-                            "answer": "Answer 5",
-                            "questionImage": null,
-                            "answerImage": null
+                            "answer": "Answer 5"
                         }
                     ]
                 }

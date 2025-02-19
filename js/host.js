@@ -178,10 +178,13 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('categoryName', JSON.stringify(categoryName));
             localStorage.setItem('questionPrice', JSON.stringify(price));
             
-            const questionContent = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`).content;
+            const selectedQuestion = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`);
+            const questionContent = selectedQuestion.content;
             localStorage.setItem('questionContent', JSON.stringify(questionContent));
-            const answer = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`).answer;
+            const answer = selectedQuestion.answer;
             localStorage.setItem('answer', JSON.stringify(answer));
+            const dailyDouble = selectedQuestion.dailyDouble || false;
+            localStorage.setItem('dailyDouble', JSON.stringify(dailyDouble));
             changeToQuestionView();
             
         });
@@ -293,16 +296,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 correctButton.addEventListener('click', function() {
                     questionPrice = JSON.parse(localStorage.getItem('questionPrice'));
+                    dailyDouble = JSON.parse(localStorage.getItem('dailyDouble'));
+                    if (dailyDouble) {
+                        questionPrice = `${parseInt(questionPrice) * 2}`;
+                    }
                     socket.send(JSON.stringify({ type: 'correctAnswer', data: {name: player.name, price: questionPrice} }));
-                    players[index].score += parseInt(questionPrice.replace('$', ''));
+                    players[index].score += parseInt(questionPrice);
                     localStorage.setItem('players', JSON.stringify(players));
                     drawPlayerCards();
                 });
         
                 incorrectButton.addEventListener('click', function() {
                     questionPrice = JSON.parse(localStorage.getItem('questionPrice'));
+                    dailyDouble = JSON.parse(localStorage.getItem('dailyDouble'));
+                    if (dailyDouble) {
+                        questionPrice = `${parseInt(questionPrice) * 2}`;
+                    }
                     socket.send(JSON.stringify({ type: 'incorrectAnswer', data: {name: player.name, price: questionPrice} }));
-                    players[index].score -= parseInt(questionPrice.replace('$', ''));
+                    players[index].score -= parseInt(questionPrice);
                     localStorage.setItem('players', JSON.stringify(players));
                     drawPlayerCards();
                 });

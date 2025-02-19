@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionCard = document.getElementById('questionCard');
     const answer = localStorage.getItem('answer');
     const answerImage = localStorage.getItem('answerImage');
+    const dailyDouble = localStorage.getItem('dailyDouble');
 
     // Update the category name and question price
     if (categoryName) {
@@ -16,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (questionPrice) {
         document.getElementById('questionPrice').textContent = questionPrice;
+        if (dailyDouble === 'true') {
+            document.getElementById('priceMultiplier').textContent = ' x2!'; 
+        }
     }
     if (questionImage !== "null") {
         questionCard.innerHTML = `<img src="${questionImage}" alt="Question Image" class="question-image">`;
@@ -113,7 +117,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('correctAnswer', data.name);
 
         const playerIndex = playerData.findIndex(player => player.name === data.name);
-        playerData[playerIndex].score += parseInt(questionPrice.replace('$', ''));
+        let dailyDouble = localStorage.getItem('dailyDouble');
+        if (dailyDouble === 'true') {
+            playerData[playerIndex].score += parseInt(questionPrice.replace('$', '')) * 2;
+        } else {
+            playerData[playerIndex].score += parseInt(questionPrice.replace('$', ''));
+        }
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerCards();
         // showScoreChange(event, `+${questionPrice}`);
@@ -124,7 +133,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update the score of the player who answered incorrectly
         const playerIndex = playerData.findIndex(player => player.name === data.name);
-        playerData[playerIndex].score -= parseInt(questionPrice.replace('$', ''));
+        let dailyDouble = localStorage.getItem('dailyDouble');
+        if (dailyDouble === 'true') {
+            playerData[playerIndex].score -= parseInt(questionPrice.replace('$', '')) * 2;
+        } else {
+            playerData[playerIndex].score -= parseInt(questionPrice.replace('$', ''));
+        }
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerCards();
         // showScoreChange(event, `-${questionPrice}`);

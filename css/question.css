@@ -40,12 +40,30 @@ h1 {
     font-family: 'Impact';
 }
 
+.price-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 h2 {
     margin-top: 0.1vw;
     font-size: 4vw;
     font-family: 'Mono';
     color: rgb(202, 176, 226);
     margin-bottom: 1.5vw;
+}
+
+.price-multiplier {
+    font-size: 3.5vw;
+    font-family: 'Mono';
+    color: rgb(133, 16, 184);
+    margin-left: 0.5vw;
+    text-shadow: 
+        -1px -1px 0 #000,  
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000;
 }
 
 .board {
