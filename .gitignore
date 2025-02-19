@@ -1,5 +1,7 @@
 node_modules/
 build/
-fonts/
-images/
+fonts/*
+images/*
+!images/icons/
+!images/icons/game_icon.ico
 boardData.json

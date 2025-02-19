@@ -4,8 +4,8 @@
 }
 
 @font-face {
-    font-family: 'Mono';
-    src: url(../fonts/Mono.ttf) format('truetype');
+    font-family: 'Mono Polz';
+    src: url("../fonts/Mono Polz.ttf") format('truetype');
 }
 
 .loading-screen {
@@ -21,7 +21,7 @@
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 body {

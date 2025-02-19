@@ -4,8 +4,8 @@
 }
 
 @font-face {
-    font-family: 'Mono';
-    src: url(../fonts/Mono.ttf) format('truetype');
+    font-family: 'Mono Polz';
+    src: url('../fonts/Mono Polz.ttf') format('truetype');
 }
 
 body {
@@ -25,7 +25,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 .ip-container {
@@ -64,22 +64,25 @@ h1 {
     margin-top: 0;
     margin-bottom: 0.5vw;
     margin-left: 20%;
-    font-size: 3.2vw;
+    font-size: 3.1vw;
     font-family: 'Naturaly';
 }
 
-.hide-button {
-    width: 6%;
+.hide-button{
+    width: 13%;
     height: 6%;
     margin-top: 0vw;
     margin-left: 7%;
-    margin-right: 12%;
+    margin-right: 5%;
     margin-bottom: 0.5vw;
     background-color: #2f105a;
     border: solid 0.3vw;
     border-color: #261952 #1d1240 #1d1240 #261952;
     border-radius: 0.6vw;
     cursor: pointer;
+    font-size: 2vw;
+    font-family: 'Naturaly';
+    text-align: center;
 }
 
 .player-list {

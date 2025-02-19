@@ -4,8 +4,8 @@
 }
 
 @font-face {
-    font-family: 'Mono';
-    src: url(../fonts/Mono.ttf) format('truetype');
+    font-family: 'Mono Polz';
+    src: url('../fonts/Mono Polz.ttf') format('truetype');
 }
 
 body {
@@ -26,7 +26,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 .top-bar {
@@ -86,7 +86,7 @@ body {
 .player-score {
     text-align: center;
     font-size: 2vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 .board {
@@ -143,7 +143,7 @@ body {
     flex: 1;
     text-align: center;
     font-size: 3.1vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(218, 187, 248);
     padding: 0.9vw;
     border: 0.4vw solid;
@@ -170,7 +170,7 @@ body {
     z-index: 1000;
     font-size: 4vw;
     text-align: center;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     border: solid 0.8vw;
     border-color: #160f31 #0d081d #080513 #120c2b;
 }

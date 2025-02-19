@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
             hideIpAddress = false;
             ipAddress.textContent = process.env.IP_ADDRESS;
             ipAddress.textContent += ':3000';
-            hideButton.src = '../images/icons/hide.png';
+            hideButton.textContent = 'Hide';
         } else {
             ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
             hideIpAddress = true;
-            hideButton.src = '../images/icons/unhide.png';
+            hideButton.textContent = 'Show';
         }
     });
 

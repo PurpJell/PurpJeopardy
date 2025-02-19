@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Mono';
-    src: url(../fonts/Mono.ttf) format('truetype');
+    font-family: 'Mono Polz';
+    src: url("../fonts/Mono Polz.ttf") format('truetype');
 }
 
 body {
@@ -26,7 +26,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 .title {
@@ -49,7 +49,7 @@ h1 {
 h2 {
     margin-top: 0.1vw;
     font-size: 4vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(202, 176, 226);
     margin-bottom: 1.5vw;
 }
@@ -88,7 +88,7 @@ h2 {
     background-color: white;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
-    /* font-family: 'Mono'; */
+    /* font-family: 'Mono Polz'; */
     font-family: 'Ink Free';
     font-weight: bold;
     font-size: 3.5vw;
@@ -137,7 +137,7 @@ h2 {
     width: 2vw;
     margin-left: 4vw;
     font-size: 10vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
 
 @keyframes fadeUp {
@@ -154,7 +154,7 @@ h2 {
 .score-change {
     position: absolute;
     font-size: 2.5vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     animation: fadeUp 1s ease-out forwards;
     pointer-events: none;
 }

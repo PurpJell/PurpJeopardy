@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Mono';
-    src: url("../fonts/Mono.ttf") format("truetype");
+    font-family: 'Mono Polz';
+    src: url("../fonts/Mono Polz.ttf") format("truetype");
 }
 
 @font-face {
@@ -89,7 +89,7 @@ body {
     border-color: rgb(51, 8, 100) rgb(38, 9, 70) rgb(38, 9, 70) rgb(51, 8, 100);
     border-radius: 1vw;
     font-size: 5vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
     left: 40%;
@@ -98,7 +98,7 @@ body {
 
 label {
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
 }
 
@@ -108,7 +108,7 @@ select {
     margin-top: 1vh;
     margin-bottom: 1vh;
     font-size: 7vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     text-align: center;
     color: rgb(242, 231, 255);
     background-color: #372863;
@@ -128,7 +128,7 @@ select {
     border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -142,7 +142,7 @@ select {
     border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -156,7 +156,7 @@ select {
     border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -172,7 +172,7 @@ h1 {
 .question {
     margin-top: 0.1vh;
     font-size: 7vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(202, 176, 226);
     margin-bottom: 1.5vh;
     text-align: center;
@@ -182,7 +182,7 @@ h1 {
 .answer {
     margin-top: 0.1vh;
     font-size: 7vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(83, 0, 160);
     margin-bottom: 1.5vh;
     text-align: center;
@@ -214,7 +214,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 5vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
     transition: background-color 0.1s;
@@ -267,7 +267,7 @@ h1 {
     height: 20.5vw;
     font-size: 7vw;
     text-align: center;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     margin-top: 1vw;
 }
 
@@ -279,7 +279,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 5vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
     transition: background-color 0.1s;
@@ -293,7 +293,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -306,7 +306,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -319,7 +319,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -332,7 +332,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }

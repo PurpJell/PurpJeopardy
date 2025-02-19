@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Mono';
-    src: url(../fonts/Mono.ttf) format('truetype');
+    font-family: 'Mono Polz';
+    src: url('../fonts/Mono Polz.ttf') format('truetype');
 }
 
 @font-face {
@@ -26,7 +26,7 @@ body {
     border-radius: 50%;
     background: linear-gradient(to bottom, #ff4d4d, #af1212);
     font-size: 15vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
     color: white;
     cursor: pointer;
     position: relative;
@@ -94,5 +94,5 @@ body {
     height: 20.5vw;
     text-align: center;
     font-size: 12vw;
-    font-family: 'Mono';
+    font-family: 'Mono Polz';
 }
