@@ -1,6 +1,7 @@
 # PurpJeopardy
 
 PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSockets. It allows multiple players to join and participate in a quiz game hosted on a local network.
+
 Note that this game is hosted localy over LAN, therefore some non-beginner-friendly steps are required to setup the game correctly.
 
 ## Features
@@ -14,7 +15,6 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 
 - Up to 4 players or teams can play at once
 - A host is required to play the game
-- 
 
 ## Upcoming Features
 
@@ -22,6 +22,7 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 - Player card background customization
 - Sound effects and music
 - Reconnecting mid-game
+- Visual overhaul
 
 ## Setup
 
