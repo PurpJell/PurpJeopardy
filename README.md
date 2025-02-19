@@ -1,6 +1,7 @@
 # PurpJeopardy
 
 PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSockets. It allows multiple players to join and participate in a quiz game hosted on a local network.
+Note that this game is hosted localy over LAN, therefore some non-beginner-friendly steps are required to setup the game correctly.
 
 ## Features
 
@@ -8,6 +9,19 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 - Real-time updates using WebSockets
 - Customizable questions and categories
 - Score tracking
+
+## Game Features
+
+- Up to 4 players or teams can play at once
+- A host is required to play the game
+- 
+
+## Upcoming Features
+
+- Easy-to-use board builder
+- Player card background customization
+- Sound effects and music
+- Reconnecting mid-game
 
 ## Setup
 
@@ -36,6 +50,10 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
     npm install
     ```
 
+5. **Download the fonts** (Recommended)**:**
+
+    Follow the instructions in the Fonts section to download and install the free fonts used in the game.
+
 ## Usage for general users
 
 0. **Build the game** (You only need to do this once)**:**
@@ -54,10 +72,12 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 2. **Connect as the host:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
+    \**note that every device has to be connected to the same network*
 
 3. **Connect as a player:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
+    \**note that every device has to be connected to the same network*
 
 ## Usage for developers
 
@@ -70,10 +90,12 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 2. **Open the host interface:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
+    \**note that every device has to be connected to the same network*
 
 3. **Open the player interface:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
+    \**note that every device has to be connected to the same network*
 
 4. **Building the application** (optional)**:** 
 
