@@ -38,7 +38,7 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 
 ## Usage for general users
 
-0. **Build the game (You only need to do this once):**
+0. **Build the game** (You only need to do this once)**:**
 
     ```bash
     npm run build
@@ -46,20 +46,20 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 
     \**note that this also opens the game, so you can skip step 1.*
 
-1. **Run the game**
+1. **Run the game:**
 
     Locate the game files (they are usually located at `C:\Users\<username>\AppData\Local\Programs\purpjeopardy`)
     Run PurpJeopardy.exe
 
-2. **Connect as the host**
+2. **Connect as the host:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
 
-3. **Connect as a player**
+3. **Connect as a player:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
 
-## Usage for developing
+## Usage for developers
 
 1. **Start the application:**
 
@@ -75,7 +75,7 @@ PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSo
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
 
-4. **Building the application:** (optional)
+4. **Building the application** (optional)**:** 
 
     ```bash
     npm run build
