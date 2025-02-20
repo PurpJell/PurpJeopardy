@@ -9,8 +9,8 @@
 }
 
 body {
-    background-color: #227494;
-    height: 97.3vh;
+    background: linear-gradient(180deg, #2e97c1, #1e6785);
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,18 +26,14 @@ h1 {
     margin-top: 2.5vw;
     margin-bottom: 1vw;
     text-shadow: 
-        -2px -2px 0 #000,  
-        2px -2px 0 #000,
-        -2px  2px 0 #000,
-        2px  2px 0 #000,
-        -3px -3px 0 #000,  
-        3px -3px 0 #000,
-        -3px  3px 0 #000,
-        3px  3px 0 #000,
-        -4px -4px 0 #000,
-        4px -4px 0 #000,
-        -4px  4px 0 #000,
-        4px  4px 0 #000;
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
+    
+    z-index: 2;
     animation: bounce 3s infinite;
 }
 
@@ -121,6 +117,7 @@ h1 {
 button {
     position: relative;
     overflow: hidden;
+    z-index: 2;
 }
 
 button::before {
@@ -158,6 +155,7 @@ button:hover {
     bottom: 15px;
     width: 2vw;
     height: 2vw;
+    z-index: 1;
 }
 
 @keyframes bubbleRise {

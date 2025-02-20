@@ -9,8 +9,8 @@
 }
 
 body {
-    background: linear-gradient(180deg, #753592, #753592);
-    height: 100vh;
+    background-color: #227494;
+    height: 85vh;
 }
 
 .loading-screen {
@@ -30,17 +30,18 @@ body {
 }
 
 .ip-container {
-    width: 40%;
-    height: 10%;
-    margin-left: 30%;
+    width: 100%;
+    height: 18%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: solid 0.3vw;
-    border-color: #261952 #261952 #261952 #261952;
-    border-radius: 0.6vw;
-    background-color: #5824a0;
+    border-bottom: 0.3vw solid #184354;
+    background-color: #1d5a72;
 }
 
 h1 {
@@ -50,6 +51,15 @@ h1 {
     font-family: 'Naturaly';
     color: white;
     text-align: center;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
+
+    animation: ColorShift linear 5s infinite;
 }
 
 .address-line {
@@ -61,29 +71,40 @@ h1 {
 }
 
 .ip-address {
-    width: 55%;
+    width: 25%;
     margin-top: 0;
     margin-bottom: 0.5vw;
-    margin-left: 20%;
+    margin-left: 40%;
     font-size: 3.1vw;
     font-family: 'Naturaly';
 }
 
-.hide-button{
-    width: 13%;
-    height: 6%;
-    margin-top: 0vw;
-    margin-left: 7%;
-    margin-right: 5%;
-    margin-bottom: 0.5vw;
-    background-color: #2d0861;
+button {
+    background-color: #194455;
     border: solid 0.3vw;
-    border-color: #261952 #1d1240 #1d1240 #261952;
+    border-color: #163b49 #13323e #13323e #163b49;
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
     font-family: 'Naturaly';
     text-align: center;
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
+
+    z-index: 1;
+}
+
+.hide-button{
+    width: 8%;
+    height: 70%;
+    margin-top: 0vw;
+    margin-left: 1%;
+    margin-right: auto;
+    margin-bottom: 0.5vw;
 }
 
 .back-button {
@@ -92,18 +113,10 @@ h1 {
     position: absolute;
     bottom: 1vw;
     right: 1vw;
-    background-color: #2e006e;
-    border: solid 0.3vw;
-    border-color: #312069 #1d1240 #1d1240 #312069;
-    border-radius: 0.6vw;
-    cursor: pointer;
-    font-size: 3vw;
-    font-family: 'Naturaly';
-    text-align: center;
-    /* color: white; */
 }
 
 .player-list {
+    margin-top: 12%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1vw;
@@ -118,9 +131,39 @@ h1 {
     text-align: left;
     display: flex;
     flex-direction: row;
-    background-color: #583ABD;
-    transition: background-color 0.1s;
+    background-color: #035e82;
     cursor: default;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.player-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(22, 97, 112, 0.001), rgba(22, 97, 112, 0.1), rgba(255, 255, 255, 0.5), rgba(22, 97, 112, 0.1), rgba(22, 97, 112, 0.001));
+    transform: skewX(-25deg);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.player-card .player-info,
+.player-card .player-picture {
+    position: relative;
+    z-index: 2; /* Ensure the content is above the pseudo-element */
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 125%;
+    }
 }
 
 .player-info {
@@ -146,12 +189,21 @@ h1 {
     font-size: 4vw;
     text-align: center;
     font-family: 'Naturaly';
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
 .player-count {
     position: fixed;
     bottom: 4vw;
     width: 20%;
+    height: 10%;
     margin-left: 40%;
     display: flex;
     flex-direction: column;
@@ -161,13 +213,49 @@ h1 {
     padding: 0.8vw;
     padding-top: 0.5vw;
     padding-bottom: 0.5vw;
-    border:rgb(41, 1, 73) 0.3vw solid;
+    border:rgb(41, 1, 73) 0.5vw solid;
     border-radius: 0.6vw;
 
     background-color: #5824a0;
-    font-size: 2.5vw;
+    font-size: 3.5vw;
     color: white;
     font-family: 'Naturaly';
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
+
+    z-index: 1;
+}
+
+.fish {
+    position: fixed;
+    display: inline-block;
+    bottom: 0;
+    width: 4vw;
+    height: 4vw;
+    z-index: 0;
+}
+
+@keyframes swimLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100vw);
+    }
+}
+
+@keyframes swimRight {
+    from {
+        transform: translateX(0) scaleX(-1);
+    }
+    to {
+        transform: translateX(100vw) scaleX(-1);
+    }
 }
 
 *::-webkit-scrollbar {

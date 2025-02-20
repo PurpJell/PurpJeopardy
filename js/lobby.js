@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Retrieve player data from localStorage
-    localStorage.removeItem('playerData');
-    let playerData = [];
+    // localStorage.removeItem('playerData');
+    // let playerData = [];
+    let playerData = JSON.parse(localStorage.getItem('playerData')) || [];
     localStorage.setItem('currentBoardID', 1);
     localStorage.removeItem('clickedQuestions');
 
@@ -60,8 +61,87 @@ document.addEventListener('DOMContentLoaded', function() {
             playerCard.appendChild(playerInfo);
             
             playerList.appendChild(playerCard);
-        });
 
+        });
+        addShineAnimation();
+    }
+
+    function addShineAnimation() {
+
+        playerCard = document.querySelector('.player-card'); 
+
+        const randomDelay = Math.random() * 2 + 3;
+        setTimeout(() => {
+
+            const beforeElement = document.createElement('style');
+            beforeElement.innerHTML = `
+                .player-card::before {
+                    animation: none;
+                }
+            `;
+            playerCard.appendChild(beforeElement);
+        
+            // Force reflow to restart the animation
+            playerCard.offsetHeight;
+        
+            beforeElement.innerHTML = `
+                .player-card::before {
+                    animation: shine 2s 1;
+                }
+            `;
+    
+            playerCard.addEventListener('animationend', () => {
+                beforeElement.remove();
+                addShineAnimation();
+            }, { once: true });
+        }, randomDelay * 1000);
+    }
+
+    for (let i = 0; i < 12; i++) {
+        const randomDelay = Math.random() * 3 + 0.5;
+
+        setTimeout(() => {
+            const fish = document.createElement('img');
+            fish.src = '../images/fish.png';
+            fish.className = 'fish';
+            document.body.appendChild(fish);
+            startFishAnimation(fish);
+        }, randomDelay * 1000);
+    }
+
+    function startFishAnimation(fish) {
+        const direction = Math.random() > 0.5 ? "left" : "right";
+        if (direction === "left") {
+            fish.style.right = '-3vw';
+        }
+        else {
+            
+            fish.style.left = '-3vw';
+        }
+
+        fish.style.top = `${Math.random() * 75 + 18}%`;
+
+        const randomColor = Math.floor(Math.random() * 3);
+        if (randomColor === 0) {
+            // backgroundy
+            fish.style.filter = `invert(16%) sepia(15%) saturate(3476%) hue-rotate(171deg) brightness(91%) contrast(99%)`
+        } else if (randomColor === 1) {
+            // deep-blue
+            fish.style.filter = `invert(5%) sepia(85%) saturate(4820%) hue-rotate(222deg) brightness(109%) contrast(103%)`
+        } else {
+            fish.style.filter = `invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`
+        }
+
+        fish.style.scale = Math.random() + 1;
+
+        fish.style.animation = 'none';
+        fish.offsetHeight;
+
+        fish.style.animation = `${direction === "left" ? "swimLeft" : "swimRight"} ${Math.random() * 3 + 5}s linear 1`;
+
+        fish.addEventListener('animationend', () => {
+            startFishAnimation(fish);
+        }, { once: true });
     }
 
     // Render player list initially

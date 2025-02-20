@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const bubbleContainer = document.getElementById('bubbles');
+    // const bubbleContainer = document.getElementById('bubbles');
     const playGameButton = document.getElementById('playButton');
 
     let bubbles = [];
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 18; i++) {
         const randomDelay = Math.random() * 3 + 0.5;
 
         setTimeout(() => {
             const bubble = document.createElement('img');
             bubble.src = '../images/bubble.png';
             bubble.className = 'bubble';
-            bubbleContainer.appendChild(bubble);
+            document.body.appendChild(bubble);
             bubbles.push(bubble);
             startBubbleRise(bubble);
         }, randomDelay * 1000);
