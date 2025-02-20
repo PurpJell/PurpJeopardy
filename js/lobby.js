@@ -98,11 +98,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     for (let i = 0; i < 12; i++) {
+        spawnFish();
+    }
+
+    function spawnFish() {
         const randomDelay = Math.random() * 3 + 0.5;
 
         setTimeout(() => {
             const fish = document.createElement('img');
-            fish.src = '../images/fish.png';
+            fish.src = '../images/fish1.png';
             fish.className = 'fish';
             document.body.appendChild(fish);
             startFishAnimation(fish);
@@ -112,24 +116,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function startFishAnimation(fish) {
         const direction = Math.random() > 0.5 ? "left" : "right";
         if (direction === "left") {
-            fish.style.right = '-3vw';
+            fish.style.right = '-4vw';
         }
         else {
-            
-            fish.style.left = '-3vw';
+            fish.style.left = '-4vw';
         }
 
         fish.style.top = `${Math.random() * 75 + 18}%`;
 
         const randomColor = Math.floor(Math.random() * 3);
         if (randomColor === 0) {
-            // backgroundy
-            fish.style.filter = `invert(16%) sepia(15%) saturate(3476%) hue-rotate(171deg) brightness(91%) contrast(99%)`
+            fish.src = '../images/fish1.png';
         } else if (randomColor === 1) {
             // deep-blue
-            fish.style.filter = `invert(5%) sepia(85%) saturate(4820%) hue-rotate(222deg) brightness(109%) contrast(103%)`
+            fish.src = '../images/fish2.png';
         } else {
-            fish.style.filter = `invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`
+            // orange
+            fish.src = '../images/fish3.png';
         }
 
         fish.style.scale = Math.random() + 1;
@@ -140,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fish.style.animation = `${direction === "left" ? "swimLeft" : "swimRight"} ${Math.random() * 3 + 5}s linear 1`;
 
         fish.addEventListener('animationend', () => {
-            startFishAnimation(fish);
+            spawnFish();
+            fish.remove();
         }, { once: true });
     }
 
