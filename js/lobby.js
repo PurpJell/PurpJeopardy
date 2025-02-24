@@ -63,12 +63,13 @@ document.addEventListener('DOMContentLoaded', function() {
             playerList.appendChild(playerCard);
 
         });
-        addShineAnimation();
     }
+    
+    addShineAnimation();
 
     function addShineAnimation() {
 
-        playerCard = document.querySelector('.player-card'); 
+        // playerCard = document.querySelector('.player-card'); 
 
         const randomDelay = Math.random() * 2 + 3;
         setTimeout(() => {
@@ -79,10 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     animation: none;
                 }
             `;
-            playerCard.appendChild(beforeElement);
+            document.body.appendChild(beforeElement);
         
             // Force reflow to restart the animation
-            playerCard.offsetHeight;
+            document.body.offsetHeight;
         
             beforeElement.innerHTML = `
                 .player-card::before {
@@ -90,63 +91,130 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             `;
     
-            playerCard.addEventListener('animationend', () => {
+            document.body.addEventListener('animationend', () => {
                 beforeElement.remove();
                 addShineAnimation();
             }, { once: true });
         }, randomDelay * 1000);
     }
 
-    for (let i = 0; i < 12; i++) {
-        spawnFish();
+    const visualsContainer = document.createElement('div');
+    visualsContainer.className = 'visuals-container';
+    document.body.appendChild(visualsContainer);
+
+    function addStars() {
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 14; c++) {
+                const star = document.createElement('img');
+                star.className = 'star';
+
+                star.dataset.column = c;
+                star.dataset.row = r;
+                star.style.filter = 'opacity(0)';
+
+                visualsContainer.appendChild(star);
+
+                starAnimation(star);
+            }
+        }
     }
 
-    function spawnFish() {
-        const randomDelay = Math.random() * 3 + 0.5;
+    function starAnimation(star) {
 
-        setTimeout(() => {
-            const fish = document.createElement('img');
-            fish.src = '../images/fish1.png';
-            fish.className = 'fish';
-            document.body.appendChild(fish);
-            startFishAnimation(fish);
-        }, randomDelay * 1000);
+        star.style.left = `${star.dataset.row * 12.5 + Math.random() * 9.5 + 1.5}%`;
+        star.style.top = `${20 + star.dataset.column * 5.35 + Math.random() * 4 + 0.5}%`;
+        star.style.scale = Math.random() + 1;
+
+        const variant = Math.random() * 100;
+        if (variant < 90) 
+        {
+            star.src = `../images/star${Math.ceil(variant/11.25)}.png`;
+        }
+        else if (variant < 95)
+        {
+            star.src = '../images/star9.png';
+        }
+        else
+        {
+            star.src = '../images/star10.png';
+        }
+
+        const keyframes = [
+            { filter: 'opacity(0)', offset: 0},
+            { filter: 'opacity(1)', offset: 0.06},
+            { filter: 'opacity(1)', offset: 0.94},
+            { filter: 'opacity(0)', offset: 1}
+        ];
+
+        const options = {
+            duration: (Math.random() * 10 + 10)* 1000, // 10-20 seconds
+            easing: 'ease-in-out',
+            fill: 'forwards'
+        };
+
+        const animation = star.animate(keyframes, options);
+
+        animation.onfinish = () => {
+            starAnimation(star);
+        };
     }
 
-    function startFishAnimation(fish) {
-        const direction = Math.random() > 0.5 ? "left" : "right";
-        if (direction === "left") {
-            fish.style.right = '-4vw';
-        }
-        else {
-            fish.style.left = '-4vw';
-        }
+    function spawnRocket() {
 
-        fish.style.top = `${Math.random() * 75 + 18}%`;
+        const rocket = document.createElement('img');
+        rocket.src = '../images/rocket.png';
+        rocket.className = 'rocket';
+        visualsContainer.appendChild(rocket);
 
-        const randomColor = Math.floor(Math.random() * 3);
-        if (randomColor === 0) {
-            fish.src = '../images/fish1.png';
-        } else if (randomColor === 1) {
-            // deep-blue
-            fish.src = '../images/fish2.png';
-        } else {
-            // orange
-            fish.src = '../images/fish3.png';
-        }
-
-        fish.style.scale = Math.random() + 1;
-
-        fish.style.animation = 'none';
-        fish.offsetHeight;
-
-        fish.style.animation = `${direction === "left" ? "swimLeft" : "swimRight"} ${Math.random() * 3 + 5}s linear 1`;
-
-        fish.addEventListener('animationend', () => {
-            spawnFish();
-            fish.remove();
-        }, { once: true });
+        rocketAnimation(rocket);
     }
+
+    function rocketAnimation(rocket) {
+
+        const radius = 40; // Radius of the circle in vw
+        const centerX = 50; // Center of the circle in %
+        const centerY = 50; // Center of the circle in %
+
+        const direction = Math.random() > 0.5 ? 1 : -1;
+
+        const xSide = Math.random() > 0.5 ? 1 : -1;
+        const ySide = Math.random() > 0.5 ? 1 : -1;
+
+        rocket.style.left = `${xSide * (Math.random() * 20 + 40)}vw`;
+        rocket.style.top = `${ySide * (Math.random() * 20 + 40)}vh`;
+
+        const keyframes = [
+            { transform: `translate(${centerX}vw, ${centerY}vh) rotate(0deg) translate(${radius}vw) rotate(${direction * 90}deg)`, offset: 0 },
+            { transform: `translate(${centerX}vw, ${centerY}vh) rotate(${direction * 90}deg) translate(${radius}vw) rotate(${direction * 90}deg)`, offset: 0.25 },
+            { transform: `translate(${centerX}vw, ${centerY}vh) rotate(${direction * 180}deg) translate(${radius}vw) rotate(${direction * 90}deg)`, offset: 0.5 },
+            { transform: `translate(${centerX}vw, ${centerY}vh) rotate(${direction * 270}deg) translate(${radius}vw) rotate(${direction * 90}deg)`, offset: 0.75 },
+            { transform: `translate(${centerX}vw, ${centerY}vh) rotate(${direction * 360}deg) translate(${radius}vw) rotate(${direction * 90}deg)`, offset: 1 }
+        ];
+
+        const options = {
+            duration: 10000, // 10 seconds
+            easing: 'linear',
+            fill: 'forwards'
+        };
+
+        const animation = rocket.animate(keyframes, options);
+
+        animation.onfinish = () => {
+            rocket.remove();
+            
+            setTimeout(() => {
+                spawnRocket();
+            }, Math.random() * 5 * 1000 + 5000);
+        };
+    }
+
+    addStars();
+
+    for (let i = 0; i < 2; i++) {
+        spawnRocket();
+    }
+
 
     // Render player list initially
     renderPlayerList();

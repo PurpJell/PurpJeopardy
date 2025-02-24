@@ -167,6 +167,32 @@ button:hover {
     }
 }
 
+.fish {
+    position: fixed;
+    display: inline-block;
+    bottom: 0;
+    width: 4vw;
+    z-index: 0;
+}
+
+@keyframes swimLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100vw);
+    }
+}
+
+@keyframes swimRight {
+    from {
+        transform: translateX(0) scaleX(-1);
+    }
+    to {
+        transform: translateX(100vw) scaleX(-1);
+    }
+}
+
 *::-webkit-scrollbar {
     display: none;
 }

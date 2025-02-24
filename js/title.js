@@ -142,6 +142,57 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
+    for (let i = 0; i < 12; i++) {
+        spawnFish();
+    }
+
+    function spawnFish() {
+        const randomDelay = Math.random() * 3 + 0.5;
+
+        setTimeout(() => {
+            const fish = document.createElement('img');
+            fish.src = '../images/fish1.png';
+            fish.className = 'fish';
+            document.body.appendChild(fish);
+            startFishAnimation(fish);
+        }, randomDelay * 1000);
+    }
+
+    function startFishAnimation(fish) {
+        const direction = Math.random() > 0.5 ? "left" : "right";
+        if (direction === "left") {
+            fish.style.right = '-4vw';
+        }
+        else {
+            fish.style.left = '-4vw';
+        }
+
+        fish.style.top = `${Math.random() * 75 + 18}%`;
+
+        const randomColor = Math.floor(Math.random() * 3);
+        if (randomColor === 0) {
+            fish.src = '../images/fish1.png';
+        } else if (randomColor === 1) {
+            // deep-blue
+            fish.src = '../images/fish2.png';
+        } else {
+            // orange
+            fish.src = '../images/fish3.png';
+        }
+
+        fish.style.scale = Math.random() + 1;
+
+        fish.style.animation = 'none';
+        fish.offsetHeight;
+
+        fish.style.animation = `${direction === "left" ? "swimLeft" : "swimRight"} ${Math.random() * 3 + 5}s linear 1`;
+
+        fish.addEventListener('animationend', () => {
+            spawnFish();
+            fish.remove();
+        }, { once: true });
+    }
+
     spawnHook();
 
     playGameButton.addEventListener('click', () => {

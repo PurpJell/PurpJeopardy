@@ -9,8 +9,8 @@
 }
 
 body {
-    background-color: #227494;
-    height: 85vh;
+    background: linear-gradient(180deg, #000000, #0b001a, #0f0022, #14002e, #11003f);
+    height: 82vh;
 }
 
 .loading-screen {
@@ -40,8 +40,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: 0.3vw solid #184354;
-    background-color: #1d5a72;
+    border-bottom: 0.5vw solid #1f0047;
+    background-color: #40007c;
 }
 
 h1 {
@@ -77,12 +77,20 @@ h1 {
     margin-left: 40%;
     font-size: 3.1vw;
     font-family: 'Naturaly';
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
 button {
-    background-color: #194455;
+    background-color: #15004e;
     border: solid 0.3vw;
-    border-color: #163b49 #13323e #13323e #163b49;
+    border-color: #0c002b #0c002b #0c002b #0c002b;
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
@@ -116,7 +124,7 @@ button {
 }
 
 .player-list {
-    margin-top: 12%;
+    margin-top: 10%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1vw;
@@ -131,7 +139,7 @@ button {
     text-align: left;
     display: flex;
     flex-direction: row;
-    background-color: #035e82;
+    background-color: #2d0068;
     cursor: default;
     position: relative;
     overflow: hidden;
@@ -145,7 +153,7 @@ button {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(120deg, rgba(22, 97, 112, 0.001), rgba(22, 97, 112, 0.1), rgba(255, 255, 255, 0.5), rgba(22, 97, 112, 0.1), rgba(22, 97, 112, 0.001));
+    background: linear-gradient(120deg, rgba(45, 0, 104, 0.001), rgba(45, 0, 104, 0.1), rgba(255, 255, 255, 0.5), rgba(45, 0, 104, 0.1), rgba(45, 0, 104, 0.001));
     transform: skewX(-25deg);
     z-index: 1;
     pointer-events: none;
@@ -201,7 +209,7 @@ button {
 
 .player-count {
     position: fixed;
-    bottom: 4vw;
+    bottom: 1vw;
     width: 20%;
     height: 10%;
     margin-left: 40%;
@@ -213,10 +221,10 @@ button {
     padding: 0.8vw;
     padding-top: 0.5vw;
     padding-bottom: 0.5vw;
-    border:rgb(41, 1, 73) 0.5vw solid;
+    border:#746800 0.5vw solid;
     border-radius: 0.6vw;
 
-    background-color: #5824a0;
+    background-color: #f8e800;
     font-size: 3.5vw;
     color: white;
     font-family: 'Naturaly';
@@ -231,30 +239,23 @@ button {
     z-index: 1;
 }
 
-.fish {
+.visuals-container {
     position: fixed;
-    display: inline-block;
-    bottom: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.star {
+    width: 3vw;
+    position: fixed;
+}
+
+.rocket {
     width: 4vw;
-    z-index: 0;
-}
-
-@keyframes swimLeft {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-100vw);
-    }
-}
-
-@keyframes swimRight {
-    from {
-        transform: translateX(0) scaleX(-1);
-    }
-    to {
-        transform: translateX(100vw) scaleX(-1);
-    }
+    position: fixed;
 }
 
 *::-webkit-scrollbar {
