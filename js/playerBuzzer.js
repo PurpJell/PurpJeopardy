@@ -46,10 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playerData.name.length < 6) {
             playerName.style.fontSize = '14vw';
             playerName.style.marginTop = '2vw';
-        } else if (playerData.name.length < 11) {
-            playerName.style.fontSize = '10.5vw';
-            playerName.style.marginTop = '2.5vw';
         }
+        // } else if (playerData.name.length < 11) {
+        //     playerName.style.fontSize = '10.5vw';
+        //     playerName.style.marginTop = '2.5vw';
+        // }
 
         playerScore.textContent = `$${playerData.score}`;
     }

@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const hideButton = document.getElementById('hideButton');
     const backButton = document.getElementById('backButton');
 
+    let randomIcons = ["../images/rocket.png", "../images/alien.png", "../images/moon.png", "../images/astronaut.png"]
+
     let hideIpAddress = true;
     ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
 
@@ -24,44 +26,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Retrieve player data from localStorage
-    // localStorage.removeItem('playerData');
-    // let playerData = [];
-    let playerData = JSON.parse(localStorage.getItem('playerData')) || [];
+    localStorage.removeItem('playerData');
+    let playerData = [];
+    // let playerData = JSON.parse(localStorage.getItem('playerData')) || [];
     localStorage.setItem('currentBoardID', 1);
     localStorage.removeItem('clickedQuestions');
+
+    let playerCards = []
 
     // Function to render player list
     function renderPlayerList() {
         playerList.innerHTML = ''; // Clear existing player list
-        playerData.forEach((player, index) => {
-            const playerCard = document.createElement('div');
-            playerCard.className = 'player-card';
-            
-            const playerPicture = document.createElement('div');
-            playerPicture.className = 'player-picture';
-            const img = document.createElement('img');
-            img.src = player.imgSrc;
-            playerPicture.appendChild(img);
-            
-            const playerInfo = document.createElement('div');
-            playerInfo.className = 'player-info';
-            const playerName = document.createElement('div');
-            playerName.className = 'player-name';
-            playerName.innerHTML = `<b>${player.name}</b>`;
-
-            if (player.name.length < 6) {
-                playerName.style.fontSize = '6vw';
-            } else if (player.name.length < 11) {
-                playerName.style.fontSize = '5.4vw';
-            }
-            
-            playerInfo.appendChild(playerName);
-            
-            playerCard.appendChild(playerPicture);
-            playerCard.appendChild(playerInfo);
-            
+        playerCards.forEach((playerCard) => {
             playerList.appendChild(playerCard);
-
         });
     }
     
@@ -102,10 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
     visualsContainer.className = 'visuals-container';
     document.body.appendChild(visualsContainer);
 
-    function addStars() {
+    function addStars(rows, columns) {
 
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 14; c++) {
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
                 const star = document.createElement('img');
                 star.className = 'star';
 
@@ -209,9 +186,9 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    addStars();
+    addStars(8, 14);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
         spawnRocket();
     }
 
@@ -234,7 +211,72 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playerData.length < 4) {
             playerData.push(playerData_);
             localStorage.setItem('playerData', JSON.stringify(playerData));
+
+            const playerCard = document.createElement('div');
+            playerCard.className = 'player-card';
+            
+            const playerPicture = document.createElement('div');
+            playerPicture.className = 'player-picture';
+            const img = document.createElement('img');
+            img.src = playerData_.imgSrc;
+            playerPicture.appendChild(img);
+            
+            const playerInfo = document.createElement('div');
+            playerInfo.className = 'player-info';
+            const playerName = document.createElement('div');
+            playerName.className = 'player-name';
+            playerName.innerHTML = `<b>${playerData_.name}</b>`;
+
+            if (playerData_.name.length < 6) {
+                playerName.style.fontSize = '6vw';
+            } else if (playerData_.name.length < 11) {
+                playerName.style.fontSize = '5.4vw';
+            }
+            
+            playerInfo.appendChild(playerName);
+            
+            playerCard.appendChild(playerPicture);
+            playerCard.appendChild(playerInfo);
+
+            const icon = document.createElement('img');
+            const randomIcon = randomIcons[Math.floor(Math.random() * randomIcons.length)];
+
+            randomIcons = randomIcons.filter(icon => icon !== randomIcon);
+
+            if (randomIcon) {
+                if (randomIcon.includes("alien.png")) {
+                    icon.style.width = "30%";
+                    icon.style.top = "5%";
+                    icon.style.left = "53%";
+                }
+                else if (randomIcon.includes("rocket.png")) {
+                    icon.style.width = "48%";
+                    icon.style.top = "6%";
+                    icon.style.left = "42%";
+                    icon.style.transform = `rotate(-27deg)`;
+                }
+                else if (randomIcon.includes("moon.png")) {
+                    icon.style.width = "35%";
+                    icon.style.top = "5%";
+                    icon.style.left = "47%";
+                    icon.style.transform = `rotate(-27deg)`;
+                }
+                else if (randomIcon.includes("astronaut.png")) {
+                    icon.style.width = "38%";
+                    icon.style.top = "6%";
+                    icon.style.left = "47%";
+                }
+            }
+
+            icon.src = randomIcon;
+            icon.className = 'player-icon';
+
+            playerCard.appendChild(icon);
+
+            playerCards.push(playerCard);
+
             renderPlayerList();
+
             playerCount.textContent = `${playerData.length}/4 players`;
             ipcRenderer.send('addPlayerResponse', { success: true, message: 'Player added successfully' });
         } else {
@@ -244,6 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ipcRenderer.on('removePlayer', function(event, playerName_) {
         playerData = playerData.filter(player => player.name !== playerName_);
+        randomIcons.push(playerCards.find(playerCard => playerCard.querySelector('.player-name').textContent === playerName_).querySelector('.player-icon').src);
+        playerCards = playerCards.filter(playerCard => playerCard.querySelector('.player-name').textContent !== playerName_);
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerList();
         playerCount.textContent = `${playerData.length}/4 players`;

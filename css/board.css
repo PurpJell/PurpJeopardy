@@ -75,10 +75,10 @@ body {
 
 .player-name {
     width: 10vw;
-    margin-top: 1.2vw;
-    height: 1.7vw;
+    margin-top: 0.5vw;
+    height: 2.5vw;
     flex-grow: 1;
-    font-size: 1.4vw;
+    font-size: 2.2vw;
     text-align: center;
     font-family: 'Naturaly';
 }

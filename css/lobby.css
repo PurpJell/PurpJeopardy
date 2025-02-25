@@ -125,6 +125,8 @@ button {
 
 .player-list {
     margin-top: 10%;
+    margin-left: 6%;
+    margin-right: 6%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1vw;
@@ -139,7 +141,7 @@ button {
     text-align: left;
     display: flex;
     flex-direction: row;
-    background-color: #2d0068;
+    background: linear-gradient(120deg, #2d0068 30%, #d3b300);
     cursor: default;
     position: relative;
     overflow: hidden;
@@ -207,6 +209,11 @@ button {
         0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
+.player-icon {
+    position: absolute;
+    filter: opacity(0.6)
+}
+
 .player-count {
     position: fixed;
     bottom: 1vw;
@@ -249,7 +256,7 @@ button {
 }
 
 .star {
-    width: 3vw;
+    width: 1.2vw;
     position: fixed;
 }
 

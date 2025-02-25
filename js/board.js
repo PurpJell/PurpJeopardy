@@ -33,10 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 playerName.style.fontSize = '3vw';
                 playerName.style.marginTop = '0vw';
                 playerName.style.height = '3vw';
-            } else if (player.name.length < 11) {
-                playerName.style.fontSize = '2.2vw';
-                playerName.style.marginTop = '0.5vw';
-                playerName.style.height = '2.5vw';
             }
             
             playerInfo.appendChild(playerName);
