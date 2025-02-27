@@ -35,17 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.onmessage = function(event) {
             const message = JSON.parse(event.data);
             if (message.type === 'playerAdded' && state === 'lobby') {
-                alert("Player Added");
                 handlePlayerAdded(message.data);
             } else if (message.type === 'gameData') {
-                alert("got new game data");
                 players = [];
                 players_ = message.data.playerData;
                 currentBoardID = message.data.currentBoardID;
                 localStorage.setItem('currentBoardID', currentBoardID);
                 selectedBoard = message.data.selectedBoard;
                 localStorage.setItem('selectedBoard', selectedBoard);
-                alert(selectedBoard);
                 fetchBoardData();
                 if (players_.length === 0) {
                     players = players_;
@@ -57,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             else if (message.type === 'selectedBoard') {
-                alert("got selected board");
                 selectedBoard = message.data;
                 localStorage.setItem('selectedBoard', selectedBoard);
                 fetchBoardData();
@@ -70,6 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchBoardData() {
+        if (selectedBoard === 'none.pjb') {
+            return;
+        }
+
         fetch(`../boards/${selectedBoard}`)
             .then(response => response.json())
             .then(boardData_ => {

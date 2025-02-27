@@ -106,7 +106,7 @@ h1 {
     height: 6vw;
     font-family: 'Naturaly';
     font-size: 3.4vw;
-    background: radial-gradient(circle, #f80303, #440303);
+    background: radial-gradient(circle, #f80303, #640404);
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     padding: 0.2vw;
@@ -128,12 +128,13 @@ button::before {
     left: 50%;
     width: 100%;
     height: 200%;
-    background: linear-gradient(130deg, #ffffff00, #ffffff00, #ffffff00, #ffffff79, #ffffff00);
+    /* background: radial-gradient(circle, #ffffff00, #ffffff00, #ffffff8a, #ffffff00, #ffffff00); */
+    filter: blur(0.5vw);
     transform: translate(-50%, -50%);
 }
 
 button:hover::before {
-    background: linear-gradient(130deg, #ffffff00, #ffffff79, #ffffff00, #ffffff00, #ffffff00);
+    background: none;
 }
 
 button:hover {

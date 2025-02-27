@@ -8,6 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmTitleButton = document.getElementById('confirmTitleButton');
     const cancelTitleButton = document.getElementById('cancelTitleButton');
 
+    const animationContainer = document.createElement('div');
+    animationContainer.id = 'animations';
+    animationContainer.style.position = 'absolute';
+    animationContainer.style.top = 0;
+    animationContainer.style.left = 0;
+    animationContainer.style.width = '100vw';
+    animationContainer.style.height = '100vh';
+    animationContainer.style.overflow = 'hidden';
+
+    document.body.appendChild(animationContainer);
+
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
 
     // Retrieve player data from localStorage
@@ -71,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderBoard() {
         const filePath = `../boards/${selectedBoard}`;
-        console.log(`Attempting to fetch board data from: ${filePath}`);
     
         fetch(filePath)
             .then(response => {
@@ -146,6 +156,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Render the board initially
     renderBoard();
+
+    let leftLights = [];
+    let rightLights = [];
+
+    function createLights() {
+        for (let i = 0; i < 10; i++) {
+            const leftLight = document.createElement('img');
+            leftLight.src = '../images/lamp_off.png';
+            leftLight.className = 'lamp';
+            leftLights.push(leftLight);
+            animationContainer.appendChild(leftLight);
+
+            leftLight.style.left = `1.4%`;
+            leftLight.style.top = `${i * 8 + 20}%`;
+
+            const rightLight = document.createElement('img');
+            rightLight.src = '../images/lamp_off.png';
+            rightLight.className = 'lamp';
+            rightLights.push(rightLight);
+            animationContainer.appendChild(rightLight);
+
+            rightLight.style.right = `1.7%`;
+            rightLight.style.top = `${i * 8 + 20}%`;
+        }
+
+        let lightIndex = 0;
+        leftLights.forEach(light => {
+            animateLight(light, lightIndex%3);
+            lightIndex++;
+        });
+
+        rightLights.forEach(light => {
+            animateLight(light, lightIndex%3);
+            lightIndex--;
+        });
+    }
+
+    function animateLight(light, state) {
+        const duration = 300;
+
+        state = state || 0;
+
+        console.log('Animating light', light.src, state);
+
+        light.style.transition = `brightness ${100}ms`;
+
+        setTimeout(() => {
+            if (state === 2)
+            {
+                light.src = '../images/lamp_on.png';
+                light.style.filter = 'brightness(1)';
+                animateLight(light, 0);
+            }
+            else {
+                light.src = '../images/lamp_off.png';
+                light.style.filter = 'brightness(1)';
+                animateLight(light, state+1);
+            }
+        }, duration);
+    }
+
+    createLights();
 
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {

@@ -11,6 +11,7 @@ body {
     margin: 0;
     height: 100vh;
     background: linear-gradient(130deg, #6a38ff, #b0a1ff, #6a38ff);
+    overflow: hidden;
 }
 
 .loading-screen {
@@ -50,14 +51,14 @@ h2 {
     margin-top: 0.1vw;
     font-size: 4vw;
     font-family: 'Mono Polz';
-    color: rgb(202, 176, 226);
+    color: #cab0e2;
     margin-bottom: 1.5vw;
 }
 
 .price-multiplier {
     font-size: 3.5vw;
     font-family: 'Mono';
-    color: rgb(133, 16, 184);
+    color: #8510b8;
     margin-left: 0.5vw;
     text-shadow: 
         -1px -1px 0 #000,  

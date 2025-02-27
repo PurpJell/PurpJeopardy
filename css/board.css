@@ -156,16 +156,17 @@ body {
 }
 
 .board {
-    border: 0.4vw solid #140c33;
+    border: solid #140c33;
+    border-width: 0.4vw 3.5vw 0.4vw 3.5vw;
     border-radius: 1vw;
     padding: 0.3vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 5%;
+    margin-left: 1%;
     width: 90%;
 
-    background-color: #3d2a85;
+    background-color: #180070;
 }
 
 .categories {
@@ -210,16 +211,22 @@ body {
     text-align: center;
     font-size: 3.1vw;
     font-family: 'Mono Polz';
-    color: rgb(218, 187, 248);
+    color: #ffe600;
     padding: 0.9vw;
     border: 0.4vw solid;
-    border-color: #321168 #1b113d #1b113d #321168;
+    border-color: #211168 #1b113d #1b113d #211168;
     margin-left: 0.2vw;
     margin-right: 0.2vw;
     height: 4vw;
     cursor: pointer;
 
-    background: linear-gradient(130deg, #583ABD, #352274);
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
+
+    background: linear-gradient(130deg, #3c22b1, #352274);
 }
 
 .next-board-window {
@@ -239,4 +246,10 @@ body {
     font-family: 'Mono Polz';
     border: solid 0.8vw;
     border-color: #160f31 #0d081d #080513 #120c2b;
+}
+
+.lamp {
+    position: absolute;
+    width: 3.5vw;
+    height: 3.5vw;
 }

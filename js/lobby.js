@@ -72,6 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
         }
 
+        boards = boards.filter(board => board !== "exampleBoardData.pjb");
+
+        if (boards.length === 0) {
+            dropdownMenu.textContent = "No boards found";
+            return;
+        }
+
         // Populate the dropdown menu with the .pjb files
         boards.forEach(board => {
             const boardOption = document.createElement('p');
@@ -248,8 +255,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
-        console.log("Sending gane data to host");
-        alert("Sending game data to host");
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
         serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
