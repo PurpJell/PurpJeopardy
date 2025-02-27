@@ -10,7 +10,8 @@
 
 body {
     background: linear-gradient(180deg, #000000, #0b001a, #0f0022, #14002e, #11003f);
-    height: 82vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .loading-screen {
@@ -113,6 +114,48 @@ button {
     margin-left: 1%;
     margin-right: auto;
     margin-bottom: 0.5vw;
+}
+
+.dropdown {
+    position: absolute;
+    display: inline-block;
+    bottom: 1vw;
+    left: 1vw;
+    z-index: 1;
+}
+
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 3vw;
+    background-color: #15004e;
+    border: 0.3vw solid black;
+    border-radius: 0.6vw;
+    padding: 0.5vw;
+    color: white;
+    font-family: 'Naturaly';
+    font-size: 1.2vw;
+    z-index: 1;
+}
+
+.dropdown-menu p {
+    padding: 0.1vw;
+    padding-left: 0.7vw;
+    margin: 0;
+    cursor: pointer;
+}
+
+.dropdown-menu p::before {
+    content: '-'; /* Unicode character for a bullet point */
+    color: white; /* Color of the bullet point */
+    position: absolute;
+    left: 0.25vw; /* Adjust the position as needed */
+    font-size: 1.2vw; /* Match the font size of the text */
+}
+
+.dropdown-menu.show {
+    display: flex;
 }
 
 .back-button {

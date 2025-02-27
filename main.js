@@ -82,7 +82,7 @@ function createWindow() {
         if (url === '/host') {
             hostSocket = ws;
             console.log('Host connected at', url);
-            mainWindow.webContents.send('retrievePlayerData');
+            mainWindow.webContents.send('retrieveGameData');
         } else {
             playerSockets.add(ws);
             console.log('Player connected at', url);
@@ -137,19 +137,29 @@ function createWindow() {
         });
     });
 
-    ipcMain.on('retrievePlayerDataResponse', (event, response) => {
+    ipcMain.on('retrieveGameDataResponse', (event, response) => {
+        console.log("got game data response");
         const players = response.players;
         const currentBoardID_ = response.currentBoardID;
+        const selectedBoard = response.selectedBoard;
         if (hostSocket) {
             hostSocket.send(JSON.stringify(
                 { 
                     type: 'gameData',
                     data: {
                         playerData: players,
-                        currentBoardID: currentBoardID_
+                        currentBoardID: currentBoardID_,
+                        selectedBoard: selectedBoard
                     } 
                 }
             ));
+        }
+    });
+
+    ipcMain.on('selectedBoard', (event, selectedBoard) => {
+        console.log('Selected board:', selectedBoard, ", sending to host");
+        if (hostSocket) {
+            hostSocket.send(JSON.stringify({ type: 'selectedBoard', data: selectedBoard }));
         }
     });
 

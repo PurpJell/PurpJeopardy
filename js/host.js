@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let boardData = [];
     let currentBoard;
 
+    let selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+
     let questionPrice = JSON.parse(localStorage.getItem('questionPrice')) || 0;
     let state = 'lobby';
 
@@ -33,12 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.onmessage = function(event) {
             const message = JSON.parse(event.data);
             if (message.type === 'playerAdded' && state === 'lobby') {
+                alert("Player Added");
                 handlePlayerAdded(message.data);
             } else if (message.type === 'gameData') {
+                alert("got new game data");
                 players = [];
                 players_ = message.data.playerData;
                 currentBoardID = message.data.currentBoardID;
                 localStorage.setItem('currentBoardID', currentBoardID);
+                selectedBoard = message.data.selectedBoard;
+                localStorage.setItem('selectedBoard', selectedBoard);
+                alert(selectedBoard);
                 fetchBoardData();
                 if (players_.length === 0) {
                     players = players_;
@@ -49,6 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             }
+            else if (message.type === 'selectedBoard') {
+                alert("got selected board");
+                selectedBoard = message.data;
+                localStorage.setItem('selectedBoard', selectedBoard);
+                fetchBoardData();
+            }
         };
 
         socket.onclose = function() {
@@ -57,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchBoardData() {
-        fetch(`../js/boardData.json`)
+        fetch(`../boards/${selectedBoard}`)
             .then(response => response.json())
             .then(boardData_ => {
                 boardData = boardData_;
@@ -76,8 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => alert('Error loading board data:', error));
     }
-
-    // fetchBoardData();
 
     function handlePlayerAdded(playerData) {
         players.push({name: playerData.name, score: playerData.score});
@@ -123,6 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     startGameButton.addEventListener('click', function() {
+        if (selectedBoard === 'none.pjb') {
+            alert('No board selected!');
+            return;
+        }
         socket.send(JSON.stringify({ type: 'startGame' }));
         changeToBoardView();
     });

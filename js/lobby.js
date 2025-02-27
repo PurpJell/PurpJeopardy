@@ -1,11 +1,17 @@
 const { ipcRenderer } = require('electron');
+const fs = require('fs');
+const path = require('path');
 
 document.addEventListener('DOMContentLoaded', function() {
     const ipAddress = document.getElementById('ipAddress');
     const playerList = document.getElementById('playerList');
     const playerCount = document.getElementById('playerCount');
     const hideButton = document.getElementById('hideButton');
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
     const backButton = document.getElementById('backButton');
+
+    selectedBoard = localStorage.getItem('selectedBoard') || "exampleBoardData.pjb";
 
     let randomIcons = ["../images/rocket.png", "../images/alien.png", "../images/moon.png", "../images/astronaut.png"]
 
@@ -41,6 +47,46 @@ document.addEventListener('DOMContentLoaded', function() {
             playerList.appendChild(playerCard);
         });
     }
+
+    let boards = [];
+
+    dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+
+    dropdownButton.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Fetch boards from the games directory
+    const gamesDirectory = path.join(__dirname, '../boards');
+    fs.readdir(gamesDirectory, (err, files) => {
+        if (err) {
+            console.error('Error reading games directory:', err);
+            return;
+        }
+
+        boards = files.filter(file => file.endsWith('.pjb'));
+
+        if (!boards.includes(selectedBoard)) {
+            selectedBoard = "none.pjb";
+            localStorage.setItem('selectedBoard', selectedBoard);
+            dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+        }
+
+        // Populate the dropdown menu with the .pjb files
+        boards.forEach(board => {
+            const boardOption = document.createElement('p');
+            boardOption.textContent = board.replace(".pjb", "");
+            boardOption.addEventListener('click', () => {
+                dropdownButton.textContent = "Selected board:\n" + board.replace(".pjb", "");
+                dropdownMenu.classList.toggle('show');
+                localStorage.setItem('selectedBoard', `${board}`);
+                selectedBoard = board;
+                // send selected board to host
+                ipcRenderer.send('selectedBoard', selectedBoard);
+            });
+            dropdownMenu.appendChild(boardOption);
+        });
+    });
     
     addShineAnimation();
 
@@ -200,11 +246,14 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'title.html';
     });
 
-    // Listen for messages from the server
-    ipcRenderer.on('retrievePlayerData', function(event) {
+    // Retrieve server data from localStorage
+    ipcRenderer.on('retrieveGameData', function(event) {
+        console.log("Sending gane data to host");
+        alert("Sending game data to host");
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        servercurrentBoardID = localStorage.getItem('currentBoardID') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: servercurrentBoardID });
+        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('addPlayer', function(event, playerData_) {

@@ -91,11 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('loadingScreen').style.display = 'none';
     });
 
-    // Listen for messages from the main process
-    ipcRenderer.on('retrievePlayerData', function(event) {
+    // Retrieve server data from localStorage
+    ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        servercurrentBoardID = localStorage.getItem('currentBoardID') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: servercurrentBoardID });
+        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('buzzIn', function(event, playerData_) {

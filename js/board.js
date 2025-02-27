@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const topBar = document.getElementById('topBar');
     const board = document.querySelector('.board');
 
+    const backToTitleWindow = document.getElementById('backToTitleWindow');
+    const confirmTitleButton = document.getElementById('confirmTitleButton');
+    const cancelTitleButton = document.getElementById('cancelTitleButton');
+
+    const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+
     // Retrieve player data from localStorage
     const playerData = JSON.parse(localStorage.getItem('playerData')) || [];
 
@@ -64,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // let clickedQuestions = [];
 
     function renderBoard() {
-        const filePath = `../js/boardData.json`;
+        const filePath = `../boards/${selectedBoard}`;
         console.log(`Attempting to fetch board data from: ${filePath}`);
     
         fetch(filePath)
@@ -141,11 +147,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render the board initially
     renderBoard();
 
-    // Handle request to open question
-    ipcRenderer.on('retrievePlayerData', function(event) {
+    // Retrieve server data from localStorage
+    ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
         serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
-        ipcRenderer.send('retrievePlayerDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID });
+        serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('openQuestion', function(event, data) {
@@ -184,6 +191,21 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('clickedQuestions');
         currentBoardID = localStorage.getItem('currentBoardID') || 1;
         renderBoard();
+    });
+
+    // Listen for Escape key press
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            backToTitleWindow.classList.toggle('show');
+        }
+    });
+
+    confirmTitleButton.addEventListener('click', function() {
+        window.location.href = 'title.html';
+    });
+
+    cancelTitleButton.addEventListener('click', function() {
+        backToTitleWindow.classList.toggle('show');
     });
 
     // Show content once fully loaded

@@ -9,8 +9,9 @@
 }
 
 body {
-    background: linear-gradient(180deg, #2c709c, #3a8ec7, #3a8ec7, #c1fbff, #bd5ee9, #753592);
-    height: 98.5vh;
+    background: linear-gradient(180deg, #1b113d, #3713ab);
+    height: 100vh;
+    overflow: hidden;
 }
 
 .loading-screen {
@@ -27,6 +28,71 @@ body {
     z-index: 1000;
     font-size: 15vw;
     font-family: 'Mono Polz';
+}
+
+.back-to-title-window {
+    display: none;
+    width: 50%;
+    height: 50%;
+    background: linear-gradient(180deg, #6738ff, #3a1f8f);
+    flex-direction: column;
+    position:fixed;
+    top: 25%;
+    left: 25%;
+    align-items: center;
+    border: solid 0.8vw #1a095f;
+    z-index: 1000;
+    
+}
+
+.back-to-title-window.show {
+    display: flex;
+}
+
+.back-to-title-window p {
+    margin-top: 5%;
+    width: 70%;
+    font-size: 6vw;
+    text-align: center;
+    font-family: 'Mono Polz';
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
+    white-space: pre-wrap;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3vw;
+    padding: 0.8vw;
+    padding-top: 0.5vw;
+    padding-bottom: 0.5vw;
+}
+
+.button-container button {
+    width: 10vw;
+    height: 5vw;
+    font-family: 'Naturaly';
+    font-size: 3.5vw;
+    border: 0.4vw solid black;
+    border-radius: 0.6vw;
+    padding-right: 0.7vw;
+    cursor: pointer;
+}
+
+.confirm-title-button {
+    background-color: #004e11;
+}
+
+.cancel-title-button {
+    background-color: #4e0000;
 }
 
 .top-bar {
