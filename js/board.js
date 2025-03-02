@@ -132,7 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const isDailyDouble = category.questions[questionIndex].dailyDouble || false;
                 questionDiv.setAttribute('dailyDouble', isDailyDouble);
                 const questionKey = `${categoryIndex + 1}-${category.questions[questionIndex].price}`.replace('$', '');
-                questionDiv.textContent = clickedQuestions.includes(questionKey) ? '' : category.questions[questionIndex].price;
+                questionDiv.textContent = category.questions[questionIndex].price;
+                if (clickedQuestions.includes(questionKey)) {
+                    questionDiv.classList.add('clicked');
+                }
                 questionsRow.appendChild(questionDiv);
             });
 
@@ -161,62 +164,79 @@ document.addEventListener('DOMContentLoaded', function() {
     let rightLights = [];
 
     function createLights() {
-        for (let i = 0; i < 10; i++) {
-            const leftLight = document.createElement('img');
-            leftLight.src = '../images/lamp_off.png';
-            leftLight.className = 'lamp';
-            leftLights.push(leftLight);
-            animationContainer.appendChild(leftLight);
+        for (let i = 0; i < numLights; i++) {
+            const leftLightOff = document.createElement('img');
+            leftLightOff.src = '../images/lamp_off.png';
+            leftLightOff.className = 'lamp';
+            animationContainer.appendChild(leftLightOff);
 
-            leftLight.style.left = `1.4%`;
-            leftLight.style.top = `${i * 8 + 20}%`;
+            const leftLightOn = document.createElement('img');
+            leftLightOn.src = '../images/lamp_on.png';
+            leftLightOn.className = 'lamp';
+            leftLights.push(leftLightOn);
+            animationContainer.appendChild(leftLightOn);
 
-            const rightLight = document.createElement('img');
-            rightLight.src = '../images/lamp_off.png';
-            rightLight.className = 'lamp';
-            rightLights.push(rightLight);
-            animationContainer.appendChild(rightLight);
+            leftLightOff.style.left = `2.5%`;
+            leftLightOff.style.top = `${i * 78/numLights + 17.5}vh`;
 
-            rightLight.style.right = `1.7%`;
-            rightLight.style.top = `${i * 8 + 20}%`;
+            leftLightOn.style.left = `2.5%`;
+            leftLightOn.style.top = `${i * 78/numLights + 17.5}vh`;
+            leftLightOn.style.opacity = 0;
+
+            const rightLightOff = document.createElement('img');
+            rightLightOff.src = '../images/lamp_off.png';
+            rightLightOff.className = 'lamp';
+            animationContainer.appendChild(rightLightOff);
+
+            const rightLightOn = document.createElement('img');
+            rightLightOn.src = '../images/lamp_on.png';
+            rightLightOn.className = 'lamp';
+            rightLights.push(rightLightOn);
+            animationContainer.appendChild(rightLightOn);
+
+            rightLightOff.style.right = `2.5%`;
+            rightLightOff.style.top = `${i * 78/numLights + 17.5}vh`;
+
+            rightLightOn.style.right = `2.5%`;
+            rightLightOn.style.top = `${i * 78/numLights + 17.5}vh`;
+            rightLightOn.style.opacity = 0;
         }
 
         let lightIndex = 0;
         leftLights.forEach(light => {
-            animateLight(light, lightIndex%3);
+            animateLight(light, lightIndex);
             lightIndex++;
         });
 
+        lightIndex = numLights - 1;
+
         rightLights.forEach(light => {
-            animateLight(light, lightIndex%3);
+            animateLight(light, lightIndex);
             lightIndex--;
         });
     }
 
-    function animateLight(light, state) {
-        const duration = 300;
+    function animateLight(light, delay) {
 
-        state = state || 0;
+        keyframes = [
+            { opacity: 0, offset: 0 },
+            { opacity: 1, offset: 0.1 },
+            { opacity: 0, offset: 0.5 },
+            { opacity: 0, offset: 1 }
+        ];
 
-        console.log('Animating light', light.src, state);
+        const options = {
+            duration: 3 * 1000,
+            easing: 'ease-in-out',
+            fill: 'forwards',
+            iterations: Infinity,
+            delay: delay * 150
+        };
 
-        light.style.transition = `brightness ${100}ms`;
-
-        setTimeout(() => {
-            if (state === 2)
-            {
-                light.src = '../images/lamp_on.png';
-                light.style.filter = 'brightness(1)';
-                animateLight(light, 0);
-            }
-            else {
-                light.src = '../images/lamp_off.png';
-                light.style.filter = 'brightness(1)';
-                animateLight(light, state+1);
-            }
-        }, duration);
+        light.animate(keyframes, options);
     }
 
+    const numLights = 10;
     createLights();
 
     // Retrieve server data from localStorage
@@ -237,14 +257,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
         if (question) {
-            question.textContent = '';
+            // question.textContent = '';
             localStorage.setItem('category', currentBoard.categories[category - 1].name);
             localStorage.setItem('price', question.getAttribute('data-price'));
             localStorage.setItem('content', question.getAttribute('content'));
             localStorage.setItem('answer', question.getAttribute('answer'));
             localStorage.setItem('questionImage', question.getAttribute('questionImage'));
             localStorage.setItem('answerImage', question.getAttribute('answerImage')); 
-            localStorage.setItem('dailyDouble', question.getAttribute('dailyDouble'));           
+            localStorage.setItem('dailyDouble', question.getAttribute('dailyDouble'));
+            question.classList.add('clicked');       
         }
         window.location.href = 'question.html';
     });
