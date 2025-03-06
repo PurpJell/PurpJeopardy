@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             playerScore.textContent = `$${player.score}`;
 
             if (player.name.length < 6) {
-                playerName.style.fontSize = '3vw';
+                playerName.style.fontSize = '2.7vw';
                 playerName.style.marginTop = '0vw';
                 playerName.style.height = '3vw';
             }

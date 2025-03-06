@@ -9,7 +9,7 @@
 }
 
 body {
-    background: linear-gradient(180deg, #241652, #0b2f70);
+    background: linear-gradient(180deg, #1d83bd, #0b2f70);
     height: 100vh;
     overflow: hidden;
 }
@@ -118,7 +118,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
 
-    background: linear-gradient(130deg, #e72e66, #e96485, #e0a195, #c1fbff, #2a87ac, #186c8d);
+    background: linear-gradient(130deg, #2a78ac, #022d3e);
 
 }
 
@@ -164,6 +164,10 @@ body {
     width: 98%;
     margin-left: 1%;
     gap: 0;
+
+    border: 0.3vw solid black;
+    border-radius: 1.2vw;
+    padding: 0.55vh 0 0.55vh 0;
 }
 
 .sidebar-left {
@@ -200,32 +204,33 @@ body {
 
 .categories {
     display: flex;
-    padding-top: 0.3vh;
-    padding-bottom: 0.7vh;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     height: 12vh;
-    background: linear-gradient(180deg, #b18200, #dee200);
-
+    background: linear-gradient(180deg, #1249a9, #00235f);
+    
     border-bottom: 0.3vh solid;
     border-color: #000000;
 }
 
 .category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex: 1;
     text-align: center;
     font-weight: bold;
     font-size: 1.6vw;
     font-family: 'Impact';
-    color: #eeda22;
-    padding: 0.7vw;
-    padding-top: 0.2vw;
+    color: #ac9e24;
+    padding-top: 0.3vh;
+    padding-bottom: 2.2vh;
     border: 0.3vw solid;
     border-color: #000000;
-    margin-left: 0.2vw;
-    margin-right: 0.2vw;
+    margin-right: 0;
+    margin-left: 0;
     height: 5.5vw;
-    background: linear-gradient(180deg, #d3d600, #998a00);
+    background: linear-gradient(180deg, #1249a9, #00235f);
 
     text-shadow: 
         -0.1vw -0.1vw 0 #000000,  
@@ -234,11 +239,15 @@ body {
          0.1vw  0.1vw 0 #000000;
 }
 
+.category:not(:last-child) {
+    margin-right: -0.3vw; /* Apply negative margin only to non-last categories */
+}
+
 .questions {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    height: 12.8vh;
+    height: 13.2vh;
     margin-top: -0.2vh;
     margin-bottom: 0.4vh;
     border-collapse: collapse;
@@ -258,13 +267,9 @@ body {
     border-left-width: 0.2vw;
     border-style: solid;
     border-color: #000000;
-    height: 100%;
     cursor: pointer;
 
-    margin-right: -0.15vw;
-    /* margin-left: -0.1vw; */
     margin-bottom: -0.4vh;
-
 
     text-shadow: 
         -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
@@ -273,6 +278,10 @@ body {
         0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
 
     background: linear-gradient(130deg, #3c22b1, #352274);
+}
+
+.question:not(:last-child) {
+    margin-right: -0.15vw; /* Apply negative margin only to non-last questions */
 }
 
 .question.clicked {
