@@ -8,16 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmTitleButton = document.getElementById('confirmTitleButton');
     const cancelTitleButton = document.getElementById('cancelTitleButton');
 
-    const animationContainer = document.createElement('div');
-    animationContainer.id = 'animations';
-    animationContainer.style.position = 'absolute';
-    animationContainer.style.top = 0;
-    animationContainer.style.left = 0;
-    animationContainer.style.width = '100vw';
-    animationContainer.style.height = '100vh';
-    animationContainer.style.overflow = 'hidden';
-
-    document.body.appendChild(animationContainer);
+    const leftSidebar = document.getElementById('sidebarLeft');
+    const rightSidebar = document.getElementById('sidebarRight');
 
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
 
@@ -46,9 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
             playerScore.className = 'player-score';
             playerScore.textContent = `$${player.score}`;
 
-            if (player.name.length < 6) {
-                playerName.style.fontSize = '2.7vw';
-                playerName.style.marginTop = '0vw';
+            if (player.name.length < 8) {
+                playerName.style.fontSize = '3.2vw';
+                playerName.style.paddingTop = '0';
+                playerName.style.height = '3vw';
+            } else if (player.name.length < 9) {
+                playerName.style.fontSize = '2.8vw';
+                playerName.style.paddingTop = '0.2vh';
                 playerName.style.height = '3vw';
             }
             
@@ -168,38 +164,30 @@ document.addEventListener('DOMContentLoaded', function() {
             const leftLightOff = document.createElement('img');
             leftLightOff.src = '../images/lamp_off.png';
             leftLightOff.className = 'lamp';
-            animationContainer.appendChild(leftLightOff);
+            leftSidebar.appendChild(leftLightOff);
 
             const leftLightOn = document.createElement('img');
             leftLightOn.src = '../images/lamp_on.png';
             leftLightOn.className = 'lamp';
             leftLights.push(leftLightOn);
-            animationContainer.appendChild(leftLightOn);
+            leftSidebar.appendChild(leftLightOn);
 
-            leftLightOff.style.left = `2.5%`;
-            leftLightOff.style.top = `${i * 78/numLights + 17.5}vh`;
-
-            leftLightOn.style.left = `2.5%`;
-            leftLightOn.style.top = `${i * 78/numLights + 17.5}vh`;
             leftLightOn.style.opacity = 0;
+            leftLightOn.classList.add('on');
 
             const rightLightOff = document.createElement('img');
             rightLightOff.src = '../images/lamp_off.png';
             rightLightOff.className = 'lamp';
-            animationContainer.appendChild(rightLightOff);
+            rightSidebar.appendChild(rightLightOff);
 
             const rightLightOn = document.createElement('img');
             rightLightOn.src = '../images/lamp_on.png';
             rightLightOn.className = 'lamp';
             rightLights.push(rightLightOn);
-            animationContainer.appendChild(rightLightOn);
+            rightSidebar.appendChild(rightLightOn);
 
-            rightLightOff.style.right = `2.5%`;
-            rightLightOff.style.top = `${i * 78/numLights + 17.5}vh`;
-
-            rightLightOn.style.right = `2.5%`;
-            rightLightOn.style.top = `${i * 78/numLights + 17.5}vh`;
             rightLightOn.style.opacity = 0;
+            rightLightOn.classList.add('on');
         }
 
         let lightIndex = 0;

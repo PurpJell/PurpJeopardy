@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // const bubbleContainer = document.getElementById('bubbles');
     const playGameButton = document.getElementById('playButton');
+    const exitGameButton = document.getElementById('exitButton');
 
     const animationContainer = document.createElement('div');
     animationContainer.id = 'animations';
@@ -205,5 +206,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'lobby.html';
     });
     
+    exitGameButton.addEventListener('click', () => {
+        window.close();
+    });
     
 });

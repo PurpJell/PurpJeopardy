@@ -34,13 +34,14 @@ body {
     display: none;
     width: 50%;
     height: 50%;
-    background: linear-gradient(180deg, #6738ff, #3a1f8f);
+    background: linear-gradient(180deg, #5409e1, #3a1f8f);
     flex-direction: column;
     position:fixed;
     top: 25%;
     left: 25%;
     align-items: center;
     border: solid 0.8vw #1a095f;
+    border-radius: 1.2vw;
     z-index: 1000;
     
 }
@@ -51,6 +52,7 @@ body {
 
 .back-to-title-window p {
     margin-top: 5%;
+    margin-bottom: 7.5%;
     width: 70%;
     font-size: 6vw;
     text-align: center;
@@ -72,15 +74,15 @@ body {
     align-items: center;
     gap: 3vw;
     padding: 0.8vw;
-    padding-top: 0.5vw;
-    padding-bottom: 0.5vw;
+    /* margin-top: 0.5vw; */
+    margin-bottom: 0.5vw;
 }
 
 .button-container button {
-    width: 10vw;
-    height: 5vw;
+    width: 11.5vw;
+    height: 5.8vw;
     font-family: 'Naturaly';
-    font-size: 3.5vw;
+    font-size: 4.2vw;
     border: 0.4vw solid black;
     border-radius: 0.6vw;
     padding-right: 0.7vw;
@@ -88,71 +90,91 @@ body {
 }
 
 .confirm-title-button {
-    background-color: #004e11;
+    background-color: #006516;
+    color: white;
+
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
 .cancel-title-button {
-    background-color: #4e0000;
+    background-color: #860000;
+    color: white;
+
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
+        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
+        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
 .top-bar {
     display: flex;
-    height: 14vh;
+    height: 16vh;
     justify-content: center;
     align-items: center;
     gap: 3vw;
-    padding: 0.8vw;
-    padding-top: 0.5vh;
-    padding-bottom: 1.5vh;
+    margin-bottom: 1vw;
 }
 
 .player-card {
-    width: 15vw;
+    width: 18.7vw;
+    height: 90%;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
-    padding: 0.2vw;
-    padding-right: 0.7vw;
     margin: 1vw;
+    margin-bottom: 0;
     text-align: left;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
     background: linear-gradient(130deg, #2a78ac, #022d3e);
-
+    cursor: default;
 }
 
 .player-info {
-    padding-top: 0.1vw;
+    padding-top: 0.6vh;
     align-items: center;
     justify-content: space-between;
     width: 10vw;
 }
 
 .player-picture img {
-    width: 5.4vw;
-    height: 5.4vw;
-    margin-top: 0.15vw;
+    width: 8vw;
+    height: 8vw;
+    margin-top: 0.5vh;
+    margin-left: 0.3vw;
     border: 0.2vw solid black;
     border-radius: 50%;
     cursor: pointer;
     background-color: #380606;
     object-fit: cover;
+    cursor: default;
 }
 
 .player-name {
     width: 10vw;
-    margin-top: 0.5vw;
     height: 2.5vw;
     flex-grow: 1;
-    font-size: 2.2vw;
+    font-size: 2vw;
+    padding-top: 0.5vh;
+    margin-left: -0.2vw;
     text-align: center;
     font-family: 'Naturaly';
 }
 
 .player-score {
+    padding-top: 1.5vh;
     text-align: center;
-    font-size: 2vw;
+    font-size: 2.7vw;
     font-family: 'Mono Polz';
 }
 
@@ -162,7 +184,7 @@ body {
     justify-content: center;
     height: 78vh;
     width: 98%;
-    margin-left: 1%;
+    margin-left: 0.7%;
     gap: 0;
 
     border: 0.3vw solid black;
@@ -171,6 +193,10 @@ body {
 }
 
 .sidebar-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3vw;
     width: 5%;
     height: 100%;
     background: linear-gradient(180deg, #2a1555, #4c2796, #2a1555);
@@ -193,6 +219,10 @@ body {
 }
 
 .sidebar-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.3vw;
     width: 5%;
     height: 100%;
     background: linear-gradient(180deg, #2a1555, #4c2796, #2a1555);
@@ -237,6 +267,8 @@ body {
          0.1vw -0.1vw 0 #000000,
         -0.1vw  0.1vw 0 #000000,
          0.1vw  0.1vw 0 #000000;
+
+    cursor: default;
 }
 
 .category:not(:last-child) {
@@ -278,6 +310,7 @@ body {
         0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
 
     background: linear-gradient(130deg, #3c22b1, #352274);
+    cursor: default;
 }
 
 .question:not(:last-child) {
@@ -308,7 +341,13 @@ body {
 }
 
 .lamp {
-    position: absolute;
+    /* position: absolute; */
     width: 3.5vw;
     height: 3.5vw;
+    margin-top: 0.2vw;
+    /* margin-bottom: 1vw; */
+}
+
+.lamp.on {
+    margin-top: -4.8vw;
 }
