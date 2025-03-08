@@ -47,6 +47,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 playerName.style.paddingTop = '0.2vh';
                 playerName.style.height = '3vw';
             }
+
+            const icon = document.createElement('img');
+            const randomIcon = player.icon;
+
+            if (randomIcon) {
+                if (randomIcon.includes("alien.png")) {
+                    icon.style.width = "30%";
+                    icon.style.top = "6%";
+                    icon.style.left = "56%";
+                }
+                else if (randomIcon.includes("rocket.png")) {
+                    icon.style.width = "48%";
+                    icon.style.top = "8%";
+                    icon.style.left = "45%";
+                    icon.style.transform = `rotate(-27deg)`;
+                    icon.style.filter = `opacity(0.6)`;
+                }
+                else if (randomIcon.includes("moon.png")) {
+                    icon.style.width = "35%";
+                    icon.style.top = "8%";
+                    icon.style.left = "52%";
+                    icon.style.transform = `rotate(-27deg)`;
+                    icon.style.filter = `opacity(0.9)`;
+                }
+                else if (randomIcon.includes("astronaut.png")) {
+                    icon.style.width = "38%";
+                    icon.style.top = "6%";
+                    icon.style.left = "52%";
+                    icon.style.filter = `opacity(0.55)`;
+                }
+            }
+
+            icon.src = randomIcon;
+            icon.className = 'player-icon';
+
+            playerCard.appendChild(icon);
             
             playerInfo.appendChild(playerName);
             playerInfo.appendChild(playerScore);
@@ -224,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         light.animate(keyframes, options);
     }
 
-    const numLights = 10;
+    const numLights = 9;
     createLights();
 
     // Retrieve server data from localStorage

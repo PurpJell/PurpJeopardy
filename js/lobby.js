@@ -263,6 +263,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ipcRenderer.on('addPlayer', function(event, playerData_) {
         if (playerData.length < 4) {
+
+            const icon = document.createElement('img');
+            const randomIcon = randomIcons[Math.floor(Math.random() * randomIcons.length)];
+
+            randomIcons = randomIcons.filter(icon => icon !== randomIcon);
+
+            playerData_ = {
+                name: playerData_.name,
+                imgSrc: playerData_.imgSrc,
+                score: 0,
+                icon: randomIcon
+            };
+
             playerData.push(playerData_);
             localStorage.setItem('playerData', JSON.stringify(playerData));
 
@@ -291,11 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             playerCard.appendChild(playerPicture);
             playerCard.appendChild(playerInfo);
-
-            const icon = document.createElement('img');
-            const randomIcon = randomIcons[Math.floor(Math.random() * randomIcons.length)];
-
-            randomIcons = randomIcons.filter(icon => icon !== randomIcon);
 
             if (randomIcon) {
                 if (randomIcon.includes("alien.png")) {
@@ -331,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             renderPlayerList();
 
-            playerCount.textContent = `${playerData.length}/4 players`;
+            playerCount.textContent = `${playerData.length}`;
             ipcRenderer.send('addPlayerResponse', { success: true, message: 'Player added successfully' });
         } else {
             ipcRenderer.send('addPlayerResponse', { success: false, message: 'Player limit reached' });

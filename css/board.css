@@ -33,14 +33,16 @@ body {
 .back-to-title-window {
     display: none;
     width: 50%;
-    height: 50%;
-    background: linear-gradient(180deg, #5409e1, #3a1f8f);
+    height: 55%;
+    background: linear-gradient(180deg, #52d7ff, #004777);
     flex-direction: column;
     position:fixed;
-    top: 25%;
+    top: 22.5%;
     left: 25%;
     align-items: center;
-    border: solid 0.8vw #1a095f;
+    border: solid 0.8vw;
+    /* make the border color a gradien */
+    border-image: linear-gradient(155deg, #64c1ff, #001842) 1;
     border-radius: 1.2vw;
     z-index: 1000;
     
@@ -74,8 +76,8 @@ body {
     align-items: center;
     gap: 3vw;
     padding: 0.8vw;
-    /* margin-top: 0.5vw; */
     margin-bottom: 0.5vw;
+    height: 10vh;
 }
 
 .button-container button {
@@ -87,32 +89,27 @@ body {
     border-radius: 0.6vw;
     padding-right: 0.7vw;
     cursor: pointer;
+    -webkit-text-stroke: 1px;
 }
 
 .confirm-title-button {
     background-color: #006516;
-    color: white;
+}
 
-    text-shadow: 
-        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
-        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
-        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
-        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
-        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
-        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
+svg{
+    font: 4.9vw 'Mono Polz';
+}
+
+.svg-text {
+    fill: white;
+    font-weight: bolder;
+    stroke: black;
+    stroke-width: 1.5px;
+    stroke-linejoin : round;
 }
 
 .cancel-title-button {
     background-color: #860000;
-    color: white;
-
-    text-shadow: 
-        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
-        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
-        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
-        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000,
-        -4px -4px 0 #000,  4px -4px 0 #000,  0px  4px 0 #000,  4px 0px 0 #000,
-        0px -4px 0 #000, -4px 0px 0 #000, -4px  4px 0 #000,  4px  4px 0 #000;
 }
 
 .top-bar {
@@ -136,7 +133,9 @@ body {
     flex-direction: row;
     justify-content: space-between;
 
-    background: linear-gradient(130deg, #2a78ac, #022d3e);
+    position: relative;
+
+    background: radial-gradient(circle at 70% 50%, #4ca2db 10%, #054761 50%, #002f4d 100%);
     cursor: default;
 }
 
@@ -145,11 +144,12 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 10vw;
+    z-index: 1;
 }
 
 .player-picture img {
-    width: 8vw;
-    height: 8vw;
+    aspect-ratio: 1/1;
+    height: 90%;
     margin-top: 0.5vh;
     margin-left: 0.3vw;
     border: 0.2vw solid black;
@@ -169,6 +169,13 @@ body {
     margin-left: -0.2vw;
     text-align: center;
     font-family: 'Naturaly';
+    margin-left: -0.6vw;
+}
+
+.player-icon {
+    position: absolute;
+    filter: opacity(0.7);
+    z-index: 0;
 }
 
 .player-score {
@@ -176,6 +183,7 @@ body {
     text-align: center;
     font-size: 2.7vw;
     font-family: 'Mono Polz';
+    margin-left: -0.8vw;
 }
 
 .board-container {
@@ -239,7 +247,7 @@ body {
     height: 12vh;
     background: linear-gradient(180deg, #1249a9, #00235f);
     
-    border-bottom: 0.3vh solid;
+    border-bottom: 0.1vh solid;
     border-color: #000000;
 }
 
@@ -252,15 +260,19 @@ body {
     font-weight: bold;
     font-size: 1.6vw;
     font-family: 'Impact';
-    color: #ac9e24;
+    color: #c9b824;
     padding-top: 0.3vh;
     padding-bottom: 2.2vh;
-    border: 0.3vw solid;
+    border-style: solid;
+    border-top-width: 0.3vh;
+    /* border-bottom-width: 0.2vh; */
+    border-right-width: 0.2vw;
+    border-left-width: 0.2vw;
     border-color: #000000;
     margin-right: 0;
     margin-left: 0;
-    height: 5.5vw;
-    background: linear-gradient(180deg, #1249a9, #00235f);
+    /* height: 5.5vw; */
+    background: linear-gradient(180deg, #0b3680, #001842);
 
     text-shadow: 
         -0.1vw -0.1vw 0 #000000,  
@@ -272,7 +284,7 @@ body {
 }
 
 .category:not(:last-child) {
-    margin-right: -0.3vw; /* Apply negative margin only to non-last categories */
+    margin-right: -0.15vw; /* Apply negative margin only to non-last categories */
 }
 
 .questions {

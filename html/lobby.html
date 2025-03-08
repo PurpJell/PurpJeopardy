@@ -21,7 +21,13 @@
     </div>
     <button id="backButton" class="back-button">Back to Title</button>
     <div id="playerList" class="player-list"></div>
-    <div class="player-count" id="playerCount">0/4 players</div>
+    <div class="player-count">
+        <svg>
+            <text x="50%" y="70%" text-anchor="middle" class="svg-text">
+                <tspan id="playerCount">0</tspan><tspan class="slash">/</tspan>4 Players
+            </text>
+        </svg>
+    </div>
     <script src="../js/lobby.js"></script>
 </body>
 </html>
