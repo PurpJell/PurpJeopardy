@@ -223,7 +223,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(resetBoardButton);
 
         resetBoardButton.addEventListener('click', function() {
-            socket.send(JSON.stringify({ type: 'resetBoard' }));
+            if (confirm('Are you sure you want to reset the board?')) {
+                socket.send(JSON.stringify({ type: 'resetBoard' }));
+            }
         });
     }
 
