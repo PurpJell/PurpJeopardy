@@ -356,10 +356,10 @@ svg{
     /* position: absolute; */
     width: 6vh;
     height: 6vh;
-    margin-top: 0.1vh;
+    margin-top: 0.5vh;
     /* margin-bottom: 1vw; */
 }
 
 .lamp.on {
-    margin-top: -4.8vh;
+    margin-top: -8.3vh;
 }
