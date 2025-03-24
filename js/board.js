@@ -55,18 +55,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (randomIcon.includes("alien.png")) {
                     icon.style.width = "30%";
                     icon.style.top = "6%";
+                    if (window.innerHeight >= 1067) {
+                        icon.style.width = "34%";
+                        icon.style.top = "8%";
+                    }
                     icon.style.left = "56%";
                 }
                 else if (randomIcon.includes("rocket.png")) {
                     icon.style.width = "48%";
                     icon.style.top = "8%";
                     icon.style.left = "45%";
+                    if (window.innerHeight >= 1067) {
+                        icon.style.width = "52%";
+                        icon.style.top = "11.5%";
+                        icon.style.left = "48%";
+                    }
                     icon.style.transform = `rotate(-27deg)`;
                     icon.style.filter = `opacity(0.6)`;
                 }
                 else if (randomIcon.includes("moon.png")) {
                     icon.style.width = "35%";
                     icon.style.top = "8%";
+                    if (window.innerHeight >= 1067) {
+                        icon.style.width = "42%";
+                    }
                     icon.style.left = "52%";
                     icon.style.transform = `rotate(-27deg)`;
                     icon.style.filter = `opacity(0.9)`;
@@ -75,6 +87,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon.style.width = "38%";
                     icon.style.top = "6%";
                     icon.style.left = "52%";
+                    if (window.innerHeight >= 1067) {
+                        icon.style.width = "42%";
+                        icon.style.top = "12%";
+                    }
                     icon.style.filter = `opacity(0.55)`;
                 }
             }
@@ -224,6 +240,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             rightLightOn.style.opacity = 0;
             rightLightOn.classList.add('on');
+
+            if (window.innerHeight >= 1067) {
+                console.log('height:', window.innerHeight);
+                leftLightOff.style.marginTop = '0.65vh';
+                leftLightOn.style.marginTop = '-8.1vh';
+                rightLightOff.style.marginTop = '0.65vh';
+                rightLightOn.style.marginTop = '-8.1vh';
+            }
         }
 
         let lightIndex = 0;
