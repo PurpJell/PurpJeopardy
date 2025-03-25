@@ -68,15 +68,15 @@ function createWindow() {
 
     serverApp.post('/buzzer', (req, res) => {
         const playerData = req.body;
-        console.log('Buzz in:', playerData.name);
+        console.log('main.js Buzz in:', playerData.name);
         mainWindow.webContents.send('buzzIn', playerData);
         
         res.json({ success: true });
+    });
 
-        ipcMain.once('buzzInResponse', (event, response) => {
-            console.log('Buzz in response');
-            nextAnswerer();
-        });
+    ipcMain.on('buzzInResponse', (event) => {
+        console.log('Received buzzInResponse in main.js');
+        nextAnswerer();
     });
 
     function nextAnswerer() {

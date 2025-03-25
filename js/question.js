@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('buzzIn', function(event, playerData_) {
-        console.log('buzzedIn', playerData_);
+        console.log('buzzIn question.js', playerData_);
 
         // Add player to the buzzer queue
         if (playerData_ && !contestantsThatAnswered.includes(playerData_.name) && !buzzerQueue.includes(playerData_.name))
@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         else return;
 
         if (answererQID === -1) {
+            console.log("Sending buzzInResponse from question.js");
             ipcRenderer.send('buzzInResponse');
             return;
         }
@@ -171,45 +172,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('nextAnswerer in question.js');
 
-        if (answererQID < buzzerQueue.length - 1) {  // If there are still players who have buzzed in but not yet answered
-            console.log("A");
-            if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
-                console.log('pushing to contestantsThatAnswered');
-                contestantsThatAnswered.push(buzzerQueue[answererQID]);
-                console.log("B");
-            }
-            answererQID++;
+        if (buzzerQueue.length <= contestantsThatAnswered.length) return;
 
-            if (answererQID > 0) {
-                lastPlayer_ = buzzerQueue[answererQID - 1];
-            } else {
-                lastPlayer_ = null;
-            }
-    
-            if (answererQID >= 0) {
-                currentPlayer_ = buzzerQueue[answererQID];
-            }
-            else {
-                currentPlayer_ = null;
-            }
-    
-            renderPlayerCards();
-            
-            ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
-            return;
+        if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
+            contestantsThatAnswered.push(buzzerQueue[answererQID]);
         }
-        else if (answererQID === buzzerQueue.length - 1) {  // If all players have answered incorrectly, allow waiting for the next buzz in
-            console.log("C");
-            if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
-                console.log('pushing to contestantsThatAnswered');
-                contestantsThatAnswered.push(buzzerQueue[answererQID]);
-            }
-            renderPlayerCards();
+        
+        if (answererQID === -1) {
+            answererQID = buzzerQueue.length - 1;
+        }
+        else {
+            answererQID++;
+        }
+
+        if (contestantsThatAnswered.length > 0) {
+            lastPlayer_ = contestantsThatAnswered[contestantsThatAnswered.length - 1];
+        }
+        else {
+            lastPlayer_ = null;
+        }
+
+        if (buzzerQueue.length > answererQID) {
+            currentPlayer_ = buzzerQueue[answererQID];
+        }
+        else {
             currentPlayer_ = null;
-            lastPlayer_ = buzzerQueue[answererQID];
-            ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
-            return;
+            answererQID = -1;
         }
+
+        renderPlayerCards();
+        ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+
+
+        // if (answererQID < buzzerQueue.length - 1) {  // If there are still players who have buzzed in but not yet answered
+        //     console.log("A");
+        //     if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
+        //         console.log('pushing to contestantsThatAnswered');
+        //         contestantsThatAnswered.push(buzzerQueue[answererQID]);
+        //         console.log("B");
+        //     }
+        //     answererQID++;
+
+        //     if (answererQID > 0) {
+        //         lastPlayer_ = buzzerQueue[answererQID - 1];
+        //     } else {
+        //         lastPlayer_ = null;
+        //     }
+    
+        //     if (answererQID >= 0) {
+        //         currentPlayer_ = buzzerQueue[answererQID];
+        //     }
+        //     else {
+        //         currentPlayer_ = null;
+        //     }
+    
+        //     renderPlayerCards();
+            
+        //     ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+        //     return;
+        // }
+        // else if (answererQID === buzzerQueue.length - 1) {  // If all players have answered incorrectly, allow waiting for the next buzz in
+        //     console.log("C");
+        //     if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
+        //         console.log('pushing to contestantsThatAnswered');
+        //         contestantsThatAnswered.push(buzzerQueue[answererQID]);
+        //     }
+        //     renderPlayerCards();
+        //     currentPlayer_ = null;
+        //     lastPlayer_ = buzzerQueue[answererQID];
+        //     ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+        //     return;
+        // }
     });
 
     ipcRenderer.on('revealAnswer', function() {

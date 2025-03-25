@@ -210,11 +210,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(nextBoardButton);
 
         nextBoardButton.addEventListener('click', function() {
-            socket.send(JSON.stringify({ type: 'nextBoard' }));
-            currentBoardID++;
-            localStorage.setItem('currentBoardID', currentBoardID);
-            fetchBoardData();
-            // changeToBoardView();
+            if (confirm("Are you sure you want to go to the next board?"))
+            {
+                socket.send(JSON.stringify({ type: 'nextBoard' }));
+                currentBoardID++;
+                localStorage.setItem('currentBoardID', currentBoardID);
+                fetchBoardData();
+            }
         });
 
         resetBoardButton = document.createElement('button');

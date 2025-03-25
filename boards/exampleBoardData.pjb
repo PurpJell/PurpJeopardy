@@ -12,8 +12,8 @@
                             "price": "$100",
                             "content": "Question 1",
                             "answer": "Answer 1",
-                            "questionImage": "../images/default_player.jpg",
-                            "answerImage": "../images/default_player.jpg",
+                            "questionImage": "../images/default_player.png",
+                            "answerImage": "../images/default_player.png",
                             "dailyDouble": true
                         },
                         {
