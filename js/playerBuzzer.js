@@ -30,6 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 playerData.score -= parseInt(message.data.price);
                 localStorage.setItem('playerData', JSON.stringify(playerData));
                 playerScore.textContent = `$${playerData.score}`;
+            } else if (message.type === 'updateState') {
+                let currentPlayer = message.currentPlayer;
+                let lastPlayer = message.lastPlayer;
+                
+                if (playerData.name === currentPlayer) {
+                    buzzerButton.style.background = 'linear-gradient(to bottom,rgb(0, 194, 0),rgb(0, 88, 7))';
+                }
+                else if (playerData.name === lastPlayer) {
+                    buzzerButton.style.background = 'linear-gradient(to bottom,rgb(230, 230, 230),rgb(156, 156, 156)';
+                }
+            } else if (message.type === 'enableBuzzer') {
+                buzzerButton.style.background = 'linear-gradient(to bottom, #ff4d4d, #af1212)';
+                buzzerButton.disabled = false;
             }
         };
 
@@ -47,10 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
             playerName.style.fontSize = '14vw';
             playerName.style.marginTop = '2vw';
         }
-        // } else if (playerData.name.length < 11) {
-        //     playerName.style.fontSize = '10.5vw';
-        //     playerName.style.marginTop = '2.5vw';
-        // }
 
         playerScore.textContent = `$${playerData.score}`;
     }
@@ -67,7 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // alert('Buzzer pressed successfully');
+                    buzzerButton.style.background = 'linear-gradient(to bottom,rgb(227, 243, 0),rgb(170, 159, 0))';
+                    buzzerButton.disabled = true;
                 } else {
                     alert('Error pressing buzzer');
                 }

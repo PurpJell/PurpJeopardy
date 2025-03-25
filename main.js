@@ -70,8 +70,27 @@ function createWindow() {
         const playerData = req.body;
         console.log('Buzz in:', playerData.name);
         mainWindow.webContents.send('buzzIn', playerData);
+        
         res.json({ success: true });
+
+        ipcMain.once('buzzInResponse', (event, response) => {
+            console.log('Buzz in response');
+            nextAnswerer();
+        });
     });
+
+    function nextAnswerer() {
+        console.log('Next answerer in main');
+        mainWindow.webContents.send('nextAnswerer');
+
+        // get reply from main window
+        ipcMain.once('nextAnswererResponse', (event, response) => {
+            console.log('Next answerer response:', response);
+            playerSockets.forEach(playerSocket => {
+                playerSocket.send(JSON.stringify({ type: 'updateState', currentPlayer: response.currentPlayer, lastPlayer: response.lastPlayer }));
+            });
+        });
+    }
 
     // Set up WebSocket server
     // const server = http.createServer(serverApp);
@@ -117,11 +136,15 @@ function createWindow() {
             } else if (parsedMessage.type === 'startTimer') {
                 mainWindow.webContents.send('startTimer');
             } else if (parsedMessage.type === 'nextAnswerer') {
-                mainWindow.webContents.send('nextAnswerer');
+                nextAnswerer();
             } else if (parsedMessage.type === 'revealAnswer') {
                 mainWindow.webContents.send('revealAnswer');
             } else if (parsedMessage.type === 'backToBoard') {
                 mainWindow.webContents.send('backToBoard');
+
+                playerSockets.forEach(playerSocket => {
+                    playerSocket.send(JSON.stringify({ type: 'enableBuzzer' }));
+                });
             }
         });
 

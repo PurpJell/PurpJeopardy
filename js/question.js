@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const playerData = JSON.parse(localStorage.getItem('playerData')) || [];
     let buzzerQueue = [];
     let contestantsThatAnswered = [];
+    let answererQID = -1;
 
     // Function to render player cards
     function renderPlayerCards() {
@@ -48,9 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = player.imgSrc;
 
             // Apply styles based on buzzerQueue and contestantsThatAnswered
-            if (buzzerQueue.length > 0 && buzzerQueue[0] === player.name) {
+            if (buzzerQueue.length > 0 && buzzerQueue[answererQID] === player.name && !contestantsThatAnswered.includes(player.name)) {
                 img.style.border = '0.4vw solid rgb(55, 185, 23)';
-            } else if (contestantsThatAnswered.includes(player.name) && !buzzerQueue.includes(player.name)) {
+                console.log('buzzerQueue', buzzerQueue);
+                console.log('answererQID', answererQID);
+            } else if (contestantsThatAnswered.includes(player.name)) {
+                console.log('contestantsThatAnswered', contestantsThatAnswered);
                 img.style.filter = 'brightness(20%)';
                 img.style.border = '0.4vw solid red';
             }
@@ -103,15 +107,17 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('buzzedIn', playerData_);
 
         // Add player to the buzzer queue
-        if (playerData_ && !contestantsThatAnswered.includes(playerData_.name))
+        if (playerData_ && !contestantsThatAnswered.includes(playerData_.name) && !buzzerQueue.includes(playerData_.name))
         {
             buzzerQueue.push(playerData_.name);
-            contestantsThatAnswered.push(playerData_.name);
         }
-        if (buzzerQueue.length === 1)
-        {
-            renderPlayerCards();
+        else return;
+
+        if (answererQID === -1) {
+            ipcRenderer.send('buzzInResponse');
+            return;
         }
+
     });
 
     ipcRenderer.on('correctAnswer', function(event, data) {
@@ -160,9 +166,50 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('nextAnswerer', function() {
-        console.log('nextAnswerer');
-        buzzerQueue.shift();
-        renderPlayerCards();
+        let lastPlayer_;
+        let currentPlayer_;
+
+        console.log('nextAnswerer in question.js');
+
+        if (answererQID < buzzerQueue.length - 1) {  // If there are still players who have buzzed in but not yet answered
+            console.log("A");
+            if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
+                console.log('pushing to contestantsThatAnswered');
+                contestantsThatAnswered.push(buzzerQueue[answererQID]);
+                console.log("B");
+            }
+            answererQID++;
+
+            if (answererQID > 0) {
+                lastPlayer_ = buzzerQueue[answererQID - 1];
+            } else {
+                lastPlayer_ = null;
+            }
+    
+            if (answererQID >= 0) {
+                currentPlayer_ = buzzerQueue[answererQID];
+            }
+            else {
+                currentPlayer_ = null;
+            }
+    
+            renderPlayerCards();
+            
+            ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+            return;
+        }
+        else if (answererQID === buzzerQueue.length - 1) {  // If all players have answered incorrectly, allow waiting for the next buzz in
+            console.log("C");
+            if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
+                console.log('pushing to contestantsThatAnswered');
+                contestantsThatAnswered.push(buzzerQueue[answererQID]);
+            }
+            renderPlayerCards();
+            currentPlayer_ = null;
+            lastPlayer_ = buzzerQueue[answererQID];
+            ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+            return;
+        }
     });
 
     ipcRenderer.on('revealAnswer', function() {
@@ -177,7 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('backToBoard', function() {
         buzzerQueue = [];
         contestantsThatAnswered = [];
+        answererQID = -1;
         window.location.href = 'board.html';
     });
+
+    console.log('LOADED, buzzerQueue, contestantsThatAnswered, answererQID', buzzerQueue, contestantsThatAnswered, answererQID);
 
 });
