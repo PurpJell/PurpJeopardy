@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const leftSidebar = document.getElementById('sidebarLeft');
     const rightSidebar = document.getElementById('sidebarRight');
 
+    const animationContainer = document.createElement('div');
+    animationContainer.id = 'animations';
+    animationContainer.style.position = 'absolute';
+    animationContainer.style.top = 0;
+    animationContainer.style.left = 0;
+    animationContainer.style.width = '100vw';
+    animationContainer.style.height = '100vh';
+    animationContainer.style.overflow = 'hidden';
+    // animationContainer.style.zIndex = 1;
+
+    document.body.appendChild(animationContainer);
+
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
 
     // Retrieve player data from localStorage
@@ -162,9 +174,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         board.appendChild(categoriesContainer);
 
+        const questionsContainer = document.createElement('div');
+        questionsContainer.className = 'questions-container';
+
+        board.appendChild(questionsContainer);
+
         currentBoard.categories[0].questions.forEach((_, questionIndex) => {
             const questionsRow = document.createElement('div');
-            questionsRow.className = 'questions';
+            questionsRow.className = 'questions-row';
 
             currentBoard.categories.forEach((category, categoryIndex) => {
                 const questionDiv = document.createElement('div');
@@ -185,9 +202,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     questionDiv.classList.add('clicked');
                 }
                 questionsRow.appendChild(questionDiv);
+
+                questionDiv.addEventListener('contextmenu', function() {
+                    clickedQuestions.push(questionKey);
+                    localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
+                    drawBoard(currentBoard);
+                });
             });
 
-            board.appendChild(questionsRow);
+            questionsContainer.appendChild(questionsRow);
         });
 
         // Check if all questions have been clicked
@@ -287,6 +310,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const numLights = 9;
     createLights();
 
+
+    function spawnMoneyBag() {
+        const moneyBagContainer = document.createElement('div');
+        moneyBagContainer.className = 'money-bag-container';
+        moneyBagContainer.style.left = `${Math.random() * 80 + 8}vw`; // Random horizontal position
+    
+        const moneyBagNormal = document.createElement('div');
+        moneyBagNormal.className = 'money-bag normal';
+        const moneyBagXray = document.createElement('div');
+        moneyBagXray.className = 'money-bag xray';
+    
+        moneyBagContainer.appendChild(moneyBagNormal);
+        moneyBagContainer.appendChild(moneyBagXray);
+        animationContainer.appendChild(moneyBagContainer);
+    
+        // Check for intersection with the board
+        const board = document.querySelector('.questions-container');
+    
+        function checkIntersection() {
+            const moneyBagRect = moneyBagContainer.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+    
+            // Check if the money bag intersects with the board
+            if (
+                moneyBagRect.bottom > boardRect.top &&
+                moneyBagRect.top < boardRect.bottom
+            ) {
+                const intersectTopXray = Math.max(moneyBagRect.top, boardRect.top);
+                const intersectBottomXray = Math.min(moneyBagRect.bottom, boardRect.bottom);
+
+                const cutOffTopNormal = moneyBagRect.top > boardRect.top? boardRect.bottom - moneyBagRect.top : 0;
+                const cutOffBottomNormal = moneyBagRect.top < boardRect.bottom? boardRect.top - moneyBagRect.bottom : 0;
+    
+                // Apply clip-path to create the x-ray effect only for the intersecting part
+                moneyBagNormal.style.clipPath = `inset(${cutOffTopNormal}px 0 ${cutOffBottomNormal}px 0)`;
+                moneyBagXray.style.clipPath = `inset(${intersectTopXray - moneyBagRect.top}px 0 ${moneyBagRect.bottom - intersectBottomXray}px 0)`;
+            } else {
+                moneyBagNormal.style.clipPath = 'none';
+                moneyBagXray.style.clipPath = 'inset(100% 0 0 0)'; // Hide the x-ray version
+            }
+    
+            // Continue checking for intersection
+            requestAnimationFrame(checkIntersection);
+        }
+    
+        // Start checking for intersection
+        requestAnimationFrame(checkIntersection);
+    
+        // Remove the money bag after the animation ends
+        moneyBagContainer.addEventListener('animationend', () => {
+            moneyBagContainer.remove();
+        });
+    }
+    
+    // Spawn money bags at random intervals
+    for (let i = 0; i < 5; i++){
+        setInterval(spawnMoneyBag, Math.random() * 3000 + 1500); // Adjust interval as needed
+    }
+
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
@@ -332,6 +414,11 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.removeItem('clickedQuestions');
         currentBoardID = localStorage.getItem('currentBoardID') || 1;
         renderBoard();
+
+        let nextBoardWindow = document.querySelector('.next-board-window');
+        if (nextBoardWindow) {
+            nextBoardWindow.remove();
+        }
     });
 
     // Listen for Escape key press

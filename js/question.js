@@ -51,10 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Apply styles based on buzzerQueue and contestantsThatAnswered
             if (buzzerQueue.length > 0 && buzzerQueue[answererQID] === player.name && !contestantsThatAnswered.includes(player.name)) {
                 img.style.border = '0.4vw solid rgb(55, 185, 23)';
-                console.log('buzzerQueue', buzzerQueue);
-                console.log('answererQID', answererQID);
             } else if (contestantsThatAnswered.includes(player.name)) {
-                console.log('contestantsThatAnswered', contestantsThatAnswered);
                 img.style.filter = 'brightness(20%)';
                 img.style.border = '0.4vw solid red';
             }
@@ -104,8 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('buzzIn', function(event, playerData_) {
-        console.log('buzzIn question.js', playerData_);
-
         // Add player to the buzzer queue
         if (playerData_ && !contestantsThatAnswered.includes(playerData_.name) && !buzzerQueue.includes(playerData_.name))
         {
@@ -114,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
         else return;
 
         if (answererQID === -1) {
-            console.log("Sending buzzInResponse from question.js");
             ipcRenderer.send('buzzInResponse');
             return;
         }
@@ -122,8 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('correctAnswer', function(event, data) {
-        console.log('correctAnswer', data.name);
-
         const playerIndex = playerData.findIndex(player => player.name === data.name);
         let dailyDouble = localStorage.getItem('dailyDouble');
         if (dailyDouble === 'true') {
@@ -137,8 +129,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('incorrectAnswer', function(event, data) {
-        console.log('incorrectAnswer', data.name);
-
         // Update the score of the player who answered incorrectly
         const playerIndex = playerData.findIndex(player => player.name === data.name);
         let dailyDouble = localStorage.getItem('dailyDouble');
@@ -153,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('startTimer', function() {
-        console.log('startTimer');
         const timer = document.querySelector('.timer');
 
         let timeLeft = 30;
@@ -169,8 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('nextAnswerer', function() {
         let lastPlayer_;
         let currentPlayer_;
-
-        console.log('nextAnswerer in question.js');
 
         if (buzzerQueue.length <= contestantsThatAnswered.length) return;
 
@@ -206,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     ipcRenderer.on('revealAnswer', function() {
-        console.log('revealAnswer');
         if (answerImage !== "null") {
             questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
         } else {
@@ -220,7 +206,5 @@ document.addEventListener('DOMContentLoaded', function() {
         answererQID = -1;
         window.location.href = 'board.html';
     });
-
-    console.log('LOADED, buzzerQueue, contestantsThatAnswered, answererQID', buzzerQueue, contestantsThatAnswered, answererQID);
 
 });

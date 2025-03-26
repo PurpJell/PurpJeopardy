@@ -68,24 +68,20 @@ function createWindow() {
 
     serverApp.post('/buzzer', (req, res) => {
         const playerData = req.body;
-        console.log('main.js Buzz in:', playerData.name);
         mainWindow.webContents.send('buzzIn', playerData);
         
         res.json({ success: true });
     });
 
     ipcMain.on('buzzInResponse', (event) => {
-        console.log('Received buzzInResponse in main.js');
         nextAnswerer();
     });
 
     function nextAnswerer() {
-        console.log('Next answerer in main');
         mainWindow.webContents.send('nextAnswerer');
 
         // get reply from main window
         ipcMain.once('nextAnswererResponse', (event, response) => {
-            console.log('Next answerer response:', response);
             playerSockets.forEach(playerSocket => {
                 playerSocket.send(JSON.stringify({ type: 'updateState', currentPlayer: response.currentPlayer, lastPlayer: response.lastPlayer }));
             });
@@ -108,7 +104,7 @@ function createWindow() {
         }
 
         ws.on('message', (message) => {
-            console.log('Received message from host');
+            console.log('Received message from host:', message.type);
             const parsedMessage = JSON.parse(message);
 
             if (parsedMessage.type === 'playerRemoved') {
