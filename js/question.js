@@ -203,46 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         renderPlayerCards();
         ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
 
-
-        // if (answererQID < buzzerQueue.length - 1) {  // If there are still players who have buzzed in but not yet answered
-        //     console.log("A");
-        //     if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
-        //         console.log('pushing to contestantsThatAnswered');
-        //         contestantsThatAnswered.push(buzzerQueue[answererQID]);
-        //         console.log("B");
-        //     }
-        //     answererQID++;
-
-        //     if (answererQID > 0) {
-        //         lastPlayer_ = buzzerQueue[answererQID - 1];
-        //     } else {
-        //         lastPlayer_ = null;
-        //     }
-    
-        //     if (answererQID >= 0) {
-        //         currentPlayer_ = buzzerQueue[answererQID];
-        //     }
-        //     else {
-        //         currentPlayer_ = null;
-        //     }
-    
-        //     renderPlayerCards();
-            
-        //     ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
-        //     return;
-        // }
-        // else if (answererQID === buzzerQueue.length - 1) {  // If all players have answered incorrectly, allow waiting for the next buzz in
-        //     console.log("C");
-        //     if (answererQID >= 0 && !contestantsThatAnswered.includes(buzzerQueue[answererQID])) {
-        //         console.log('pushing to contestantsThatAnswered');
-        //         contestantsThatAnswered.push(buzzerQueue[answererQID]);
-        //     }
-        //     renderPlayerCards();
-        //     currentPlayer_ = null;
-        //     lastPlayer_ = buzzerQueue[answererQID];
-        //     ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
-        //     return;
-        // }
     });
 
     ipcRenderer.on('revealAnswer', function() {
