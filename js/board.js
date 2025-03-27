@@ -310,58 +310,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const numLights = 9;
     createLights();
 
-
     function spawnMoneyBag() {
-        const moneyBagContainer = document.createElement('div');
-        moneyBagContainer.className = 'money-bag-container';
-        moneyBagContainer.style.left = `${Math.random() * 80 + 8}vw`; // Random horizontal position
-    
+
+        let horizontalPosition = Math.random() * 80 + 8; // Random horizontal position
+
         const moneyBagNormal = document.createElement('div');
         moneyBagNormal.className = 'money-bag normal';
+        moneyBagNormal.style.left = `${horizontalPosition}vw`; // Random horizontal position
+
         const moneyBagXray = document.createElement('div');
         moneyBagXray.className = 'money-bag xray';
-    
-        moneyBagContainer.appendChild(moneyBagNormal);
-        moneyBagContainer.appendChild(moneyBagXray);
-        animationContainer.appendChild(moneyBagContainer);
-    
-        // Check for intersection with the board
-        const board = document.querySelector('.questions-container');
-    
-        function checkIntersection() {
-            const moneyBagRect = moneyBagContainer.getBoundingClientRect();
-            const boardRect = board.getBoundingClientRect();
-    
-            // Check if the money bag intersects with the board
-            if (
-                moneyBagRect.bottom > boardRect.top &&
-                moneyBagRect.top < boardRect.bottom
-            ) {
-                const intersectTopXray = Math.max(moneyBagRect.top, boardRect.top);
-                const intersectBottomXray = Math.min(moneyBagRect.bottom, boardRect.bottom);
+        moneyBagXray.style.left = `${horizontalPosition - 7}vw`; // Random horizontal position
+        setTimeout( () => {
+            board.appendChild(moneyBagXray);
+        }, 1000);
 
-                const cutOffTopNormal = moneyBagRect.top > boardRect.top? boardRect.bottom - moneyBagRect.top : 0;
-                const cutOffBottomNormal = moneyBagRect.top < boardRect.bottom? boardRect.top - moneyBagRect.bottom : 0;
+        animationContainer.appendChild(moneyBagNormal);
     
-                // Apply clip-path to create the x-ray effect only for the intersecting part
-                moneyBagNormal.style.clipPath = `inset(${cutOffTopNormal}px 0 ${cutOffBottomNormal}px 0)`;
-                moneyBagXray.style.clipPath = `inset(${intersectTopXray - moneyBagRect.top}px 0 ${moneyBagRect.bottom - intersectBottomXray}px 0)`;
-            } else {
-                moneyBagNormal.style.clipPath = 'none';
-                moneyBagXray.style.clipPath = 'inset(100% 0 0 0)'; // Hide the x-ray version
-            }
+        spinMoneyBag(moneyBagXray);
+
+        // Remove the money bag after 6 seconds
+        setTimeout(() => {
+            moneyBagNormal.remove();
+            moneyBagXray.remove();
+        }, 5700);
+    }
+
+    function spinMoneyBag(moneyBag) {
+        const keyframes = [
+            { transform: 'rotate(0deg)', offset: 0 },
+            { transform: `rotate(${Math.random() > 0.5 ? 360 : -360}deg)`, offset: 1 }
+        ];
     
-            // Continue checking for intersection
-            requestAnimationFrame(checkIntersection);
-        }
+        const options = {
+            duration: Math.random() * 2 * 1000 + 1000,
+            easing: 'linear',
+            iterations: Infinity
+        };
     
-        // Start checking for intersection
-        requestAnimationFrame(checkIntersection);
-    
-        // Remove the money bag after the animation ends
-        moneyBagContainer.addEventListener('animationend', () => {
-            moneyBagContainer.remove();
-        });
+        moneyBag.animate(keyframes, options);
     }
     
     // Spawn money bags at random intervals
