@@ -399,6 +399,40 @@ svg{
     background-image: url('../images/money_bag_xray.png');
 }
 
+.coin {
+    position: absolute;
+    width: 2.5vw;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    animation: fall 6s linear 1;
+}
+
+.coin.normal {
+    background-image: url('../images/coin.png');
+    z-index: -1;
+}
+
+.coin.xray {
+    background-image: url('../images/coin_xray.png');
+}
+
+.cash {
+    position: absolute;
+    width: 3.5vw;
+    aspect-ratio: 273/131;
+    background-size: cover;
+    animation: fall 6s linear 1;
+}
+
+.cash.normal {
+    background-image: url('../images/cash.png');
+    z-index: -1;
+}
+
+.cash.xray {
+    background-image: url('../images/cash_xray.png');
+}
+
 @keyframes fall {
     0% {
         top: -200px;

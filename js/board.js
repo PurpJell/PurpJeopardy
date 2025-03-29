@@ -310,33 +310,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const numLights = 9;
     createLights();
 
-    function spawnMoneyBag() {
+    function spawnItem() {
 
         let horizontalPosition = Math.random() * 80 + 8; // Random horizontal position
 
-        const moneyBagNormal = document.createElement('div');
-        moneyBagNormal.className = 'money-bag normal';
-        moneyBagNormal.style.left = `${horizontalPosition}vw`; // Random horizontal position
+        const itemNormal = document.createElement('div');
 
-        const moneyBagXray = document.createElement('div');
-        moneyBagXray.className = 'money-bag xray';
-        moneyBagXray.style.left = `${horizontalPosition - 7}vw`; // Random horizontal position
+        let randomItem = Math.random() * 3;
+
+        if (randomItem < 1) {
+            itemNormal.className = 'money-bag normal';
+            console.log('money-bag');
+        } else if (randomItem < 2) {
+            itemNormal.className = 'coin normal';
+        }
+        else {
+            itemNormal.className = 'cash normal';
+        }
+
+        itemNormal.style.left = `${horizontalPosition}vw`; // Random horizontal position
+
+        const itemXray = document.createElement('div');
+        if (randomItem < 1) {
+            itemXray.className = 'money-bag xray';
+        } else if (randomItem < 2) {
+            itemXray.className = 'coin xray';
+        }
+        else {
+            itemXray.className = 'cash xray';
+        }
+
+        itemXray.style.left = `${horizontalPosition - 7}vw`; // Random horizontal position
         setTimeout( () => {
-            board.appendChild(moneyBagXray);
+            board.appendChild(itemXray);
         }, 1000);
 
-        animationContainer.appendChild(moneyBagNormal);
+        animationContainer.appendChild(itemNormal);
     
-        spinMoneyBag(moneyBagXray);
+        spinItem(itemXray);
 
         // Remove the money bag after 6 seconds
         setTimeout(() => {
-            moneyBagNormal.remove();
-            moneyBagXray.remove();
+            itemNormal.remove();
+            itemXray.remove();
         }, 5700);
     }
 
-    function spinMoneyBag(moneyBag) {
+    function spinItem(item) {
         const keyframes = [
             { transform: 'rotate(0deg)', offset: 0 },
             { transform: `rotate(${Math.random() > 0.5 ? 360 : -360}deg)`, offset: 1 }
@@ -348,12 +368,12 @@ document.addEventListener('DOMContentLoaded', function() {
             iterations: Infinity
         };
     
-        moneyBag.animate(keyframes, options);
+        item.animate(keyframes, options);
     }
     
-    // Spawn money bags at random intervals
-    for (let i = 0; i < 5; i++){
-        setInterval(spawnMoneyBag, Math.random() * 3000 + 1500); // Adjust interval as needed
+    // Spawn items at random intervals
+    for (let i = 0; i < 7; i++){
+        setInterval(spawnItem, Math.random() * 3000 + 1500); // Adjust interval as needed
     }
 
     // Retrieve server data from localStorage
