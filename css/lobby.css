@@ -273,9 +273,10 @@ button {
     padding-bottom: 0.5vw;
     
     border: 0.5vw solid;
-    border-image: linear-gradient(155deg, #ceaf00, #6d5d00) 1;
+    border-color: #bea200 #6d5d00 #6d5d00 #bea200;
+    border-radius: 0.8vw;
 
-    background: linear-gradient(135deg, #e9d900 10%, #dfbd00 50%, #e9bf01 90%);
+    background: linear-gradient(135deg, #dfca0f 10%, #c7a900 50%, #b99700 90%);
     font-size: 4.5vw;
     color: white;
     font-family: 'Naturaly';

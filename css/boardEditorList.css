@@ -1,0 +1,196 @@
+@font-face {
+    font-family: 'Mono Polz';
+    src: url("../fonts/Mono Polz.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Naturaly';
+    src: url("../fonts/Naturaly.otf") format("opentype");
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(180deg, #1d83bd, #0b2f70);
+    overflow: hidden;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #261952;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-size: 15vw;
+    font-family: 'Mono Polz';
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 17vh;
+    margin: 0;
+    padding-top: 1vh;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    background: linear-gradient(180deg, #52d7ff, #004777);
+    border-width: 0 0 0.3vw 0;
+    border-style: solid;
+    border-color: #0c002b;
+
+    z-index: 100;
+}
+
+button {
+    background-color: #15004e;
+    border: solid 0.3vw;
+    border-color: #0c002b #0c002b #0c002b #0c002b;
+    border-radius: 0.6vw;
+    cursor: pointer;
+    font-size: 2vw;
+    font-family: 'Naturaly';
+    text-align: center;
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
+
+    z-index: 1;
+}
+
+.back-button {
+    width: 20vh;
+    margin-left: 4vw;
+    font-size: 2vw;
+    height: 8vh;
+    background-color: #0b2f70;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-board-button {
+    width: 25vh;
+    margin-left: 8vw;
+    font-size: 2.3vw;
+    height: 13vh;
+    background: linear-gradient(150deg, #00a524, #005207);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar {
+    width: 20vw;
+    height: 6vh;
+    margin-right: 3vw;
+    font-size: 2vw;
+    font-family: 'Naturaly';
+    background-color: #0b2f70;
+    color: white;
+    border: solid 0.3vw;
+    border-color: #0c002b #0c002b #0c002b #0c002b;
+    border-radius: 0.6vw;
+    padding-left: 1vw;
+}
+
+.search-bar::placeholder {
+    color: #cccccc; /* Change this to your desired placeholder color */
+    opacity: 1; /* Ensure full opacity for the placeholder text */
+}
+
+.search-bar:focus {
+    outline: none; /* Removes the orange outline */
+}
+
+.no-boards {
+    margin-top: 30vh;
+    font-size: 6vw;
+    font-family: 'Mono Polz';
+    color: white;
+    text-align: center;
+    display: none;
+}
+
+.board-list {
+    margin-left: 1vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    margin-top: 20vh;
+    padding: 1vh;
+    overflow-y: auto;
+    width: 96%;
+    height: 75vh;
+
+    background: linear-gradient(180deg, #2a1555, #4c2796, #2a1555);
+    border: solid #140c33;
+    border-width: 0.4vw;
+    border-radius: 1vw;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.board-list::-webkit-scrollbar {
+    display: none;
+}
+
+.board-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 18vh;
+    background: linear-gradient(to bottom, #00557c, #1db5cf);
+    border: 0.4vw solid #000000;
+    border-radius: 0.6vw;
+    transition: background-color 0.1s;
+    cursor: pointer;
+
+    font-family: 'Mono Polz';
+    font-size: 2vw;
+    color: white;
+
+    text-shadow: 
+        -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+        0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+        -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+        0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
+}
+
+.left-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    padding: 1vw;
+}
+
+.board-title {
+    font-size: 4vw;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.board-description {
+    white-space: normal;
+    overflow-wrap: break-word;
+    width: 60%;
+    height: 90%;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}

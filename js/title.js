@@ -221,6 +221,10 @@ document.addEventListener('DOMContentLoaded', function() {
     playGameButton.addEventListener('click', () => {
         window.location.href = 'lobby.html';
     });
+
+    createBoardButton.addEventListener('click', () => {
+        window.location.href = 'boardEditorList.html';
+    });
     
     exitGameButton.addEventListener('click', () => {
         window.close();

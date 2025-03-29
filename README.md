@@ -10,6 +10,8 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 - Real-time updates using WebSockets
 - Customizable questions and categories
 - Score tracking
+- CSS and JavaScript animations
+- Language selection between English and Lithuanian
 
 ## Game Features
 
@@ -22,7 +24,6 @@ Note that this game is hosted localy over LAN, therefore some non-beginner-frien
 - Player card background customization
 - Sound effects and music
 - Reconnecting mid-game
-- Visual overhaul
 
 ## Setup
 
