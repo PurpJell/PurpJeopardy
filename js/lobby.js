@@ -4,14 +4,24 @@ const path = require('path');
 
 document.addEventListener('DOMContentLoaded', function() {
     const ipAddress = document.getElementById('ipAddress');
+    const joinGameText = document.getElementById('joinGameText');
     const playerList = document.getElementById('playerList');
     const playerCount = document.getElementById('playerCount');
+    const playerCountEnding = document.getElementById('playerCountEnding');
     const hideButton = document.getElementById('hideButton');
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const backButton = document.getElementById('backButton');
 
     selectedBoard = localStorage.getItem('selectedBoard') || "exampleBoardData.pjb";
+    language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        hideButton.textContent = 'Rodyti';
+        joinGameText.textContent = 'Prisijunkite prie zaidimo';
+        backButton.textContent = 'Atgal';
+        playerCountEnding.textContent = '4 zaideju';
+    }
 
     let randomIcons = ["../images/rocket.png", "../images/alien.png", "../images/moon.png", "../images/astronaut.png"]
 
@@ -23,11 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
             hideIpAddress = false;
             ipAddress.textContent = process.env.IP_ADDRESS;
             ipAddress.textContent += ':3000';
-            hideButton.textContent = 'Hide';
+            if (language === 'lt') {
+                hideButton.textContent = 'Slepti';
+            }
+            else {
+                hideButton.textContent = 'Hide';
+            }
         } else {
             ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
             hideIpAddress = true;
-            hideButton.textContent = 'Show';
+            if (language === 'lt') {
+                hideButton.textContent = 'Rodyti';
+            }
+            else {
+                hideButton.textContent = 'Show';
+            }
         }
     });
 
@@ -50,7 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let boards = [];
 
-    dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+    if (language === 'lt') {
+        dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
+    } else {
+        dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+    }
 
     dropdownButton.addEventListener('click', () => {
         dropdownMenu.classList.toggle('show');
@@ -69,13 +93,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!boards.includes(selectedBoard)) {
             selectedBoard = "none.pjb";
             localStorage.setItem('selectedBoard', selectedBoard);
-            dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+            if (language === 'lt') {
+                dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
+            } else {
+                dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+            }
         }
 
         boards = boards.filter(board => board !== "exampleBoardData.pjb");
 
         if (boards.length === 0) {
-            dropdownMenu.textContent = "No boards found";
+            if (language === 'lt') {
+                dropdownMenu.textContent = "Lentų nerasta";
+            } else {
+                dropdownMenu.textContent = "No boards found";
+            }
             return;
         }
 
@@ -84,7 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const boardOption = document.createElement('p');
             boardOption.textContent = board.replace(".pjb", "");
             boardOption.addEventListener('click', () => {
-                dropdownButton.textContent = "Selected board:\n" + board.replace(".pjb", "");
+                if (language === 'lt') {
+                    dropdownButton.textContent = "Pasirinkta lenta:\n" + board.replace(".pjb", "");
+                } else {
+                    dropdownButton.textContent = "Selected board:\n" + board.replace(".pjb", "");
+                }
                 dropdownMenu.classList.toggle('show');
                 localStorage.setItem('selectedBoard', `${board}`);
                 selectedBoard = board;
@@ -352,11 +388,23 @@ document.addEventListener('DOMContentLoaded', function() {
         playerCards = playerCards.filter(playerCard => playerCard.querySelector('.player-name').textContent !== playerName_);
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerList();
-        playerCount.textContent = `${playerData.length}/4 players`;
+        if (language === 'lt') {
+            playerCount.textContent = `${playerData.length}`;
+        } else {
+            playerCount.textContent = `${playerData.length}`;
+        }
     });
 
     ipcRenderer.on('startGame', function(event) {
         window.location.href = 'board.html';
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            window.location.href = 'title.html';
+        } else if (event.key === 'Enter') {
+            window.location.href = 'board.html';
+        }
     });
 
     // Show content once fully loaded

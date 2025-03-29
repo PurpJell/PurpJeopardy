@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const answerImage = localStorage.getItem('answerImage');
     const dailyDouble = localStorage.getItem('dailyDouble');
 
+    language = localStorage.getItem('language') || 'en';
+
     // Update the category name and question price
     if (categoryName) {
         document.getElementById('categoryName').textContent = categoryName;
@@ -196,7 +198,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (answerImage !== "null") {
             questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
         } else {
-        questionCard.textContent = 'Atsakymas: ' + answer;
+            if (language === 'lt') {
+                questionCard.textContent = 'Atsakymas: ' + answer;
+            } else {
+                questionCard.textContent = 'Answer: ' + answer;
+            }
         }
     });
 
@@ -205,6 +211,15 @@ document.addEventListener('DOMContentLoaded', function() {
         contestantsThatAnswered = [];
         answererQID = -1;
         window.location.href = 'board.html';
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            buzzerQueue = [];
+            contestantsThatAnswered = [];
+            answererQID = -1;
+            window.location.href = 'board.html';
+        }
     });
 
 });

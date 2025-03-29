@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(animationContainer);
 
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+    let language = localStorage.getItem('language') || 'en';
 
     // Retrieve player data from localStorage
     const playerData = JSON.parse(localStorage.getItem('playerData')) || [];
@@ -208,6 +209,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
                     drawBoard(currentBoard);
                 });
+
+                questionDiv.addEventListener('click', function() {
+
+                    price = category.questions[questionIndex].price;
+                    category = categoryIndex + 1;
+                    
+                    if (!clickedQuestions.includes(questionKey)) {
+                        clickedQuestions.push(questionKey);
+                        localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
+                    }
+                    const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
+                    if (question) {
+                        // question.textContent = '';
+                        localStorage.setItem('category', currentBoard.categories[category - 1].name);
+                        localStorage.setItem('price', question.getAttribute('data-price'));
+                        localStorage.setItem('content', question.getAttribute('content'));
+                        localStorage.setItem('answer', question.getAttribute('answer'));
+                        localStorage.setItem('questionImage', question.getAttribute('questionImage'));
+                        localStorage.setItem('answerImage', question.getAttribute('answerImage')); 
+                        localStorage.setItem('dailyDouble', question.getAttribute('dailyDouble'));
+                        question.classList.add('clicked');       
+                    }
+                    window.location.href = 'question.html';
+                    });
             });
 
             questionsContainer.appendChild(questionsRow);
@@ -223,7 +248,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function showNextBoardWindow() {
         const nextBoardWindow = document.createElement('div');
         nextBoardWindow.className = 'next-board-window';
-        nextBoardWindow.textContent = 'Visi lentos klausimai buvo atsakyti!';
+        if (language === 'lt') {
+            nextBoardWindow.textContent = 'Visi lentos klausimai buvo atsakyti!';
+        }
+        else {
+            nextBoardWindow.textContent = 'All questions have been answered!';
+        }
 
         document.body.appendChild(nextBoardWindow);
     }
@@ -411,7 +441,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('nextBoard', function() {
         localStorage.removeItem('clickedQuestions');
         localStorage.setItem('currentBoardID', parseInt(currentBoardID) + 1);
-        // renderBoard();
         window.location.reload();
     });
 
@@ -432,6 +461,24 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             backToTitleWindow.classList.toggle('show');
+        } else if (event.key === 'N') {
+            localStorage.removeItem('clickedQuestions');
+            localStorage.setItem('currentBoardID', parseInt(currentBoardID) + 1);
+            window.location.reload();
+        } else if (event.key === 'R') {
+            clickedQuestions = [];
+            localStorage.removeItem('clickedQuestions');
+            currentBoardID = localStorage.getItem('currentBoardID') || 1;
+            renderBoard();
+
+            let nextBoardWindow = document.querySelector('.next-board-window');
+            if (nextBoardWindow) {
+                nextBoardWindow.remove();
+            }
+        } else if (event.key === 'P') {
+            localStorage.removeItem('clickedQuestions');
+            localStorage.setItem('currentBoardID', parseInt(currentBoardID) - 1);
+            window.location.reload();
         }
     });
 

@@ -115,6 +115,9 @@ function createWindow() {
                 mainWindow.webContents.send('startGame');
             } else if (parsedMessage.type === 'openQuestion') {
                 mainWindow.webContents.send('openQuestion', parsedMessage.data);
+                playerSockets.forEach(playerSocket => {
+                    playerSocket.send(JSON.stringify({ type: 'enableBuzzer' }));
+                });
             } else if (parsedMessage.type === 'nextBoard') {
                 mainWindow.webContents.send('nextBoard');
             } else if (parsedMessage.type === 'resetBoard') {
@@ -137,9 +140,8 @@ function createWindow() {
                 mainWindow.webContents.send('revealAnswer');
             } else if (parsedMessage.type === 'backToBoard') {
                 mainWindow.webContents.send('backToBoard');
-
                 playerSockets.forEach(playerSocket => {
-                    playerSocket.send(JSON.stringify({ type: 'enableBuzzer' }));
+                    playerSocket.send(JSON.stringify({ type: 'disableBuzzer' }));
                 });
             }
         });

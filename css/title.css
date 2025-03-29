@@ -142,6 +142,17 @@ button:hover {
     border: 0.3vw solid rgb(255, 255, 255);
 }
 
+.flag {
+    position: fixed;
+    bottom: 1vh;
+    left: 1vw;
+    width: 4vw;
+
+    border: 0.2vw solid black;
+
+    z-index: 1;
+}
+
 .bubble {
     display: none;
     position: absolute;

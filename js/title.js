@@ -1,7 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     // const bubbleContainer = document.getElementById('bubbles');
     const playGameButton = document.getElementById('playButton');
+    const createBoardButton = document.getElementById('createBoardButton');
+    const optionsButton = document.getElementById('optionsButton');
     const exitGameButton = document.getElementById('exitButton');
+    const languageButton = document.getElementById('languageButton');
+
+    let language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        playGameButton.textContent = 'Zaisti';
+        createBoardButton.textContent = 'Sukurti lenta';
+        optionsButton.textContent = 'Nustatymai';
+        exitGameButton.textContent = 'Iseiti';
+        languageButton.src = '../images/icons/flag_lt.png';
+    }
+    else {
+        languageButton.src = '../images/icons/flag_en.png';
+    }
 
     const animationContainer = document.createElement('div');
     animationContainer.id = 'animations';
@@ -208,6 +224,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     exitGameButton.addEventListener('click', () => {
         window.close();
+    });
+
+    languageButton.addEventListener('click', () => {
+        if (language === 'en') {
+            language = 'lt';
+        }
+        else {
+            language = 'en';
+        }
+        localStorage.setItem('language', language);
+        location.reload();
     });
     
 });

@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let ip_address = '';
 
+    let language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        playerName.placeholder = 'Vardas';
+        buzzerButton.textContent = 'Atsakyti!';
+    }
+
+    buzzerButton.style.background = 'linear-gradient(to bottom,rgb(230, 230, 230),rgb(156, 156, 156)';
+    buzzerButton.disabled = true;
+
     // Fetch the IP address from the server
     fetch('/get-ip-address')
         .then(response => response.json())
@@ -43,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (message.type === 'enableBuzzer') {
                 buzzerButton.style.background = 'linear-gradient(to bottom, #ff4d4d, #af1212)';
                 buzzerButton.disabled = false;
+            } else if (message.type === 'disableBuzzer') {
+                buzzerButton.style.background = 'linear-gradient(to bottom,rgb(230, 230, 230),rgb(156, 156, 156)';
+                buzzerButton.disabled = true;
             }
         };
 

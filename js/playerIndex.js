@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const playerName = document.getElementById('playerName');
     const joinGameButton = document.getElementById('joinGameButton');
     const playerImageInput = document.createElement('input');
+    const languageButton = document.getElementById('languageButton');
     const loadingScreen = document.getElementById('loadingScreen');
     playerImageInput.type = 'file';
     playerImageInput.accept = 'image/*';
@@ -12,6 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
     loadingScreen.style.display = 'none';
 
     let ip_address = '';
+
+    let language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        joinGameButton.textContent = 'Prisijungti';
+        playerName.placeholder = 'Vardas';
+        languageButton.src = '../images/icons/flag_lt.png';
+    }
+    else {
+        languageButton.src = '../images/icons/flag_en.png';
+    }
 
     // Fetch the IP address from the server
     fetch('/get-ip-address')
@@ -43,6 +55,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to player picture to trigger file input
     playerPicture.addEventListener('click', function() {
         playerImageInput.click();
+    });
+
+    languageButton.addEventListener('click', () => {
+        if (language === 'en') {
+            language = 'lt';
+        }
+        else {
+            language = 'en';
+        }
+        localStorage.setItem('language', language);
+        location.reload();
     });
 
     // Add event listener to join game button

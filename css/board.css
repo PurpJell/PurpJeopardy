@@ -44,7 +44,7 @@ body {
     /* make the border color a gradien */
     border-image: linear-gradient(155deg, #64c1ff, #001842) 1;
     border-radius: 1.2vw;
-    z-index: 1000;
+    z-index: 101;
     
 }
 
@@ -364,7 +364,7 @@ svg{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     font-size: 4vw;
     text-align: center;
     font-family: 'Mono Polz';

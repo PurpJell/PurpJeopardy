@@ -75,3 +75,10 @@ body {
     color: white;
     cursor: pointer;
 }
+
+.flag {
+    width: 15vw;
+    margin-left: -48vw;
+    border: 1vw solid black;
+    z-index: 1;
+}
