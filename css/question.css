@@ -12,6 +12,7 @@ body {
     height: 100vh;
     background: linear-gradient(130deg, #6a38ff, #b0a1ff, #6a38ff);
     overflow: hidden;
+    user-select: none;
 }
 
 .loading-screen {

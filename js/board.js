@@ -213,13 +213,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.addEventListener('click', function() {
 
                     price = category.questions[questionIndex].price;
-                    category = categoryIndex + 1;
+                    category = questionKey.split('-')[0];
                     
                     if (!clickedQuestions.includes(questionKey)) {
                         clickedQuestions.push(questionKey);
                         localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
                     }
-                    const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
+                    const question = questionDiv;
                     if (question) {
                         // question.textContent = '';
                         localStorage.setItem('category', currentBoard.categories[category - 1].name);
