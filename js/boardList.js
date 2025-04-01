@@ -102,6 +102,33 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'boardEditor.html';
     });
 
+    searchBar.addEventListener('input', function() {
+        const searchValue = searchBar.value.toLowerCase();
+        const boardCards = document.getElementsByClassName('board-card');
+        let hiddenBoards = 0;
+        for (let i = 0; i < boardCards.length; i++) {
+            const title = boardCards[i].getElementsByClassName('board-title')[0].textContent.toLowerCase();
+            if (title.includes(searchValue)) {
+                boardCards[i].style.display = 'flex';
+            } else {
+                boardCards[i].style.display = 'none';
+                hiddenBoards++;
+            }
+        }
+
+        if (hiddenBoards === boardCards.length) {
+            noBoards.style.display = 'block';
+            if (language === 'lt') {
+                noBoards.textContent = "Lentu nerasta";
+            } else {
+                noBoards.textContent = "No boards found";
+            }
+        } else {
+            noBoards.style.display = 'none';
+        }
+        
+    });
+
     // Show content once fully loaded
     window.addEventListener('load', function() {
         document.getElementById('loadingScreen').style.display = 'none';

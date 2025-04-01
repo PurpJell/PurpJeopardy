@@ -55,7 +55,7 @@ body {
 button {
     background-color: #15004e;
     border: solid 0.3vw;
-    border-color: #0c002b #0c002b #0c002b #0c002b;
+    border-color: black;
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;

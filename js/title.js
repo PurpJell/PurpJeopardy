@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     createBoardButton.addEventListener('click', () => {
-        window.location.href = 'boardEditorList.html';
+        window.location.href = 'boardList.html';
     });
     
     exitGameButton.addEventListener('click', () => {

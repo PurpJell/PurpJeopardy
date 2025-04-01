@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PurpJeopardy Board Editor</title>
+    <link rel="stylesheet" type="text/css" href="../css/boardEditor.css">
+    <script src="../js/boardEditor.js"></script>
+</head>
+<body>
+    <div class="top-bar" id="topBar">
+        <button class="back-button" id="backButton">Back to boards</button>
+        <input type="text" class="board-title" id="boardTitle" placeholder="Board title" maxlength="20">
+        <button class="save-button" id="saveButton">Save</button>
+        <button class="delete-button" id="deleteButton">Delete</button>
+    </div>
+
+    <div class="board" id="board"></div>
+    <div class="board-cover" id="boardCover"></div>
+    <div class="question-editor" id="questionEditor">
+        <div class="row">
+            <input type="number" class="price-input" id="priceInput" placeholder="$0" min="100" step="100">
+            <button class="daily-double-button" id="dailyDoubleButton">Daily Double</button>
+
+            <button class="save-question-button" id="saveQuestionButton">Save</button>
+            <button class="cancel-question-button" id="cancelQuestionButton">Cancel</button>
+        </div>
+        <div class="row">
+            <textarea class="question-input" wrap="soft" spellcheck="false" id="questionInput" placeholder="Question" maxlength="200"></textarea>
+            <textarea class="answer-input" wrap="soft" spellcheck="false" id="answerInput" placeholder="Answer" maxlength="200"></textarea>
+        </div>
+        <div class="row">
+            <img class="question-image image-input" id="questionImage" src="../images/add_picture.png" alt="Question image">
+            <img class="remove-image-button" id="removeQuestionImageButton" src="../images/icons/kick.png" alt="X">
+            <img class="answer-image image-input" id="answerImage" src="../images/add_picture.png" alt="Answer image">
+            <img class="remove-image-button" id="removeAnswerImageButton" src="../images/icons/kick.png" alt="X">
+        </div>
+    </div>
+</body>
+</html>
