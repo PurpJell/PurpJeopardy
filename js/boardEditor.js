@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const finalSaveButton = document.getElementById('saveBoardButton');
     const finalCancelButton = document.getElementById('cancelBoardButton');
 
+    const confirmWindow = document.getElementById('confirmWindow');
+    const confirmText = document.getElementById('confirmText');
+    const confirmYesButton = document.getElementById('confirmYesButton');
+    const confirmNoButton = document.getElementById('confirmNoButton');
+
     const boardCover = document.getElementById('boardCover');
     const questionEditor = document.getElementById('questionEditor');
     const priceInput = document.getElementById('priceInput');
@@ -30,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelQuestionButton = document.getElementById('cancelQuestionButton');
 
     let boardData;
-    let currentBoard = 0;
+    let currentPage = 0;
 
     let questionImageType = null;
     let answerImageType = null;
@@ -75,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         descriptionInput.value = data.meta.description || 'Description';
 
         const categoryInputs = document.getElementsByClassName('category');
-        data.boards[currentBoard].categories.forEach((category, i) => {
+        data.pages[currentPage].categories.forEach((category, i) => {
             categoryInputs[i].value = category.name || '';
         });
 
@@ -86,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateQuestionPrices(data) {
         const questionElements = document.getElementsByClassName('question');
-        data.boards[currentBoard].categories.forEach((category, i) => {
+        data.pages[currentPage].categories.forEach((category, i) => {
             category.questions.forEach((question, j) => {
                 questionElements[j * 5 + i].textContent = `$${question.price}`;
             });
@@ -143,21 +148,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('editingQuestion', `${j}-${i}`);
                 changesMade = true;
 
-                questionInput.value = boardData.boards[currentBoard].categories[j].questions[i].content || 'Question';
-                answerInput.value = boardData.boards[currentBoard].categories[j].questions[i].answer || 'Answer';
-                priceInput.value = '$' + boardData.boards[currentBoard].categories[j].questions[i].price || '$0';
-                dailyDoubleCheckbox.checked = boardData.boards[currentBoard].categories[j].questions[i].dailyDouble || false;
-                questionImage.src = boardData.boards[currentBoard].categories[j].questions[i].questionImage || '../images/add_picture.png';
-                answerImage.src = boardData.boards[currentBoard].categories[j].questions[i].answerImage || '../images/add_picture.png';
+                questionInput.value = boardData.pages[currentPage].categories[j].questions[i].content || 'Question';
+                answerInput.value = boardData.pages[currentPage].categories[j].questions[i].answer || 'Answer';
+                priceInput.value = '$' + boardData.pages[currentPage].categories[j].questions[i].price || '$0';
+                dailyDoubleCheckbox.checked = boardData.pages[currentPage].categories[j].questions[i].dailyDouble || false;
+                questionImage.src = boardData.pages[currentPage].categories[j].questions[i].questionImage || '../images/add_picture.png';
+                answerImage.src = boardData.pages[currentPage].categories[j].questions[i].answerImage || '../images/add_picture.png';
+                questionImageType = boardData.pages[currentPage].categories[j].questions[i].questionImageType || 'png';
+                answerImageType = boardData.pages[currentPage].categories[j].questions[i].answerImageType || 'png';
             });
         }
     }
 
     backButton.addEventListener('click', function() {
         if (changesMade) {
-            if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
-                window.location.href = 'boardList.html';
-            }
+            customConfirm('You have unsaved changes. Are you sure you want to leave?', 'Yes', 'No')
+                .then((confirmed) => {
+                    if (confirmed) {
+                        window.location.href = 'boardList.html';
+                    }
+                });
         }
         else {
             window.location.href = 'boardList.html';
@@ -170,6 +180,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     finalSaveButton.addEventListener('click', function() {
+        handleFinalSave();
+    });
+
+    async function handleFinalSave() {
+        const boardFolder = path.join(__dirname, '../boards', boardTitle.value);
+        
+        async function overwriteConfirmation() {
+            return await customConfirm('A board with this name already exists. Do you want to overwrite it?', 'Yes', 'No', false);
+        }
+
+        if (fs.existsSync(boardFolder)) {
+            let confirmed = await overwriteConfirmation();
+            if (confirmed) {
+                try {
+                    fs.rmSync(boardFolder, { recursive: true, force: true });
+                } catch (error) {
+                    console.error('Error deleting board folder:', error);
+                    return; // Exit the function if folder deletion fails
+                }
+            }
+            else {
+                return;
+            }
+        }
+
+        async function removeOldFolder() {
+            return await customConfirm('The board name has changed. Do you want to delete or keep the old board folder?', 'Delete', 'Keep', false);
+        }
+        
+        if (boardData.meta.title !== boardTitle.value) {
+            let confirmed = await removeOldFolder();
+            if (confirmed) {
+                fs.rmSync(path.join(__dirname, '../boards', boardData.meta.title), { recursive: true, force: true });
+            }
+        }
+
+        finalizeSave();
+    }
+
+    async function finalizeSave() {
 
         const date = new Date(Date.now());
         const year = date.getFullYear();
@@ -190,94 +240,65 @@ document.addEventListener('DOMContentLoaded', function() {
             minutes = '0' + minutes;
         }
         const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-        
-        const boardFolder = path.join(__dirname, '../boards', boardTitle.value);
-        const imagesFolderPath = path.join(boardFolder, 'images');
-        
-        if (fs.existsSync(boardFolder)) {
-            if (confirm('A board with this name already exists. Do you want to overwrite it?')) {
-                fs.rmdirSync(boardFolder, { recursive: true });
-            }
-            else {
-                return;
-            }
-        }
 
-        if (boardData.meta.title !== boardTitle.value) {
-            if (confirm('The board title has changed. Do you want to delete the old board folder?')) {
-                fs.rmdirSync(path.join(__dirname, '../boards', boardData.meta.title), { recursive: true });
-            }
-        }
-
+        const BOARDS_DIR = path.join(__dirname, '../boards');
+        const IMAGES_DIR = path.join(BOARDS_DIR, boardTitle.value, 'images');
+    
         boardData.meta.title = boardTitle.value;
         boardData.meta.description = descriptionInput.value;
         boardData.meta.lastEdited = formattedDate;
 
         // Ensure the images folder exists
-        if (!fs.existsSync(imagesFolderPath)) {
-            fs.mkdirSync(imagesFolderPath, { recursive: true });
-        }
+        await fs.promises.mkdir(IMAGES_DIR, { recursive: true });
 
         // delete the old images
-        fs.readdir(imagesFolderPath, (err, files) => {
-            if (err) {
-                console.error('Error reading images folder:', err);
-            } else {
-                for (const file of files) {
-                    fs.unlink(path.join(imagesFolderPath, file), err => {
-                        if (err) {
-                            console.error('Error deleting image:', err);
-                        }
-                    });
-                }
+        try {
+            const files = await fs.promises.readdir(IMAGES_DIR);
+            for (const file of files) {
+                await fs.promises.unlink(path.join(IMAGES_DIR, file));
             }
-        });
+        } catch (err) {
+            console.error('Error deleting old images:', err);
+        }
 
         // Save the images to the folder
-        boardData.boards.forEach(board => {
-            board.categories.forEach((category, i) => {
-                category.questions.forEach((question, j) => {
-                    if (question.questionImage && !question.questionImage.includes('add_picture.png')) {
-                        const questionImagePath = path.join(imagesFolderPath, `QI_${i}_${j}.${question.questionImageType}`);
-                        const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
-                        const questionImageBuffer = Buffer.from(questionImageData, 'base64');
-                        fs.writeFile(questionImagePath, questionImageBuffer, (err) => {
-                            if (err) {
-                                console.error('Error saving question image:', err);
-                            }
-                        });
-                        question.questionImage = '../boards/' + boardTitle.value + '/images/' + `QI_${i}_${j}.${question.questionImageType}`;
-                    }
-                    if (question.answerImage && !question.answerImage.includes('add_picture.png')) {
-                        const answerImagePath = path.join(imagesFolderPath, `AI_${i}_${j}.${question.answerImageType}`);
-                        const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
-                        const answerImageBuffer = Buffer.from(answerImageData, 'base64');
-                        fs.writeFile(answerImagePath, answerImageBuffer, (err) => {
-                            if (err) {
-                                console.error('Error saving answer image:', err);
-                            }
-                        });
-                        question.answerImage = '../boards/' + boardTitle.value + '/images/' + `AI_${i}_${j}.${question.answerImageType}`;
-                    }
-                    boardData.boards[currentBoard].categories[i].name = document.getElementsByClassName('category')[i].value;
-                });
-            });
-        });
+        await Promise.all(
+            boardData.pages.map((page) =>
+                Promise.all(
+                    page.categories.map((category, i) =>
+                        Promise.all(
+                            category.questions.map(async (question, j) => {
+                                if (question.questionImage && !question.questionImage.includes('add_picture.png')) {
+                                    const questionImagePath = path.join(IMAGES_DIR, `QI_${i}_${j}.${question.questionImageType}`);
+                                    const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
+                                    await fs.promises.writeFile(questionImagePath, Buffer.from(questionImageData, 'base64'));
+                                    question.questionImage = `../boards/${boardTitle.value}/images/QI_${i}_${j}.${question.questionImageType}`;
+                                }
+                                if (question.answerImage && !question.answerImage.includes('add_picture.png')) {
+                                    const answerImagePath = path.join(IMAGES_DIR, `AI_${i}_${j}.${question.answerImageType}`);
+                                    const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
+                                    await fs.promises.writeFile(answerImagePath, Buffer.from(answerImageData, 'base64'));
+                                    question.answerImage = `../boards/${boardTitle.value}/images/AI_${i}_${j}.${question.answerImageType}`;
+                                }
+                            })
+                        )
+                    )
+                )
+            )
+        );
 
         // write the boardData to the file
-        fs.writeFile(`./boards/${boardTitle.value}/${boardTitle.value}.pjb`, JSON.stringify(boardData, null, 4), (err) => {
-            if (err) {
-                console.error('Error saving board data:', err);
-            } else {
-                changesMade = false;
-            }
-        });
+        await fs.promises.writeFile(
+            path.join(BOARDS_DIR, boardTitle.value, `${boardTitle.value}.pjb`),
+            JSON.stringify(boardData, null, 4)
+        );
 
+        // Hide the save window
         saveBoardWindow.style.display = 'none';
         boardCover.style.display = 'none';
 
-        window.location.href = 'boardEditor.html?board=' + boardTitle.value + '.pjb';
-    });
+        window.location.href = 'boardEditor.html' + '?board=' + `${boardTitle.value}.pjb`;
+    }
 
     finalCancelButton.addEventListener('click', function() {
         descriptionInput.value = boardData.meta.description;
@@ -285,17 +306,62 @@ document.addEventListener('DOMContentLoaded', function() {
         boardCover.style.display = 'none';
     });
 
+    function customConfirm(message, yesText, noText, removeCover = true) {
+        return new Promise((resolve) => {
+            confirmText.textContent = message;
+            confirmYesButton.textContent = yesText;
+            confirmNoButton.textContent = noText;
+            confirmWindow.style.display = 'flex';
+            boardCover.style.display = 'flex';
+            boardCover.style.zIndex = 103;
+    
+            function handleYesClick() {
+                cleanup();
+                resolve(true); // Resolve the promise with `true` for "Yes"
+            }
+    
+            function handleNoClick() {
+                cleanup();
+                resolve(false); // Resolve the promise with `false` for "No"
+            }
+    
+            function handleEscapeKey(event) {
+                if (event.key === 'Escape') {
+                    cleanup();
+                    resolve(false); // Treat Escape as a "No"
+                }
+            }
+    
+            confirmYesButton.addEventListener('click', handleYesClick);
+            confirmNoButton.addEventListener('click', handleNoClick);
+            document.addEventListener('keydown', handleEscapeKey);
+    
+            // Cleanup function to remove event listeners and hide the confirm window
+            function cleanup() {
+                confirmYesButton.removeEventListener('click', handleYesClick);
+                confirmNoButton.removeEventListener('click', handleNoClick);
+                document.removeEventListener('keydown', handleEscapeKey);
+                confirmWindow.style.display = 'none';
+                if (removeCover) boardCover.style.display = 'none';
+                boardCover.style.zIndex = 101;
+            }
+        });
+    }
+
     deleteButton.addEventListener('click', function() {
-        if (confirm('Are you sure you want to delete this board?')) {
-            fs.rmdir(`./boards/${boardTitle.value}`, { recursive: true }, (err) => {
-                if (err) {
-                    console.error('Error deleting board:', err);
-                    alert('Error deleting board!\nMake sure the board \"' + boardTitle.value + '\" exists.');
-                } else {
-                    window.location.href = 'boardList.html';
+        customConfirm('Are you sure you want to delete this board?', 'Yes', 'No')
+            .then((confirmed) => {
+                if (confirmed) {
+                    fs.rm(`./boards/${boardTitle.value}`, { recursive: true, force: true }, (err) => {
+                        if (err) {
+                            console.error('Error deleting board:', err);
+                            alert('Error deleting board!\nMake sure the board "' + boardTitle.value + '" exists.');
+                        } else {
+                            window.location.href = 'boardList.html';
+                        }
+                    });
                 }
             });
-        }
     });
 
     questionImage.addEventListener('click', function() {
@@ -355,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryIndex = localStorage.getItem('editingQuestion').split('-')[0];
         const questionIndex = localStorage.getItem('editingQuestion').split('-')[1];
 
-        let question = boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex];
+        let question = boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex];
 
         question.content = questionText;
         question.answer = answerText;
@@ -379,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
             question.answerImageType = answerImageType;
         }
 
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex] = question;
+        boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex] = question;
 
         questionEditor.style.display = 'none';
         boardCover.style.display = 'none';
@@ -390,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
     cancelQuestionButton.addEventListener('click', function() {
         const categoryIndex = localStorage.getItem('editingQuestion').split('-')[0];
         const questionIndex = localStorage.getItem('editingQuestion').split('-')[1];
-        let question = boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex];
+        let question = boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex];
         questionInput.value = question.content;
         answerInput.value = question.answer;
         priceInput.value = question.price;

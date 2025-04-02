@@ -118,8 +118,8 @@ function createWindow() {
                 playerSockets.forEach(playerSocket => {
                     playerSocket.send(JSON.stringify({ type: 'enableBuzzer' }));
                 });
-            } else if (parsedMessage.type === 'nextBoard') {
-                mainWindow.webContents.send('nextBoard');
+            } else if (parsedMessage.type === 'nextPage') {
+                mainWindow.webContents.send('nextPage');
             } else if (parsedMessage.type === 'resetBoard') {
                 mainWindow.webContents.send('resetBoard');
             } else if (parsedMessage.type === 'correctAnswer') {
@@ -161,7 +161,7 @@ function createWindow() {
     ipcMain.on('retrieveGameDataResponse', (event, response) => {
         console.log("got game data response");
         const players = response.players;
-        const currentBoardID_ = response.currentBoardID;
+        const currentPageID_ = response.currentPageID;
         const selectedBoard = response.selectedBoard;
         if (hostSocket) {
             hostSocket.send(JSON.stringify(
@@ -169,7 +169,7 @@ function createWindow() {
                     type: 'gameData',
                     data: {
                         playerData: players,
-                        currentBoardID: currentBoardID_,
+                        currentPageID: currentPageID_,
                         selectedBoard: selectedBoard
                     } 
                 }

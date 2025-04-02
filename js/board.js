@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     animationContainer.style.width = '100vw';
     animationContainer.style.height = '100vh';
     animationContainer.style.overflow = 'hidden';
-    // animationContainer.style.zIndex = 1;
 
     document.body.appendChild(animationContainer);
 
@@ -150,9 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render player cards initially
     renderPlayerCards();
 
-    let currentBoardID = localStorage.getItem('currentBoardID') || 1;
+    let currentPageID = localStorage.getItem('currentPageID') || 1;
     let boardData = [];
-    let currentBoard;
+    let currentPage;
 
     // Retrieve clicked questions from localStorage
     let clickedQuestions = JSON.parse(localStorage.getItem('clickedQuestions')) || [];
@@ -171,19 +170,19 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(boardData_ => {
                 boardData = boardData_;
                 console.log("Fetched board data:", boardData);
-                currentBoard = boardData.boards[currentBoardID - 1];
-                drawBoard(currentBoard);
+                currentPage = boardData.pages[currentPageID - 1];
+                drawBoard(currentPage);
             })
             .catch(error => console.error('Error loading board data:', error));
     }
 
     // Function to render the board
-    function drawBoard(currentBoard) {
+    function drawBoard(currentPage) {
         board.innerHTML = '';
         const categoriesContainer = document.createElement('div');
         categoriesContainer.className = 'categories';
 
-        currentBoard.categories.forEach(category => {
+        currentPage.categories.forEach(category => {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
             categoryDiv.textContent = category.name;
@@ -197,11 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         board.appendChild(questionsContainer);
 
-        currentBoard.categories[0].questions.forEach((_, questionIndex) => {
+        currentPage.categories[0].questions.forEach((_, questionIndex) => {
             const questionsRow = document.createElement('div');
             questionsRow.className = 'questions-row';
 
-            currentBoard.categories.forEach((category, categoryIndex) => {
+            currentPage.categories.forEach((category, categoryIndex) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 questionDiv.setAttribute('data-category', categoryIndex + 1);
@@ -224,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.addEventListener('contextmenu', function() {
                     clickedQuestions.push(questionKey);
                     localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
-                    drawBoard(currentBoard);
+                    drawBoard(currentPage);
                 });
 
                 questionDiv.addEventListener('click', function() {
@@ -239,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const question = questionDiv;
                     if (question) {
                         // question.textContent = '';
-                        localStorage.setItem('category', currentBoard.categories[category - 1].name);
+                        localStorage.setItem('category', currentPage.categories[category - 1].name);
                         localStorage.setItem('price', question.getAttribute('data-price'));
                         localStorage.setItem('content', question.getAttribute('content'));
                         localStorage.setItem('answer', question.getAttribute('answer'));
@@ -256,23 +255,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Check if all questions have been clicked
-        if (Object.keys(clickedQuestions).length === currentBoard.categories.length * currentBoard.categories[0].questions.length) {
-            showNextBoardWindow();
+        if (Object.keys(clickedQuestions).length === currentPage.categories.length * currentPage.categories[0].questions.length) {
+            showNextPageWindow();
         }
     }
 
-    // Function to show a window to go to the next board
-    function showNextBoardWindow() {
-        const nextBoardWindow = document.createElement('div');
-        nextBoardWindow.className = 'next-board-window';
+    // Function to show a window to go to the next page
+    function showNextPageWindow() {
+        const nextPageWindow = document.createElement('div');
+        nextPageWindow.className = 'next-page-window';
         if (language === 'lt') {
-            nextBoardWindow.textContent = 'Visi lentos klausimai buvo atsakyti!';
+            nextPageWindow.textContent = 'Visi lentos klausimai buvo atsakyti!';
         }
         else {
-            nextBoardWindow.textContent = 'All questions have been answered!';
+            nextPageWindow.textContent = 'All questions have been answered!';
         }
 
-        document.body.appendChild(nextBoardWindow);
+        document.body.appendChild(nextPageWindow);
     }
 
     // Render the board initially
@@ -426,9 +425,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        servercurrentPageID = localStorage.getItem('currentPageID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: servercurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('openQuestion', function(event, data) {
@@ -442,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
         if (question) {
             // question.textContent = '';
-            localStorage.setItem('category', currentBoard.categories[category - 1].name);
+            localStorage.setItem('category', currentPage.categories[category - 1].name);
             localStorage.setItem('price', question.getAttribute('data-price'));
             localStorage.setItem('content', question.getAttribute('content'));
             localStorage.setItem('answer', question.getAttribute('answer'));
@@ -454,10 +453,10 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'question.html';
     });
 
-    // Handle request to go to the next board
-    ipcRenderer.on('nextBoard', function() {
+    // Handle request to go to the next page
+    ipcRenderer.on('nextPage', function() {
         localStorage.removeItem('clickedQuestions');
-        localStorage.setItem('currentBoardID', parseInt(currentBoardID) + 1);
+        localStorage.setItem('currentPageID', parseInt(currentPageID) + 1);
         window.location.reload();
     });
 
@@ -465,12 +464,12 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('resetBoard', function() {
         clickedQuestions = [];
         localStorage.removeItem('clickedQuestions');
-        currentBoardID = localStorage.getItem('currentBoardID') || 1;
+        currentPageID = localStorage.getItem('currentPageID') || 1;
         renderBoard();
 
-        let nextBoardWindow = document.querySelector('.next-board-window');
-        if (nextBoardWindow) {
-            nextBoardWindow.remove();
+        let nextPageWindow = document.querySelector('.next-page-window');
+        if (nextPageWindow) {
+            nextPageWindow.remove();
         }
     });
 
@@ -480,21 +479,21 @@ document.addEventListener('DOMContentLoaded', function() {
             backToTitleWindow.classList.toggle('show');
         } else if (event.key === 'N') {
             localStorage.removeItem('clickedQuestions');
-            localStorage.setItem('currentBoardID', parseInt(currentBoardID) + 1);
+            localStorage.setItem('currentPageID', parseInt(currentPageID) + 1);
             window.location.reload();
         } else if (event.key === 'R') {
             clickedQuestions = [];
             localStorage.removeItem('clickedQuestions');
-            currentBoardID = localStorage.getItem('currentBoardID') || 1;
+            currentPageID = localStorage.getItem('currentPageID') || 1;
             renderBoard();
 
-            let nextBoardWindow = document.querySelector('.next-board-window');
-            if (nextBoardWindow) {
-                nextBoardWindow.remove();
+            let nextPageWindow = document.querySelector('.next-page-window');
+            if (nextPageWindow) {
+                nextPageWindow.remove();
             }
         } else if (event.key === 'P') {
             localStorage.removeItem('clickedQuestions');
-            localStorage.setItem('currentBoardID', parseInt(currentBoardID) - 1);
+            localStorage.setItem('currentPageID', parseInt(currentPageID) - 1);
             window.location.reload();
         }
     });

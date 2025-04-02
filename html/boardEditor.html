@@ -39,13 +39,20 @@
     <div class="save-board-window" id="saveBoardWindow">
         <label class="description-label">Board description:</label>
         <textarea class="board-description" wrap="soft" spellcheck="false" id="boardDescription" placeholder="Describe your board" maxlength="150"></textarea>
-        <div class="button-container">
+        <div class="save-button-container">
             <button class="save-board-button" id="saveBoardButton">Save</button>
             <button class="cancel-board-button" id="cancelBoardButton">Cancel</button>
         </div>
     </div>
     <button class="next-page-button" id="nextPageButton">></button>
     <button class="previous-page-button" id="previousPageButton">&lt;</button>
+    <div class="confirm-window" id="confirmWindow">
+        <label class="confirm-text" id="confirmText">Are you sure you want to delete this board?</label>
+        <div class="confirm-button-container">
+            <button class="confirm-yes-button" id="confirmYesButton">Yes</button>
+            <button class="confirm-no-button" id="confirmNoButton">No</button>
+        </div>
+    </div>
 
     <div class="loading-screen" id="loadingScreen">
         <p>Loading...</p>
