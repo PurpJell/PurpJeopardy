@@ -188,8 +188,10 @@ button {
 .board-description {
     white-space: normal;
     overflow-wrap: break-word;
-    width: 60%;
+    width: 30%;
     height: 90%;
+    margin-right: 25vw;
+    font-size: 1.5vw;
 }
 
 *::-webkit-scrollbar {

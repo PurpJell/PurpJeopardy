@@ -17,7 +17,7 @@
     <div class="board-cover" id="boardCover"></div>
     <div class="question-editor" id="questionEditor">
         <div class="row">
-            <input type="number" class="price-input" id="priceInput" placeholder="$0" min="100" step="100">
+            <input type="text" class="price-input" id="priceInput" placeholder="$0" maxlength="5"></input>
             <div class="daily-double-container">
                 <label class="daily-double-text">Daily double?</label>
                 <input type="checkbox" class="daily-double-checkbox" id="dailyDoubleCheckbox"></input>
@@ -37,9 +37,18 @@
         </div>
     </div>
     <div class="save-board-window" id="saveBoardWindow">
-        <input type="text" class="board-description" id="boardDescription">
-
+        <label class="description-label">Board description:</label>
+        <textarea class="board-description" wrap="soft" spellcheck="false" id="boardDescription" placeholder="Describe your board" maxlength="150"></textarea>
+        <div class="button-container">
+            <button class="save-board-button" id="saveBoardButton">Save</button>
+            <button class="cancel-board-button" id="cancelBoardButton">Cancel</button>
         </div>
+    </div>
+    <button class="next-page-button" id="nextPageButton">></button>
+    <button class="previous-page-button" id="previousPageButton">&lt;</button>
+
+    <div class="loading-screen" id="loadingScreen">
+        <p>Loading...</p>
     </div>
 </body>
 </html>

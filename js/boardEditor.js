@@ -3,11 +3,18 @@ const path = require('path');
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    const loadingScreen = document.getElementById('loadingScreen');
+
     const backButton = document.getElementById('backButton');
     const saveButton = document.getElementById('saveButton');
     const boardTitle = document.getElementById('boardTitle');
     const deleteButton = document.getElementById('deleteButton');
     const board = document.getElementById('board');
+
+    const saveBoardWindow = document.getElementById('saveBoardWindow');
+    const descriptionInput = document.getElementById('boardDescription');
+    const finalSaveButton = document.getElementById('saveBoardButton');
+    const finalCancelButton = document.getElementById('cancelBoardButton');
 
     const boardCover = document.getElementById('boardCover');
     const questionEditor = document.getElementById('questionEditor');
@@ -35,9 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(queryString);
     
     const passedBoard = urlParams.get('board');
-    
-    boardCover.style.display = 'none';
-    questionEditor.style.display = 'none';
 
     // if no board was passed as a parameter, fetch exampleBoardData.pjb
     if (passedBoard === null) {
@@ -48,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`../boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`)
             .then(response => response.json())
             .then(data => {
-                localStorage.setItem('editorBoardData', JSON.stringify(data));
                 loadBoardData(data);
+                console.log('Board data loaded:', data);
             })    
             .catch(error => {
                 console.error('Error fetching board data:', error);
@@ -61,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('../boards/exampleBoardData/exampleBoardData.pjb')
             .then(response => response.json())
             .then(data => {
-                localStorage.setItem('editorBoardData', JSON.stringify(data));
                 loadBoardData(data);
             })    
             .catch(error => console.error('Error fetching default board data:', error));
@@ -69,10 +72,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadBoardData(data) {
         boardTitle.value = data.meta.title || 'New Board';
-        document.getElementById('boardDescription').value = data.meta.description || 'Description';
+        descriptionInput.value = data.meta.description || 'Description';
+
+        const categoryInputs = document.getElementsByClassName('category');
+        data.boards[currentBoard].categories.forEach((category, i) => {
+            categoryInputs[i].value = category.name || '';
+        });
+
+        updateQuestionPrices(data);
 
         boardData = data;
-    }    
+    }
+
+    function updateQuestionPrices(data) {
+        const questionElements = document.getElementsByClassName('question');
+        data.boards[currentBoard].categories.forEach((category, i) => {
+            category.questions.forEach((question, j) => {
+                questionElements[j * 5 + i].textContent = `$${question.price}`;
+            });
+        });
+    }
 
     let language = localStorage.getItem('language') || 'en';
 
@@ -81,6 +100,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
     }
+
+    priceInput.addEventListener('input', function() {
+        let numericValue = priceInput.value.replace(/[^0-9]/g, ''); // Keep only numeric characters
+        priceInput.value = numericValue ? `$${numericValue}` : ''; // Add '$' only if there's a value
+        changesMade = true;
+    });
 
     const invalidChars = /[\\/:*?"<>|]/g;
 
@@ -120,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 questionInput.value = boardData.boards[currentBoard].categories[j].questions[i].content || 'Question';
                 answerInput.value = boardData.boards[currentBoard].categories[j].questions[i].answer || 'Answer';
-                priceInput.value = boardData.boards[currentBoard].categories[j].questions[i].price || '$0';
+                priceInput.value = '$' + boardData.boards[currentBoard].categories[j].questions[i].price || '$0';
                 dailyDoubleCheckbox.checked = boardData.boards[currentBoard].categories[j].questions[i].dailyDouble || false;
                 questionImage.src = boardData.boards[currentBoard].categories[j].questions[i].questionImage || '../images/add_picture.png';
                 answerImage.src = boardData.boards[currentBoard].categories[j].questions[i].answerImage || '../images/add_picture.png';
@@ -134,36 +159,143 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'boardList.html';
             }
         }
-        window.location.href = 'boardList.html';
+        else {
+            window.location.href = 'boardList.html';
+        }
     });
 
     saveButton.addEventListener('click', function() {
+        saveBoardWindow.style.display = 'flex';
+        boardCover.style.display = 'flex';
+    });
 
-        const date = new Date(data.meta.lastEdited || Date.now());
+    finalSaveButton.addEventListener('click', function() {
+
+        const date = new Date(Date.now());
         const year = date.getFullYear();
         let month = date.getMonth() + 1;
         if (month < 10) {
             month = '0' + month;
         }
-        const day = date.getDate();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
+        let day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        let hours = date.getHours();
+        if (hours < 10) {
+            hours = '0' + hours;
+        }
+        let minutes = date.getMinutes();
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
         const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+        
+        const boardFolder = path.join(__dirname, '../boards', boardTitle.value);
+        const imagesFolderPath = path.join(boardFolder, 'images');
+        
+        if (fs.existsSync(boardFolder)) {
+            if (confirm('A board with this name already exists. Do you want to overwrite it?')) {
+                fs.rmdirSync(boardFolder, { recursive: true });
+            }
+            else {
+                return;
+            }
+        }
+
+        if (boardData.meta.title !== boardTitle.value) {
+            if (confirm('The board title has changed. Do you want to delete the old board folder?')) {
+                fs.rmdirSync(path.join(__dirname, '../boards', boardData.meta.title), { recursive: true });
+            }
+        }
 
         boardData.meta.title = boardTitle.value;
-        boardData.meta.description = "Description"; // TODO: Add description input
+        boardData.meta.description = descriptionInput.value;
         boardData.meta.lastEdited = formattedDate;
 
+        // Ensure the images folder exists
+        if (!fs.existsSync(imagesFolderPath)) {
+            fs.mkdirSync(imagesFolderPath, { recursive: true });
+        }
+
+        // delete the old images
+        fs.readdir(imagesFolderPath, (err, files) => {
+            if (err) {
+                console.error('Error reading images folder:', err);
+            } else {
+                for (const file of files) {
+                    fs.unlink(path.join(imagesFolderPath, file), err => {
+                        if (err) {
+                            console.error('Error deleting image:', err);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Save the images to the folder
+        boardData.boards.forEach(board => {
+            board.categories.forEach((category, i) => {
+                category.questions.forEach((question, j) => {
+                    if (question.questionImage && !question.questionImage.includes('add_picture.png')) {
+                        const questionImagePath = path.join(imagesFolderPath, `QI_${i}_${j}.${question.questionImageType}`);
+                        const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
+                        const questionImageBuffer = Buffer.from(questionImageData, 'base64');
+                        fs.writeFile(questionImagePath, questionImageBuffer, (err) => {
+                            if (err) {
+                                console.error('Error saving question image:', err);
+                            }
+                        });
+                        question.questionImage = '../boards/' + boardTitle.value + '/images/' + `QI_${i}_${j}.${question.questionImageType}`;
+                    }
+                    if (question.answerImage && !question.answerImage.includes('add_picture.png')) {
+                        const answerImagePath = path.join(imagesFolderPath, `AI_${i}_${j}.${question.answerImageType}`);
+                        const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
+                        const answerImageBuffer = Buffer.from(answerImageData, 'base64');
+                        fs.writeFile(answerImagePath, answerImageBuffer, (err) => {
+                            if (err) {
+                                console.error('Error saving answer image:', err);
+                            }
+                        });
+                        question.answerImage = '../boards/' + boardTitle.value + '/images/' + `AI_${i}_${j}.${question.answerImageType}`;
+                    }
+                    boardData.boards[currentBoard].categories[i].name = document.getElementsByClassName('category')[i].value;
+                });
+            });
+        });
+
         // write the boardData to the file
-        fs.writeFile(`../boards/${boardTitle.value}/${boardTitle.value}.pjb`, JSON.stringify(boardData), (err) => {
+        fs.writeFile(`./boards/${boardTitle.value}/${boardTitle.value}.pjb`, JSON.stringify(boardData, null, 4), (err) => {
             if (err) {
                 console.error('Error saving board data:', err);
             } else {
-                alert('Board saved successfully!');
                 changesMade = false;
             }
         });
-        
+
+        saveBoardWindow.style.display = 'none';
+        boardCover.style.display = 'none';
+
+        window.location.href = 'boardEditor.html?board=' + boardTitle.value + '.pjb';
+    });
+
+    finalCancelButton.addEventListener('click', function() {
+        descriptionInput.value = boardData.meta.description;
+        saveBoardWindow.style.display = 'none';
+        boardCover.style.display = 'none';
+    });
+
+    deleteButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete this board?')) {
+            fs.rmdir(`./boards/${boardTitle.value}`, { recursive: true }, (err) => {
+                if (err) {
+                    console.error('Error deleting board:', err);
+                    alert('Error deleting board!\nMake sure the board \"' + boardTitle.value + '\" exists.');
+                } else {
+                    window.location.href = 'boardList.html';
+                }
+            });
+        }
     });
 
     questionImage.addEventListener('click', function() {
@@ -175,30 +307,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Get the board name and construct the image path
-                    const boardName = boardData.meta.title;
-                    const imagesFolderPath = path.join(__dirname, `../boards/${boardName}/images`);
-                    category = localStorage.getItem('editingQuestion').split('-')[0];
-                    question = localStorage.getItem('editingQuestion').split('-')[1];
-                    const fileName = 'QI_' + category + '_' + question + '.png';
-                    const imagePath = path.join(imagesFolderPath, fileName);
-    
-                    // Ensure the images folder exists
-                    if (!fs.existsSync(imagesFolderPath)) {
-                        fs.mkdirSync(imagesFolderPath, { recursive: true });
-                    }
-    
-                    // Save the image to the folder
-                    const base64Data = e.target.result.replace(/^data:image\/\w+;base64,/, '');
-                    const buffer = Buffer.from(base64Data, 'base64');
-                    fs.writeFile(imagePath, buffer, (err) => {
-                        if (err) {
-                            console.error('Error saving image:', err);
-                        } else {
-                            boardData.boards[currentBoard].categories[category].questions[question].questionImage = `../boards/${boardName}/images/${fileName}`;
-                            questionImage.src = `../boards/${boardName}/images/${fileName}`; // Update the image preview
-                        }
-                    });
+                    questionImage.src = e.target.result; // Update the image preview
+                    questionImageType = file.type.split('/')[1]; // Store the image path in a variable
                 };
                 reader.readAsDataURL(file);
             }
@@ -215,17 +325,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Get the board name and construct the image path
-                    const boardName = boardData.meta.title;
-                    const imagesFolderPath = path.join(__dirname, `../boards/${boardName}/images`);
-                    category = localStorage.getItem('editingQuestion').split('-')[0];
-                    question = localStorage.getItem('editingQuestion').split('-')[1];
-                    const fileName = 'AI_' + category + '_' + question + '.png';
-                    const imagePath = path.join(imagesFolderPath, fileName);
-    
                     answerImage.src = e.target.result; // Update the image preview
                     answerImageType = file.type.split('/')[1]; // Store the image path in a variable
-                    console.log('answerImage.src', answerImage.src);
                 };
                 reader.readAsDataURL(file);
             }
@@ -235,90 +336,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
     removeQuestionImageButton.addEventListener('click', function() {
         questionImage.src = '../images/add_picture.png';
-        category = localStorage.getItem('editingQuestion').split('-')[0];
-        question = localStorage.getItem('editingQuestion').split('-')[1];
-        const boardName = boardData.meta.title;
-        const imagesFolderPath = path.join(__dirname, `../boards/${boardName}/images`);
-        const fileName = 'QI_' + category + '_' + question + '.png';
-        const imagePath = path.join(imagesFolderPath, fileName);
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Error deleting image:', err);
-            }
-        });
-        boardData.boards[currentBoard].categories[category].questions[question].questionImage = null;
+        questionImageType = 'png';
     });
 
     removeAnswerImageButton.addEventListener('click', function() {
         answerImage.src = '../images/add_picture.png';
-        category = localStorage.getItem('editingQuestion').split('-')[0];
-        question = localStorage.getItem('editingQuestion').split('-')[1];
-        const boardName = boardData.meta.title;
-        const imagesFolderPath = path.join(__dirname, `../boards/${boardName}/images`);
-        const fileName = 'AI_' + category + '_' + question + '.png';
-        const imagePath = path.join(imagesFolderPath, fileName);
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Error deleting image:', err);
-            }
-        });
-        boardData.boards[currentBoard].categories[category].questions[question].answerImage = null;
+        answerImageType = 'png';
     });
 
     saveQuestionButton.addEventListener('click', function() {
         const questionText = questionInput.value.trim();
         const answerText = answerInput.value.trim();
-        const price = priceInput.value.trim();
+        const price = priceInput.value.trim().replace('$', '').replace(/^0+$/, '0').replace(/^0+(?!$)/, '');
         const dailyDouble = dailyDoubleCheckbox.checked;
         const questionImageSrc = questionImage.src;
         const answerImageSrc = answerImage.src;
 
-        const boardName = boardData.meta.title;
-        const imagesFolderPath = path.join(__dirname, `../boards/${boardName}/images`);
         const categoryIndex = localStorage.getItem('editingQuestion').split('-')[0];
         const questionIndex = localStorage.getItem('editingQuestion').split('-')[1];
 
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].content = questionText;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].answer = answerText;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].price = price;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].dailyDouble = dailyDouble;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].questionImage = questionImageSrc;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].answerImage = answerImageSrc;
+        let question = boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex];
 
-        // Ensure the images folder exists
-        if (!fs.existsSync(imagesFolderPath)) {
-            fs.mkdirSync(imagesFolderPath, { recursive: true });
+        question.content = questionText;
+        question.answer = answerText;
+        question.price = price;
+        question.dailyDouble = dailyDouble;
+        if (questionImageSrc.includes('add_picture.png')) {
+            question.questionImage = null;
+            question.questionImageType = null;
+        }
+        else {
+            question.questionImage = questionImageSrc;
+            question.questionImageType = questionImageType;
         }
 
-        // Download the question image to the folder
-        const questionImagePath = path.join(imagesFolderPath, `QI_${categoryIndex}_${questionIndex}.${questionImageType}`);
-        const questionImageData = questionImageSrc.replace(/^data:image\/\w+;base64,/, '');
-        const questionImageBuffer = Buffer.from(questionImageData, 'base64');
-        fs.writeFile(questionImagePath, questionImageBuffer, (err) => {
-            if (err) {
-                console.error('Error saving question image:', err);
-            }
-        });
+        if (answerImageSrc.includes('add_picture.png')) {
+            question.answerImage = null;
+            question.answerImageType = null;
+        }
+        else {
+            question.answerImage = answerImageSrc;
+            question.answerImageType = answerImageType;
+        }
 
-        // Download the answer image to the folder
-        const answerImagePath = path.join(imagesFolderPath, `AI_${categoryIndex}_${questionIndex}.${answerImageType}`);
-        const answerImageData = answerImageSrc.replace(/^data:image\/\w+;base64,/, '');
-        const answerImageBuffer = Buffer.from(answerImageData, 'base64');
-        fs.writeFile(answerImagePath, answerImageBuffer, (err) => {
-            if (err) {
-                console.error('Error saving answer image:', err);
-            }
-        });
-
-        // Update the question and answer images in the board data
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].questionImage = questionImagePath;
-        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex].answerImage = answerImagePath;
+        boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex] = question;
 
         questionEditor.style.display = 'none';
         boardCover.style.display = 'none';
+
+        updateQuestionPrices(boardData);
     });
 
     cancelQuestionButton.addEventListener('click', function() {
+        const categoryIndex = localStorage.getItem('editingQuestion').split('-')[0];
+        const questionIndex = localStorage.getItem('editingQuestion').split('-')[1];
+        let question = boardData.boards[currentBoard].categories[categoryIndex].questions[questionIndex];
+        questionInput.value = question.content;
+        answerInput.value = question.answer;
+        priceInput.value = question.price;
+        dailyDoubleCheckbox.checked = question.dailyDouble;
+        questionImage.src = question.questionImage || '../images/add_picture.png';
+        answerImage.src = question.answerImage || '../images/add_picture.png';
         questionEditor.style.display = 'none';
         boardCover.style.display = 'none';
     });
@@ -327,7 +405,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.key === 'Escape') {
             questionEditor.style.display = 'none';
             boardCover.style.display = 'none';
+            saveBoardWindow.style.display = 'none';
         }
+    });
+
+    window.addEventListener('load', function() {
+        document.getElementById('loadingScreen').style.display = 'none';
     });
 
 });

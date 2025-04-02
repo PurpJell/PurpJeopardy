@@ -70,24 +70,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 title.textContent = board.replace('.pjb', '');
                 leftContainer.appendChild(title);
 
+                let metaData = {};
+
                 const lastEdited = document.createElement('div');
-                // convert to yyyy-mm-dd hh:mm format
-                const stats = fs.statSync(path.join(gamesDirectory, board.replace('.pjb',''), board));
-                const date = stats.mtime;
-                const year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                if (month < 10) {
-                    month = '0' + month;
-                }
-                const day = date.getDate();
-                const hours = date.getHours();
-                const minutes = date.getMinutes();
-                const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
                 lastEdited.className = 'last-edited';
                 if (language === 'lt') {
-                    lastEdited.textContent = 'Paskutini karta redaguota: ' + formattedDate;
+                    lastEdited.textContent = 'Paskutini karta redaguota: ' + metaData.lastEdited;
                 } else {
-                    lastEdited.textContent = 'Last edited: ' + formattedDate;
+                    lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
                 }
                 leftContainer.appendChild(lastEdited);
 
@@ -96,10 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const description = document.createElement('div');
                 description.className = 'board-description';
                 if (language === 'lt') {
-                    description.textContent = 'Aprasymas: kazkoks tekstas';
+                    description.textContent = 'Aprasymas: ' + metaData.description;
                 } else
                 {
-                    description.textContent = 'Description: some text';
+                    description.textContent = 'Description: ' + metaData.description;
                 }
                 boardCard.appendChild(description);
 
@@ -108,6 +98,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 boardList.appendChild(boardCard);
+
+                fetch(`../boards/${board.replace('.pjb','')}/${board}`)
+                .then(response => response.json())
+                .then(data => {
+                    metaData = data.meta;
+                    if (language === 'lt') {
+                        lastEdited.textContent = 'Paskutini karta redaguota: ' + metaData.lastEdited;
+                    } else {
+                        lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
+                    }
+                    if (language === 'lt') {
+                        description.textContent = 'Aprasymas: ' + metaData.description;
+                    } else
+                    {
+                        description.textContent = 'Description: ' + metaData.description;
+                    }
+                })    
+                .catch(error => console.error('Error fetching default board data:', error, board));
             })
         });
     });

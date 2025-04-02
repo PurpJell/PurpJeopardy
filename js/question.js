@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('categoryName').textContent = categoryName;
     }
     if (questionPrice) {
-        document.getElementById('questionPrice').textContent = questionPrice;
+        document.getElementById('questionPrice').textContent = '$' + questionPrice;
         if (dailyDouble === 'true') {
             document.getElementById('priceMultiplier').textContent = ' x2!'; 
         }

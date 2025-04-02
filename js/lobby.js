@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Promise.all(boardPromises).then((validBoards) => {
             boards = validBoards.filter(Boolean); // Remove null values
 
-            if (!boards.includes(selectedBoard)) {
+            if (!boards.includes(selectedBoard.replace(".pjb", ""))) {
                 selectedBoard = "none.pjb";
                 localStorage.setItem('selectedBoard', selectedBoard);
                 if (language === 'lt') {

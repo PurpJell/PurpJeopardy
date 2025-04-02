@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const board = document.querySelector('.board');
 
     const backToTitleWindow = document.getElementById('backToTitleWindow');
+    const backToTitleText = document.getElementById('backToTitleText');
     const confirmTitleButton = document.getElementById('confirmTitleButton');
     const cancelTitleButton = document.getElementById('cancelTitleButton');
 
@@ -25,6 +26,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
     let language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        backToTitleText.textContent = 'Ar norite grizti i meniu?';
+        confirmTitleButton.innerHTML = `
+                                        <svg>
+                                            <text x="5vw" y="50%" text-anchor="middle" class="svg-text">
+                                                Taip
+                                            </text>
+                                        </svg>`;
+        cancelTitleButton.innerHTML = `
+                                        <svg>
+                                            <text x="5vw" y="50%" text-anchor="middle" class="svg-text">
+                                                Ne
+                                            </text>
+                                        </svg>`;
+    }
 
     // Retrieve player data from localStorage
     const playerData = JSON.parse(localStorage.getItem('playerData')) || [];
@@ -198,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const isDailyDouble = category.questions[questionIndex].dailyDouble || false;
                 questionDiv.setAttribute('dailyDouble', isDailyDouble);
                 const questionKey = `${categoryIndex + 1}-${category.questions[questionIndex].price}`.replace('$', '');
-                questionDiv.textContent = category.questions[questionIndex].price;
+                questionDiv.textContent = '$' + category.questions[questionIndex].price;
                 if (clickedQuestions.includes(questionKey)) {
                     questionDiv.classList.add('clicked');
                 }
