@@ -310,6 +310,31 @@ button {
     margin-top: 3vh;
 }
 
+.daily-double-container {
+    display: flex;
+    align-items: start;
+    height: 6vh;
+    margin-top: 3vh;
+}
+
+.daily-double-text {
+    width: 19vw;
+    font-size: 3.5vw;
+    font-family: 'Mono Polz';
+    color: #000000;
+    text-align: center;
+    margin-left: 1vw;
+    margin-right: -1vw;
+}
+
+.daily-double-checkbox {
+    width: 3vw;
+    height: 3vw;
+    margin-left: 0;
+    margin-top: 1vh;
+    cursor: pointer;
+}
+
 .question-editor button {
     position: relative;
     height: 6vh;
@@ -327,7 +352,7 @@ button {
 
 .save-question-button {
     margin-top: 1.2vh;
-    margin-left: 26vw;
+    margin-left: 14vw;
     margin-right: 1vw;
 }
 

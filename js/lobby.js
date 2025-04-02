@@ -80,54 +80,70 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownMenu.classList.toggle('show');
     });
 
-    // Fetch boards from the games directory
+   // Fetch boards from the games directory
     const gamesDirectory = path.join(__dirname, '../boards');
-    fs.readdir(gamesDirectory, (err, files) => {
+    fs.readdir(gamesDirectory, (err, directories) => {
         if (err) {
             console.error('Error reading games directory:', err);
             return;
         }
 
-        boards = files.filter(file => file.endsWith('.pjb'));
-
-        if (!boards.includes(selectedBoard)) {
-            selectedBoard = "none.pjb";
-            localStorage.setItem('selectedBoard', selectedBoard);
-            if (language === 'lt') {
-                dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
-            } else {
-                dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
-            }
-        }
-
-        boards = boards.filter(board => board !== "exampleBoardData.pjb");
-
-        if (boards.length === 0) {
-            if (language === 'lt') {
-                dropdownMenu.textContent = "Lentų nerasta";
-            } else {
-                dropdownMenu.textContent = "No boards found";
-            }
-            return;
-        }
-
-        // Populate the dropdown menu with the .pjb files
-        boards.forEach(board => {
-            const boardOption = document.createElement('p');
-            boardOption.textContent = board.replace(".pjb", "");
-            boardOption.addEventListener('click', () => {
-                if (language === 'lt') {
-                    dropdownButton.textContent = "Pasirinkta lenta:\n" + board.replace(".pjb", "");
-                } else {
-                    dropdownButton.textContent = "Selected board:\n" + board.replace(".pjb", "");
-                }
-                dropdownMenu.classList.toggle('show');
-                localStorage.setItem('selectedBoard', `${board}`);
-                selectedBoard = board;
-                // send selected board to host
-                ipcRenderer.send('selectedBoard', selectedBoard);
+        // Filter directories and check for .pjb files inside them
+        const boardPromises = directories.map((directory) => {
+            const boardPath = path.join(gamesDirectory, directory, `${directory}.pjb`);
+            return new Promise((resolve) => {
+                fs.access(boardPath, fs.constants.F_OK, (err) => {
+                    if (!err) {
+                        resolve(directory); // Directory is valid if the .pjb file exists
+                    } else {
+                        resolve(null); // Skip invalid directories
+                    }
+                });
             });
-            dropdownMenu.appendChild(boardOption);
+        });
+
+        Promise.all(boardPromises).then((validBoards) => {
+            boards = validBoards.filter(Boolean); // Remove null values
+
+            if (!boards.includes(selectedBoard)) {
+                selectedBoard = "none.pjb";
+                localStorage.setItem('selectedBoard', selectedBoard);
+                if (language === 'lt') {
+                    dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
+                } else {
+                    dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
+                }
+            }
+
+            boards = boards.filter(board => board !== "exampleBoardData");
+
+            if (boards.length === 0) {
+                if (language === 'lt') {
+                    dropdownMenu.textContent = "Lentų nerasta";
+                } else {
+                    dropdownMenu.textContent = "No boards found";
+                }
+                return;
+            }
+
+            // Populate the dropdown menu with the .pjb files
+            boards.forEach(board => {
+                const boardOption = document.createElement('p');
+                boardOption.textContent = board;
+                boardOption.addEventListener('click', () => {
+                    if (language === 'lt') {
+                        dropdownButton.textContent = "Pasirinkta lenta:\n" + board;
+                    } else {
+                        dropdownButton.textContent = "Selected board:\n" + board;
+                    }
+                    dropdownMenu.classList.toggle('show');
+                    localStorage.setItem('selectedBoard', `${board}.pjb`);
+                    selectedBoard = `${board}/${board}.pjb`;
+                    // send selected board to host
+                    ipcRenderer.send('selectedBoard', selectedBoard);
+                });
+                dropdownMenu.appendChild(boardOption);
+            });
         });
     });
     

@@ -18,8 +18,10 @@
     <div class="question-editor" id="questionEditor">
         <div class="row">
             <input type="number" class="price-input" id="priceInput" placeholder="$0" min="100" step="100">
-            <button class="daily-double-button" id="dailyDoubleButton">Daily Double</button>
-
+            <div class="daily-double-container">
+                <label class="daily-double-text">Daily double?</label>
+                <input type="checkbox" class="daily-double-checkbox" id="dailyDoubleCheckbox"></input>
+            </div>
             <button class="save-question-button" id="saveQuestionButton">Save</button>
             <button class="cancel-question-button" id="cancelQuestionButton">Cancel</button>
         </div>
@@ -32,6 +34,11 @@
             <img class="remove-image-button" id="removeQuestionImageButton" src="../images/icons/kick.png" alt="X">
             <img class="answer-image image-input" id="answerImage" src="../images/add_picture.png" alt="Answer image">
             <img class="remove-image-button" id="removeAnswerImageButton" src="../images/icons/kick.png" alt="X">
+        </div>
+    </div>
+    <div class="save-board-window" id="saveBoardWindow">
+        <input type="text" class="board-description" id="boardDescription">
+
         </div>
     </div>
 </body>

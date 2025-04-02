@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // let clickedQuestions = [];
 
     function renderBoard() {
-        const filePath = `../boards/${selectedBoard}`;
+        const filePath = `../boards/${selectedBoard.replace('.pjb','')}/${selectedBoard}`;
     
         fetch(filePath)
             .then(response => {
