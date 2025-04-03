@@ -311,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
             rightLightOn.classList.add('on');
 
             if (window.innerHeight <= 1067) {
-                console.log('height:', window.innerHeight);
                 leftLightOff.style.marginTop = '0.65vh';
                 leftLightOn.style.marginTop = '-8.1vh';
                 rightLightOff.style.marginTop = '0.65vh';
@@ -366,11 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (randomItem < 1) {
             itemNormal.className = 'money-bag normal';
-            console.log('money-bag');
         } else if (randomItem < 2) {
             itemNormal.className = 'coin normal';
-        }
-        else {
+        } else {
             itemNormal.className = 'cash normal';
         }
 

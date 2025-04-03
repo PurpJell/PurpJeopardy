@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('playerData');
     let playerData = [];
     // let playerData = JSON.parse(localStorage.getItem('playerData')) || [];
-    localStorage.setItem('currentBoardID', 1);
+    localStorage.setItem('currentPageID', 1);
     localStorage.removeItem('clickedQuestions');
 
     let playerCards = []
@@ -308,9 +308,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        serverCurrentPageID = localStorage.getItem('currentPageID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('addPlayer', function(event, playerData_) {

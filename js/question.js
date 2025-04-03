@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        serverCurrentBoardID = localStorage.getItem('currentBoardID') || 1;
+        serverCurrentPageID = localStorage.getItem('currentPageID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentBoardID: serverCurrentBoardID, selectedBoard: serverSelectedBoard });
+        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
     ipcRenderer.on('buzzIn', function(event, playerData_) {
@@ -119,12 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ipcRenderer.on('correctAnswer', function(event, data) {
         const playerIndex = playerData.findIndex(player => player.name === data.name);
-        let dailyDouble = localStorage.getItem('dailyDouble');
-        if (dailyDouble === 'true') {
-            playerData[playerIndex].score += parseInt(questionPrice.replace('$', '')) * 2;
-        } else {
-            playerData[playerIndex].score += parseInt(questionPrice.replace('$', ''));
-        }
+        const questionPrice = data.price;
+        playerData[playerIndex].score += parseInt(questionPrice);
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerCards();
         // showScoreChange(event, `+${questionPrice}`);
@@ -133,12 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ipcRenderer.on('incorrectAnswer', function(event, data) {
         // Update the score of the player who answered incorrectly
         const playerIndex = playerData.findIndex(player => player.name === data.name);
-        let dailyDouble = localStorage.getItem('dailyDouble');
-        if (dailyDouble === 'true') {
-            playerData[playerIndex].score -= parseInt(questionPrice.replace('$', '')) * 2;
-        } else {
-            playerData[playerIndex].score -= parseInt(questionPrice.replace('$', ''));
-        }
+        const questionPrice = data.price;
+        playerData[playerIndex].score -= parseInt(questionPrice);
         localStorage.setItem('playerData', JSON.stringify(playerData));
         renderPlayerCards();
         // showScoreChange(event, `-${questionPrice}`);

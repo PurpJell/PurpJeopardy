@@ -104,8 +104,8 @@ function createWindow() {
         }
 
         ws.on('message', (message) => {
-            console.log('Received message from host:', message.type);
             const parsedMessage = JSON.parse(message);
+            console.log('Received message from host:', parsedMessage.type);
 
             if (parsedMessage.type === 'playerRemoved') {
                 console.log('Player removed:', parsedMessage.data.name);

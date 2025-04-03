@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const playerList = document.getElementById('playerList');
 
     let players = [];
-    let currentBoardID = 1;
+    let currentPageID = 1;
     let playerPictures = [];
     let boardData = [];
-    let currentBoard;
+    let currentPage;
 
     let selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
 
@@ -15,16 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let socket;
 
-    let ip_address = '';
-
     let categories = [];
     let prices = [];
-
 
     fetch('/get-ip-address')
         .then(response => response.json())
         .then(data => {
-            ip_address = data.ipAddress;
+            const ip_address = data.ipAddress;
+            // console.log('IP address:', ip_address);
             setupWebSocket(ip_address);
         })
         .catch(error => alert('Error fetching IP address:', error));
@@ -39,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (message.type === 'gameData') {
                 players = [];
                 players_ = message.data.playerData;
-                currentBoardID = message.data.currentBoardID;
-                localStorage.setItem('currentBoardID', currentBoardID);
+                currentPageID = message.data.currentPageID;
+                localStorage.setItem('currentPageID', currentPageID);
                 selectedBoard = message.data.selectedBoard;
                 localStorage.setItem('selectedBoard', selectedBoard);
                 fetchBoardData();
@@ -70,17 +68,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(`../boards/${selectedBoard}`)
+        fetch(`../boards/${selectedBoard.replace('.pjb','')}/${selectedBoard}`)
             .then(response => response.json())
             .then(boardData_ => {
                 boardData = boardData_;
                 categories = [];
                 prices = [];
-                currentBoard = boardData.boards[currentBoardID - 1];
-                currentBoard.categories.forEach(category => {
+                currentPage = boardData.pages[currentPageID - 1];
+                currentPage.categories.forEach(category => {
                     categories.push(category.name);
                 });
-                currentBoard.categories[0].questions.forEach(question => {
+                currentPage.categories[0].questions.forEach(question => {
                     prices.push(question.price);
                 });
                 if (state === 'board') {
@@ -186,14 +184,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(openQuestionButton);
 
         openQuestionButton.addEventListener('click', function() {
-            const categoryName = currentBoard.categories[categorySelect.value - 1].name;
+            const categoryName = currentPage.categories[categorySelect.value - 1].name;
             const category = categorySelect.value;
             const price = priceSelect.value;
             socket.send(JSON.stringify({ type: 'openQuestion', data: { category, price } }));
             localStorage.setItem('categoryName', JSON.stringify(categoryName));
             localStorage.setItem('questionPrice', JSON.stringify(price));
             
-            const selectedQuestion = currentBoard.categories[category - 1].questions.find(q => q.price === `$${price}`);
+            const selectedQuestion = currentPage.categories[category - 1].questions.find(q => q.price === `${price}`);
             const questionContent = selectedQuestion.content;
             localStorage.setItem('questionContent', JSON.stringify(questionContent));
             const answer = selectedQuestion.answer;
@@ -204,17 +202,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
         });
 
-        nextBoardButton = document.createElement('button');
-        nextBoardButton.textContent = 'Next Board';
-        nextBoardButton.className = 'next-board-button';
-        document.body.appendChild(nextBoardButton);
+        nextPageButton = document.createElement('button');
+        nextPageButton.textContent = 'Next Page';
+        nextPageButton.className = 'next-page-button';
+        document.body.appendChild(nextPageButton);
 
-        nextBoardButton.addEventListener('click', function() {
-            if (confirm("Are you sure you want to go to the next board?"))
+        nextPageButton.addEventListener('click', function() {
+            if (confirm("Are you sure you want to go to the next page?"))
             {
-                socket.send(JSON.stringify({ type: 'nextBoard' }));
-                currentBoardID++;
-                localStorage.setItem('currentBoardID', currentBoardID);
+                socket.send(JSON.stringify({ type: 'nextPage' }));
+                currentPageID++;
+                localStorage.setItem('currentPageID', currentPageID);
                 fetchBoardData();
             }
         });
@@ -315,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 correctButton.addEventListener('click', function() {
                     questionPrice = JSON.parse(localStorage.getItem('questionPrice'));
+                    console.log(questionPrice);
                     dailyDouble = JSON.parse(localStorage.getItem('dailyDouble'));
                     if (dailyDouble) {
                         questionPrice = `${parseInt(questionPrice) * 2}`;
@@ -327,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
                 incorrectButton.addEventListener('click', function() {
                     questionPrice = JSON.parse(localStorage.getItem('questionPrice'));
+                    console.log(questionPrice);
                     dailyDouble = JSON.parse(localStorage.getItem('dailyDouble'));
                     if (dailyDouble) {
                         questionPrice = `${parseInt(questionPrice) * 2}`;
@@ -359,7 +359,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     }
-
-    window.onload = setupWebSocket;
-
 });
