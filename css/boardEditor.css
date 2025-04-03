@@ -261,6 +261,34 @@ button {
     background: linear-gradient(150deg, #9e0000, #690000);
 }
 
+.previous-page-button {
+    position: fixed;
+    top: 55vh;
+    left: -0.45vw;
+    width: 6vh;
+    font-size: 4vw;
+    height: 7vh;
+    padding-top: 1vh;
+    background-color: #0b2f70;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.next-page-button {
+    position: fixed;
+    top: 55vh;
+    right: -0.45vw;
+    width: 6vh;
+    font-size: 4vw;
+    height: 7vh;
+    padding-top: 1vh;
+    background-color: #0b2f70;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .board {
     position: fixed;
     display: flex;

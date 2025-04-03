@@ -190,6 +190,7 @@ button {
     overflow-wrap: break-word;
     width: 30%;
     height: 90%;
+    margin-top: 3vh;
     margin-right: 25vw;
     font-size: 1.5vw;
 }

@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let hiddenBoards = 0;
         for (let i = 0; i < boardCards.length; i++) {
             const title = boardCards[i].getElementsByClassName('board-title')[0].textContent.toLowerCase();
-            if (title.includes(searchValue)) {
+            const description = boardCards[i].getElementsByClassName('board-description')[0].textContent.toLowerCase();
+            if (title.includes(searchValue) || description.includes(searchValue)) {
                 boardCards[i].style.display = 'flex';
             } else {
                 boardCards[i].style.display = 'none';

@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmYesButton = document.getElementById('confirmYesButton');
     const confirmNoButton = document.getElementById('confirmNoButton');
 
+    const previousPageButton = document.getElementById('previousPageButton');
+    const nextPageButton = document.getElementById('nextPageButton');
+
     const boardCover = document.getElementById('boardCover');
     const questionEditor = document.getElementById('questionEditor');
     const priceInput = document.getElementById('priceInput');
@@ -80,13 +83,26 @@ document.addEventListener('DOMContentLoaded', function() {
         descriptionInput.value = data.meta.description || 'Description';
 
         const categoryInputs = document.getElementsByClassName('category');
+
         data.pages[currentPage].categories.forEach((category, i) => {
             categoryInputs[i].value = category.name || '';
+            categoryInputs[i].addEventListener('input', function() {
+                boardData.pages[currentPage].categories[i].name = categoryInputs[i].value;
+                changesMade = true;
+            });
         });
 
         updateQuestionPrices(data);
 
         boardData = data;
+
+        if (currentPage === 0) {
+            previousPageButton.style.display = 'none';
+        }
+    
+        if (currentPage === boardData.pages.length - 1) {
+            nextPageButton.style.display = 'none';
+        }
     }
 
     function updateQuestionPrices(data) {
@@ -362,6 +378,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             });
+    });
+
+    previousPageButton.addEventListener('click', function() {
+        if (currentPage > 0) {
+            currentPage--;
+            loadBoardData(boardData);
+            if (currentPage === 0) {
+                previousPageButton.style.display = 'none';
+            }
+            nextPageButton.style.display = 'flex';
+        }
+    });
+
+    nextPageButton.addEventListener('click', function() {
+        if (currentPage < boardData.pages.length - 1) {
+            currentPage++;
+            loadBoardData(boardData);
+            if (currentPage === boardData.pages.length - 1) {
+                nextPageButton.style.display = 'none';
+            }
+            previousPageButton.style.display = 'flex';
+        }
     });
 
     questionImage.addEventListener('click', function() {
