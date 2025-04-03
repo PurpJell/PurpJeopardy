@@ -1,12 +1,13 @@
 {
   "name": "purpjeopardy",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-builder"
-  },
+"scripts": {
+  "start": "cross-env NODE_ENV=development electron .",
+  "build": "electron-builder"
+},
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "electron": "^34.1.1",
     "electron-builder": "^24.13.3"
   },
@@ -28,7 +29,12 @@
       "css/**/*",
       "js/**/*",
       "images/**/*",
-      "fonts/**/*"
+      "fonts/**/*",
+      {
+        "from": "boards/exampleBoardData",
+        "to": "html/boards/exampleBoardData"
+      },
+      "!boards"
     ],
     "win": {
       "target": "nsis",

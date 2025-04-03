@@ -2,14 +2,41 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
 const WebSocket = require('ws');
+const fs = require('fs');
 
 const serverApp = express();
 const port = 3000;
 
 let hostSocket = null;
 const playerSockets = new Set();
+
+ipcMain.on('get-exe-dir', (event) => {
+    event.returnValue = path.dirname(app.getPath('exe'));
+});
+
+function createBoardsFolder() {
+    // Determine the directory where the .exe file is located
+    const exeDir = path.dirname(app.getPath('exe'));
+    const boardsPath = path.join(exeDir, 'boards');
+
+    // Check if the "boards" folder exists, and create it if it doesn't
+    if (!fs.existsSync(boardsPath)) {
+        try {
+            fs.mkdirSync(boardsPath, { recursive: true });
+            console.log(`Boards folder created at: ${boardsPath}`);
+        } catch (error) {
+            console.error(`Error creating boards folder: ${error.message}`);
+        }
+    } else {
+        console.log(`Boards folder already exists at: ${boardsPath}`);
+    }
+}
+
+// Run the script when the app is ready
+app.on('ready', () => {
+    createBoardsFolder();
+});
 
 function createWindow() {
     const mainWindow = new BrowserWindow({

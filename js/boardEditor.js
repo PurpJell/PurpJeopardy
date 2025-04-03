@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { ipcRenderer } = require('electron');
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -77,8 +78,20 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchDefaultBoardData();
     }    
     else {
+
+        let filePath;
+
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            filePath = path.join(__dirname, `../boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`);
+        } else {
+            // Production mode: Use the boards folder in the same directory as the .exe file
+            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
+            filePath = path.join(exeDir, `boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`);
+        }
+
         // Load the board data from the passed parameter
-        fetch(`../boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`)
+        fetch(filePath)
             .then(response => response.json())
             .then(data => {
                 loadBoardData(data);
@@ -91,12 +104,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }        
     
     function fetchDefaultBoardData() {
-        fetch('../boards/exampleBoardData/exampleBoardData.pjb')
-            .then(response => response.json())
-            .then(data => {
-                loadBoardData(data);
-            })    
-            .catch(error => console.error('Error fetching default board data:', error));
+        let filePath;
+
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            filePath = path.join(__dirname, '../boards/exampleBoardData/exampleBoardData.pjb');
+        } else {
+            // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
+            filePath = path.join(__dirname, 'boards/exampleBoardData/exampleBoardData.pjb');
+        }
+
+        // Read the file using fs (fetch won't work with local files in production)
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading default board data:', err);
+                return;
+            }
+
+            try {
+                const boardData = JSON.parse(data);
+                loadBoardData(boardData);
+            } catch (parseError) {
+                console.error('Error parsing default board data:', parseError);
+            }
+        });
     }        
 
     function loadBoardData(data) {
@@ -177,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 boardCover.style.display = 'flex';
 
                 localStorage.setItem('editingQuestion', `${j}-${i}`);
-                changesMade = true;
 
                 questionInput.value = boardData.pages[currentPage].categories[j].questions[i].content || 'Question';
                 answerInput.value = boardData.pages[currentPage].categories[j].questions[i].answer || 'Answer';
@@ -223,8 +253,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     async function handleFinalSave() {
-        const boardFolder = path.join(__dirname, '../boards', boardTitle.value);
-        
+
+        let BOARDS_DIR;
+        let boardFolder;
+        let defaultBoardFolder;
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            BOARDS_DIR = path.join(__dirname, '../boards');
+            boardFolder = path.join(BOARDS_DIR, boardTitle.value);
+            defaultBoardFolder = path.join(BOARDS_DIR, 'New Board');
+        }
+        else {
+            // Production mode: Use the boards folder in the same directory as the .exe file
+            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
+            BOARDS_DIR = path.join(exeDir, 'boards');
+            boardFolder = path.join(BOARDS_DIR, boardTitle.value);
+            defaultBoardFolder = path.join(BOARDS_DIR, 'New Board');
+        }
+
         async function overwriteConfirmation() {
             let confirmText = 'A board with this name already exists. Do you want to overwrite it?';
             let yesText = 'Yes';
@@ -239,15 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (fs.existsSync(boardFolder)) {
             let confirmed = await overwriteConfirmation();
-            if (confirmed) {
-                try {
-                    fs.rmSync(boardFolder, { recursive: true, force: true });
-                } catch (error) {
-                    console.error('Error deleting board folder:', error);
-                    return; // Exit the function if folder deletion fails
-                }
-            }
-            else {
+            if (!confirmed) {
                 return;
             }
         }
@@ -264,10 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return await customConfirm(confirmText, yesText, noText, false);
         }
         
-        if (boardData.meta.title !== boardTitle.value) {
+        if (boardData.meta.title !== boardTitle.value && !(boardData.meta.title === 'New Board' && !fs.existsSync(defaultBoardFolder))) {
             let confirmed = await removeOldFolder();
             if (confirmed) {
-                fs.rmSync(path.join(__dirname, '../boards', boardData.meta.title), { recursive: true, force: true });
+                fs.rmSync(path.join(BOARDS_DIR, boardData.meta.title), { recursive: true, force: true });
             }
         }
 
@@ -296,44 +334,122 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
-        const BOARDS_DIR = path.join(__dirname, '../boards');
+        let BOARDS_DIR;
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            BOARDS_DIR = path.join(__dirname, '../boards');
+        }
+        else {
+            // Production mode: Use the boards folder in the same directory as the .exe file
+            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
+            BOARDS_DIR = path.join(exeDir, 'boards');
+        }
         const IMAGES_DIR = path.join(BOARDS_DIR, boardTitle.value, 'images');
-    
-        boardData.meta.title = boardTitle.value;
-        boardData.meta.description = descriptionInput.value;
-        boardData.meta.lastEdited = formattedDate;
 
         // Ensure the images folder exists
-        await fs.promises.mkdir(IMAGES_DIR, { recursive: true });
-
-        // delete the old images
-        try {
-            const files = await fs.promises.readdir(IMAGES_DIR);
-            for (const file of files) {
-                await fs.promises.unlink(path.join(IMAGES_DIR, file));
-            }
-        } catch (err) {
-            console.error('Error deleting old images:', err);
+        if (!fs.existsSync(IMAGES_DIR)) {
+            await fs.promises.mkdir(IMAGES_DIR, { recursive: true });
+            console.log('Images folder created:', IMAGES_DIR);
         }
 
         // Save the images to the folder
         await Promise.all(
-            boardData.pages.map((page) =>
+            boardData.pages.map((page, p) =>
                 Promise.all(
-                    page.categories.map((category, i) =>
+                    page.categories.map((category, c) =>
                         Promise.all(
-                            category.questions.map(async (question, j) => {
-                                if (question.questionImage && !question.questionImage.includes('add_picture.png')) {
-                                    const questionImagePath = path.join(IMAGES_DIR, `QI_${i}_${j}.${question.questionImageType}`);
-                                    const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
-                                    await fs.promises.writeFile(questionImagePath, Buffer.from(questionImageData, 'base64'));
-                                    question.questionImage = `../boards/${boardTitle.value}/images/QI_${i}_${j}.${question.questionImageType}`;
+                            category.questions.map(async (question, q) => {
+                                // console.log('Question image:', question.questionImage);
+                                if (question.questionImage === null) {  // Check if the question image exists
+                                    if (c == 0 && q == 0) console.log('question image null');
+                                    const questionImageBaseName = `QI_${p}_${c}_${q}`;
+                                    const files = fs.readdirSync(IMAGES_DIR);
+                                    const matchingFiles = files.filter((file) => file.startsWith(questionImageBaseName + '.'));
+
+                                    matchingFiles.forEach((file) => {
+                                        const questionImagePath = path.join(IMAGES_DIR, file);
+                                        fs.unlinkSync(questionImagePath);
+                                        if (c == 0 && q == 0) console.log('question image deleted:', questionImagePath);
+                                    });
+                                } else {  // Check if the question image doesn't exist
+                                    if (c == 0 && q == 0) console.log('question image not null');
+                                    // Create a new name for the image
+                                    const questionImagePath = path.join(IMAGES_DIR, `QI_${p}_${c}_${q}.${question.questionImageType}`);
+                                    if (question.questionImage.includes('data:image/')) {
+                                        const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
+                                        await fs.promises.writeFile(questionImagePath, Buffer.from(questionImageData, 'base64'))
+                                            .then(() => {
+                                                console.log('Question image saved successfully:', questionImagePath);
+                                            })
+                                            .catch((err) => {
+                                                console.error('Error saving question image:', err);
+                                            });
+                                    }
+                                    else { // if the new directory does not have the image, copy it from the old location
+                                        const oldImagePath = path.join(BOARDS_DIR, boardData.meta.title, 'images', question.questionImage.split('/').pop());
+                                        await fs.promises.copyFile(oldImagePath, questionImagePath)
+                                            .then(() => {
+                                                console.log('Question image copied successfully:', questionImagePath);
+                                            })
+                                            .catch((err) => {
+                                                console.error('Error copying question image:', err);
+                                            });
+
+                                    }
+                                    question.questionImage = process.env.NODE_ENV === 'development'
+                                        ? `../boards/${boardTitle.value}/images/QI_${p}_${c}_${q}.${question.questionImageType}`
+                                        : `../../../boards/${boardTitle.value}/images/QI_${p}_${c}_${q}.${question.questionImageType}`;
+
+                                    const questionImageBaseName = `QI_${p}_${c}_${q}`;
+                                    const files = fs.readdirSync(IMAGES_DIR);
+                                    let matchingFiles = files.filter((file) => file.startsWith(questionImageBaseName + '.'));
+
+                                    matchingFiles = matchingFiles.filter((file) => file !== `${questionImageBaseName}.${question.questionImageType}`);
+
+                                    matchingFiles.forEach((file) => {
+                                        const questionImagePath = path.join(IMAGES_DIR, file);
+                                        fs.unlinkSync(questionImagePath);
+                                    });
+
                                 }
-                                if (question.answerImage && !question.answerImage.includes('add_picture.png')) {
-                                    const answerImagePath = path.join(IMAGES_DIR, `AI_${i}_${j}.${question.answerImageType}`);
-                                    const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
-                                    await fs.promises.writeFile(answerImagePath, Buffer.from(answerImageData, 'base64'));
-                                    question.answerImage = `../boards/${boardTitle.value}/images/AI_${i}_${j}.${question.answerImageType}`;
+                                if (question.answerImage === null) {  // Check if the answer image exists
+                                    const answerImageBaseName = `AI_${p}_${c}_${q}`;
+                                    const files = fs.readdirSync(IMAGES_DIR);
+                                    const matchingFiles = files.filter((file) => file.startsWith(answerImageBaseName + '.'));
+
+                                    matchingFiles.forEach((file) => {
+                                        const answerImagePath = path.join(IMAGES_DIR, file);
+                                        fs.unlinkSync(answerImagePath);
+                                    });
+                                } else {  // Check if the answer image doesn't exist
+                                    // Create a new name for the image
+                                    const answerImagePath = path.join(IMAGES_DIR, `AI_${p}_${c}_${q}.${question.answerImageType}`);
+                                    if (question.answerImage.includes('data:image/')) {
+                                        const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
+                                        await fs.promises.writeFile(answerImagePath, Buffer.from(answerImageData, 'base64'));
+                                    }
+                                    else { // if the new directory does not have the image, copy it from the old location
+                                        const oldImagePath = path.join(BOARDS_DIR, boardData.meta.title, 'images', question.answerImage.split('/').pop());
+                                        await fs.promises.copyFile(oldImagePath, answerImagePath)
+                                            .then(() => {
+                                                console.log('Answer image copied successfully:', answerImagePath);
+                                            })
+                                            .catch((err) => {
+                                                console.error('Error copying answer image:', err);
+                                            });
+                                    }
+                                    question.answerImage = process.env.NODE_ENV === 'development'
+                                        ? `../boards/${boardTitle.value}/images/AI_${p}_${c}_${q}.${question.answerImageType}`
+                                        : `../../../boards/${boardTitle.value}/images/AI_${p}_${c}_${q}.${question.answerImageType}`;
+
+                                    const answerImageBaseName = `AI_${p}_${c}_${q}`;
+                                    const files = fs.readdirSync(IMAGES_DIR);
+                                    let matchingFiles = files.filter((file) => file.startsWith(answerImageBaseName + '.'));
+                                    matchingFiles = matchingFiles.filter((file) => file !== `${answerImageBaseName}.${question.answerImageType}`);
+                                    matchingFiles.forEach((file) => {
+                                        const answerImagePath = path.join(IMAGES_DIR, file);
+                                        fs.unlinkSync(answerImagePath);
+                                    });
                                 }
                             })
                         )
@@ -342,11 +458,17 @@ document.addEventListener('DOMContentLoaded', function() {
             )
         );
 
+        boardData.meta.title = boardTitle.value;
+        boardData.meta.description = descriptionInput.value;
+        boardData.meta.lastEdited = formattedDate;
+
         // write the boardData to the file
         await fs.promises.writeFile(
             path.join(BOARDS_DIR, boardTitle.value, `${boardTitle.value}.pjb`),
             JSON.stringify(boardData, null, 4)
         );
+
+        console.log('Board data saved successfully!', boardData);
 
         // Hide the save window
         saveBoardWindow.style.display = 'none';
@@ -496,6 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     saveQuestionButton.addEventListener('click', function() {
+        changesMade = true;
         const questionText = questionInput.value.trim();
         const answerText = answerInput.value.trim();
         const price = priceInput.value.trim().replace('$', '').replace(/^0+$/, '0').replace(/^0+(?!$)/, '');
@@ -530,7 +653,11 @@ document.addEventListener('DOMContentLoaded', function() {
             question.answerImageType = answerImageType;
         }
 
+        // console.log(currentPage, categoryIndex, questionIndex);
+
         boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex] = question;
+
+        // console.log(boardData.pages[0].categories[0].questions[0].questionImage);
 
         questionEditor.style.display = 'none';
         boardCover.style.display = 'none';

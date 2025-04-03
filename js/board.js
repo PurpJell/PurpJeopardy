@@ -1,4 +1,5 @@
 const { ipcRenderer } = require('electron');
+const path = require('path');
 
 document.addEventListener('DOMContentLoaded', function() {
     const topBar = document.getElementById('topBar');
@@ -158,7 +159,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // let clickedQuestions = [];
 
     function renderBoard() {
-        const filePath = `../boards/${selectedBoard.replace('.pjb','')}/${selectedBoard}`;
+        let filePath;
+
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            filePath = path.join(__dirname, `../boards/${selectedBoard.replace('.pjb', '')}/${selectedBoard}`);
+        } else {
+            // Production mode: Use the boards folder in the same directory as the .exe file
+            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
+            filePath = path.join(exeDir, `boards/${selectedBoard.replace('.pjb', '')}/${selectedBoard}`);
+        }
     
         fetch(filePath)
             .then(response => {

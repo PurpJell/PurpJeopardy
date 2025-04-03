@@ -80,9 +80,28 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownMenu.classList.toggle('show');
     });
 
-   // Fetch boards from the games directory
-    const gamesDirectory = path.join(__dirname, '../boards');
-    fs.readdir(gamesDirectory, (err, directories) => {
+    // Fetch boards from the games directory
+    if (process.env.NODE_ENV === 'development') {
+        // Development mode: Use the boards folder in the project directory
+        boardsPath = path.join(__dirname, '../boards');
+    } else {
+        // Production mode: Use the boards folder in the same directory as the .exe file
+        const exeDir = ipcRenderer.sendSync('get-exe-dir');
+        boardsPath = path.join(exeDir, 'boards'); 
+    }
+
+    // Ensure the boards folder exists
+    if (!fs.existsSync(boardsPath)) {
+        console.error('Boards folder does not exist:', boardsPath);
+        if (language === 'lt') {
+            dropdownMenu.textContent = "Lentu nerasta";
+        } else {
+            dropdownMenu.textContent = "No boards found";
+        }
+        return;
+    }
+
+    fs.readdir(boardsPath, (err, directories) => {
         if (err) {
             console.error('Error reading games directory:', err);
             return;
@@ -90,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Filter directories and check for .pjb files inside them
         const boardPromises = directories.map((directory) => {
-            const boardPath = path.join(gamesDirectory, directory, `${directory}.pjb`);
+            const boardPath = path.join(boardsPath, directory, `${directory}.pjb`);
             return new Promise((resolve) => {
                 fs.access(boardPath, fs.constants.F_OK, (err) => {
                     if (!err) {
@@ -119,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (boards.length === 0) {
                 if (language === 'lt') {
-                    dropdownMenu.textContent = "Lentų nerasta";
+                    dropdownMenu.textContent = "Lentu nerasta";
                 } else {
                     dropdownMenu.textContent = "No boards found";
                 }
