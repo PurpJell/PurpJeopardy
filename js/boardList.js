@@ -156,6 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
     });
 
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            window.location.href = 'title.html';
+        }
+    });
+
     // Show content once fully loaded
     window.addEventListener('load', function() {
         document.getElementById('loadingScreen').style.display = 'none';

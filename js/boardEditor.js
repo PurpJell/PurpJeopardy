@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const board = document.getElementById('board');
 
     const saveBoardWindow = document.getElementById('saveBoardWindow');
+    const descriptionLabel = document.getElementById('descriptionLabel');
     const descriptionInput = document.getElementById('boardDescription');
     const finalSaveButton = document.getElementById('saveBoardButton');
     const finalCancelButton = document.getElementById('cancelBoardButton');
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const boardCover = document.getElementById('boardCover');
     const questionEditor = document.getElementById('questionEditor');
     const priceInput = document.getElementById('priceInput');
+    const dailyDoubleText = document.getElementById('dailyDoubleText');
     const dailyDoubleCheckbox = document.getElementById('dailyDoubleCheckbox');
     const questionInput = document.getElementById('questionInput');
     const answerInput = document.getElementById('answerInput');
@@ -42,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let questionImageType = null;
     let answerImageType = null;
+
+    boardCover.style.display = 'none'; // Set initial display to none for Escape key functionality
     
     // Get the current URL's query string
     const queryString = window.location.search;
@@ -50,6 +54,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(queryString);
     
     const passedBoard = urlParams.get('board');
+
+    const language = localStorage.getItem('language') || 'en';
+
+    if (language === 'lt') {
+        backButton.textContent = 'Atgal';
+        saveButton.textContent = 'Issaugoti';
+        deleteButton.textContent = 'Istrinti';
+        questionInput.placeholder = 'Klausimas';
+        answerInput.placeholder = 'Atsakymas';
+        dailyDoubleText.textContent = 'Dvigubi taskai?';
+        saveQuestionButton.textContent = 'Issaugoti';
+        cancelQuestionButton.textContent = 'Atsaukti';
+        descriptionLabel.textContent = 'Aprasymas';
+        descriptionInput.placeholder = 'Aprasymas';
+        finalSaveButton.textContent = 'Issaugoti';
+        finalCancelButton.textContent = 'Atsaukti';
+    }
 
     // if no board was passed as a parameter, fetch exampleBoardData.pjb
     if (passedBoard === null) {
@@ -114,13 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    let language = localStorage.getItem('language') || 'en';
-
     let changesMade = false;
-
-    if (language === 'lt') {
-        backButton.textContent = 'Atgal';
-    }
 
     priceInput.addEventListener('input', function() {
         let numericValue = priceInput.value.replace(/[^0-9]/g, ''); // Keep only numeric characters
@@ -178,7 +193,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     backButton.addEventListener('click', function() {
         if (changesMade) {
-            customConfirm('You have unsaved changes. Are you sure you want to leave?', 'Yes', 'No')
+            let confirmText = 'You have unsaved changes. Are you sure you want to leave?';
+            let yesText = 'Yes';
+            let noText = 'No';
+            if (language === 'lt') {
+                confirmText = 'Yra neissaugotu pakeitimu. Ar tikrai norite iseiti?';
+                yesText = 'Taip';
+                noText = 'Ne';
+            }
+            customConfirm(confirmText, yesText, noText)
                 .then((confirmed) => {
                     if (confirmed) {
                         window.location.href = 'boardList.html';
@@ -203,7 +226,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const boardFolder = path.join(__dirname, '../boards', boardTitle.value);
         
         async function overwriteConfirmation() {
-            return await customConfirm('A board with this name already exists. Do you want to overwrite it?', 'Yes', 'No', false);
+            let confirmText = 'A board with this name already exists. Do you want to overwrite it?';
+            let yesText = 'Yes';
+            let noText = 'No';
+            if (language === 'lt') {
+                confirmText = 'Lenta su tokiu pavadinimu jau egzistuoja. Ar norite ja perrasyti?';
+                yesText = 'Taip';
+                noText = 'Ne';
+            }
+            return await customConfirm(confirmText, yesText, noText, false);
         }
 
         if (fs.existsSync(boardFolder)) {
@@ -222,7 +253,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         async function removeOldFolder() {
-            return await customConfirm('The board name has changed. Do you want to delete or keep the old board folder?', 'Delete', 'Keep', false);
+            let confirmText = 'The board name has changed. Do you want to delete or keep the old board folder?';
+            let yesText = 'Delete';
+            let noText = 'Keep';
+            if (language === 'lt') {
+                confirmText = 'Lentos pavadinimas pasikeite. Ar norite istrinti ar palikti sena lenta?';
+                yesText = 'Istrinti';
+                noText = 'Palikti';
+            }
+            return await customConfirm(confirmText, yesText, noText, false);
         }
         
         if (boardData.meta.title !== boardTitle.value) {
@@ -365,7 +404,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     deleteButton.addEventListener('click', function() {
-        customConfirm('Are you sure you want to delete this board?', 'Yes', 'No')
+        let confirmText = 'Are you sure you want to delete this board?';
+        let yesText = 'Yes';
+        let noText = 'No';
+        if (language === 'lt') {
+            confirmText = 'Ar tikrai norite istrinti sia lenta?';
+            yesText = 'Taip';
+            noText = 'Ne';
+        }
+        customConfirm(confirmText, yesText, noText)
             .then((confirmed) => {
                 if (confirmed) {
                     fs.rm(`./boards/${boardTitle.value}`, { recursive: true, force: true }, (err) => {
@@ -507,9 +554,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
-            questionEditor.style.display = 'none';
-            boardCover.style.display = 'none';
-            saveBoardWindow.style.display = 'none';
+            if (boardCover.style.display === 'none') {
+                if (changesMade) {
+                    let confirmText = 'You have unsaved changes. Are you sure you want to leave?';
+                    let yesText = 'Yes';
+                    let noText = 'No';
+                    if (language === 'lt') {
+                        confirmText = 'Yra neissaugotu pakeitimu. Ar tikrai norite iseiti?';
+                        yesText = 'Taip';
+                        noText = 'Ne';
+                    }
+                    customConfirm(confirmText, yesText, noText)
+                        .then((confirmed) => {
+                            if (confirmed) {
+                                window.location.href = 'boardList.html';
+                            }
+                        });
+                }
+                else {
+                    window.location.href = 'boardList.html';
+                }
+            }
+            else {
+                questionEditor.style.display = 'none';
+                boardCover.style.display = 'none';
+                saveBoardWindow.style.display = 'none';
+            }
         }
     });
 

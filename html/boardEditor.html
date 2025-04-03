@@ -19,7 +19,7 @@
         <div class="row">
             <input type="text" class="price-input" id="priceInput" placeholder="$0" maxlength="5"></input>
             <div class="daily-double-container">
-                <label class="daily-double-text">Daily double?</label>
+                <label class="daily-double-text" id="dailyDoubleText">Daily double?</label>
                 <input type="checkbox" class="daily-double-checkbox" id="dailyDoubleCheckbox"></input>
             </div>
             <button class="save-question-button" id="saveQuestionButton">Save</button>
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="save-board-window" id="saveBoardWindow">
-        <label class="description-label">Board description:</label>
+        <label class="description-label" id="descriptionLabel">Board description:</label>
         <textarea class="board-description" wrap="soft" spellcheck="false" id="boardDescription" placeholder="Describe your board" maxlength="150"></textarea>
         <div class="save-button-container">
             <button class="save-board-button" id="saveBoardButton">Save</button>
