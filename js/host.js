@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(`../boards/${selectedBoard.replace('.pjb','')}/${selectedBoard}`)
+        fetch(`../boards/${selectedBoard}`)
             .then(response => response.json())
             .then(boardData_ => {
                 boardData = boardData_;

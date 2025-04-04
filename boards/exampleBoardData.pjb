@@ -15,50 +15,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "200",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "300",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "500",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -70,50 +60,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "200",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "300",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "500",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -125,50 +105,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "200",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "300",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "500",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -180,50 +150,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "200",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "300",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "500",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -235,50 +195,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "200",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "300",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "500",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 }
@@ -294,50 +244,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "600",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "800",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "1000",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -349,50 +289,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "600",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "800",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "1000",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -404,50 +334,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "600",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "800",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "1000",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -459,50 +379,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "600",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "800",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "1000",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 },
@@ -514,50 +424,40 @@
                             "content": "Question 1",
                             "answer": "Answer 1",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "400",
                             "content": "Question 2",
                             "answer": "Answer 2",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "600",
                             "content": "Question 3",
                             "answer": "Answer 3",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "800",
                             "content": "Question 4",
                             "answer": "Answer 4",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         },
                         {
                             "price": "1000",
                             "content": "Question 5",
                             "answer": "Answer 5",
                             "dailyDouble": false,
-                            "questionImage": null,
-                            "questionImageType": null,
-                            "answerImage": null,
-                            "answerImageType": null
+                            "questionImageData": null,
+                            "answerImageData": null
                         }
                     ]
                 }

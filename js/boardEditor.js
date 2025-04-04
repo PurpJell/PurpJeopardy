@@ -43,9 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let boardData;
     let currentPage = 0;
 
-    let questionImageType = null;
-    let answerImageType = null;
-
     boardCover.style.display = 'none'; // Set initial display to none for Escape key functionality
     
     // Get the current URL's query string
@@ -57,6 +54,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const passedBoard = urlParams.get('board');
 
     const language = localStorage.getItem('language') || 'en';
+
+    let changesMade = false;
+    const invalidChars = /[\\/:*?"<>|]/g;
+
+    let BOARDS_DIR; // boards/...
+
+    if (process.env.NODE_ENV === 'development') {
+        // Development mode: Use the boards folder in the project directory
+        BOARDS_DIR = path.join(__dirname, '../boards');
+    }
+    else {
+        // Production mode: Use the boards folder in the same directory as the .exe file
+        const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
+        BOARDS_DIR = path.join(exeDir, 'boards');
+    }
+
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -83,11 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (process.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, `../boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`);
+            filePath = path.join(__dirname, `../boards/${passedBoard}`);
         } else {
             // Production mode: Use the boards folder in the same directory as the .exe file
             const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-            filePath = path.join(exeDir, `boards/${passedBoard.replace('.pjb', '')}/${passedBoard}`);
+            filePath = path.join(exeDir, `boards/${passedBoard}`);
         }
 
         // Load the board data from the passed parameter
@@ -108,10 +121,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (process.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, '../boards/exampleBoardData/exampleBoardData.pjb');
+            filePath = path.join(__dirname, '../boards/exampleBoardData.pjb');
         } else {
             // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
-            filePath = path.join(__dirname, 'boards/exampleBoardData/exampleBoardData.pjb');
+            filePath = path.join(__dirname, 'boards/exampleBoardData.pjb');
         }
 
         // Read the file using fs (fetch won't work with local files in production)
@@ -130,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }        
 
+    // Load the board data into the editor
     function loadBoardData(data) {
         boardTitle.value = data.meta.title || 'New Board';
         descriptionInput.value = data.meta.description || 'Description';
@@ -157,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Update the question prices in the UI
     function updateQuestionPrices(data) {
         const questionElements = document.getElementsByClassName('question');
         data.pages[currentPage].categories.forEach((category, i) => {
@@ -166,25 +181,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    let changesMade = false;
-
-    priceInput.addEventListener('input', function() {
-        let numericValue = priceInput.value.replace(/[^0-9]/g, ''); // Keep only numeric characters
-        priceInput.value = numericValue ? `$${numericValue}` : ''; // Add '$' only if there's a value
-        changesMade = true;
-    });
-
-    const invalidChars = /[\\/:*?"<>|]/g;
-
+    // Add event listeners to the inputs
     boardTitle.addEventListener('input', function() {
-        boardTitle.value = boardTitle.value.replace(invalidChars, '');
+        boardTitle.value = boardTitle.value.replace(invalidChars, '');  // Don't allow invalid characters
         changesMade = true;
     });
 
+    // Create the board layout
     categoriesRow = document.createElement('div');
     categoriesRow.className = 'categories-row';
     board.appendChild(categoriesRow);
 
+    // Create the category inputs
     for (let i = 0; i < 5; i++) {
         const category = document.createElement('input');
         category.className = 'category';
@@ -192,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         categoriesRow.appendChild(category);
     }
 
+    // Create the question cards
     for (let i = 0; i < 5; i++) {
         questionsRow = document.createElement('div');
         questionsRow.className = 'questions-row';
@@ -203,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
             question.textContent = '$0';
             questionsRow.appendChild(question);
 
+            // Open the question editor when the question is clicked
             question.addEventListener('click', function() {
                 questionEditor.style.display = 'flex';
                 boardCover.style.display = 'flex';
@@ -213,14 +223,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 answerInput.value = boardData.pages[currentPage].categories[j].questions[i].answer || 'Answer';
                 priceInput.value = '$' + boardData.pages[currentPage].categories[j].questions[i].price || '$0';
                 dailyDoubleCheckbox.checked = boardData.pages[currentPage].categories[j].questions[i].dailyDouble || false;
-                questionImage.src = boardData.pages[currentPage].categories[j].questions[i].questionImage || '../images/add_picture.png';
-                answerImage.src = boardData.pages[currentPage].categories[j].questions[i].answerImage || '../images/add_picture.png';
-                questionImageType = boardData.pages[currentPage].categories[j].questions[i].questionImageType || 'png';
-                answerImageType = boardData.pages[currentPage].categories[j].questions[i].answerImageType || 'png';
+                questionImage.src = boardData.pages[currentPage].categories[j].questions[i].questionImageData || '../images/add_picture.png';
+                answerImage.src = boardData.pages[currentPage].categories[j].questions[i].answerImageData || '../images/add_picture.png';
             });
         }
     }
 
+    // Back button functionality
     backButton.addEventListener('click', function() {
         if (changesMade) {
             let confirmText = 'You have unsaved changes. Are you sure you want to leave?';
@@ -243,75 +252,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Save button functionality (opens the save window)
     saveButton.addEventListener('click', function() {
         saveBoardWindow.style.display = 'flex';
         boardCover.style.display = 'flex';
     });
 
+    // Final save button functionality (saves the board)
     finalSaveButton.addEventListener('click', function() {
         handleFinalSave();
     });
 
+    // Handle the saving of the board
     async function handleFinalSave() {
 
-        let BOARDS_DIR;
-        let boardFolder;
-        let defaultBoardFolder;
-        if (process.env.NODE_ENV === 'development') {
-            // Development mode: Use the boards folder in the project directory
-            BOARDS_DIR = path.join(__dirname, '../boards');
-            boardFolder = path.join(BOARDS_DIR, boardTitle.value);
-            defaultBoardFolder = path.join(BOARDS_DIR, 'New Board');
-        }
-        else {
-            // Production mode: Use the boards folder in the same directory as the .exe file
-            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-            BOARDS_DIR = path.join(exeDir, 'boards');
-            boardFolder = path.join(BOARDS_DIR, boardTitle.value);
-            defaultBoardFolder = path.join(BOARDS_DIR, 'New Board');
-        }
+        let currentBoardFile = path.join(BOARDS_DIR, `${boardTitle.value}.pjb`);
+        let exampleBoardFile = path.join(BOARDS_DIR, 'New Board.pjb');
 
-        async function overwriteConfirmation() {
-            let confirmText = 'A board with this name already exists. Do you want to overwrite it?';
-            let yesText = 'Yes';
-            let noText = 'No';
-            if (language === 'lt') {
-                confirmText = 'Lenta su tokiu pavadinimu jau egzistuoja. Ar norite ja perrasyti?';
-                yesText = 'Taip';
-                noText = 'Ne';
-            }
-            return await customConfirm(confirmText, yesText, noText, false);
-        }
-
-        if (fs.existsSync(boardFolder)) {
-            let confirmed = await overwriteConfirmation();
+        // Overwrite the board if it already exists?
+        if (fs.existsSync(currentBoardFile)) {
+            let confirmed = await async function() {
+                let confirmText = 'A board with this name already exists. Do you want to overwrite it?';
+                let yesText = 'Yes';
+                let noText = 'No';
+                if (language === 'lt') {
+                    confirmText = 'Lenta su tokiu pavadinimu jau egzistuoja. Ar norite ja perrasyti?';
+                    yesText = 'Taip';
+                    noText = 'Ne';
+                }
+                return await customConfirm(confirmText, yesText, noText, false);
+            }();
             if (!confirmed) {
                 return;
             }
         }
-
-        async function removeOldFolder() {
-            let confirmText = 'The board name has changed. Do you want to delete or keep the old board folder?';
-            let yesText = 'Delete';
-            let noText = 'Keep';
-            if (language === 'lt') {
-                confirmText = 'Lentos pavadinimas pasikeite. Ar norite istrinti ar palikti sena lenta?';
-                yesText = 'Istrinti';
-                noText = 'Palikti';
-            }
-            return await customConfirm(confirmText, yesText, noText, false);
-        }
         
-        if (boardData.meta.title !== boardTitle.value && !(boardData.meta.title === 'New Board' && !fs.existsSync(defaultBoardFolder))) {
-            let confirmed = await removeOldFolder();
+        // Delete the old board folder if it exists after detecting a rename?
+        if (boardData.meta.title !== boardTitle.value && !(boardData.meta.title === 'New Board' && !fs.existsSync(exampleBoardFile))) {
+            let confirmed = await async function() {
+                let confirmText = 'The board name has changed. Do you want to delete or keep the old board folder?';
+                let yesText = 'Delete';
+                let noText = 'Keep';
+                if (language === 'lt') {
+                    confirmText = 'Lentos pavadinimas pasikeite. Ar norite istrinti ar palikti sena lenta?';
+                    yesText = 'Istrinti';
+                    noText = 'Palikti';
+                }
+                return await customConfirm(confirmText, yesText, noText, false);
+            }();
             if (confirmed) {
-                fs.rmSync(path.join(BOARDS_DIR, boardData.meta.title), { recursive: true, force: true });
+                fs.rmSync(path.join(BOARDS_DIR, `${boardData.meta.title}.pjb`), { force: true });
             }
         }
 
         finalizeSave();
     }
 
+    // Save the board data to a file
     async function finalizeSave() {
 
         const date = new Date(Date.now());
@@ -334,137 +331,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
-        let BOARDS_DIR;
-        if (process.env.NODE_ENV === 'development') {
-            // Development mode: Use the boards folder in the project directory
-            BOARDS_DIR = path.join(__dirname, '../boards');
-        }
-        else {
-            // Production mode: Use the boards folder in the same directory as the .exe file
-            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-            BOARDS_DIR = path.join(exeDir, 'boards');
-        }
-        const IMAGES_DIR = path.join(BOARDS_DIR, boardTitle.value, 'images');
-
-        // Ensure the images folder exists
-        if (!fs.existsSync(IMAGES_DIR)) {
-            await fs.promises.mkdir(IMAGES_DIR, { recursive: true });
-            console.log('Images folder created:', IMAGES_DIR);
-        }
-
-        // Save the images to the folder
-        await Promise.all(
-            boardData.pages.map((page, p) =>
-                Promise.all(
-                    page.categories.map((category, c) =>
-                        Promise.all(
-                            category.questions.map(async (question, q) => {
-                                // console.log('Question image:', question.questionImage);
-                                if (question.questionImage === null) {  // Check if the question image exists
-                                    if (c == 0 && q == 0) console.log('question image null');
-                                    const questionImageBaseName = `QI_${p}_${c}_${q}`;
-                                    const files = fs.readdirSync(IMAGES_DIR);
-                                    const matchingFiles = files.filter((file) => file.startsWith(questionImageBaseName + '.'));
-
-                                    matchingFiles.forEach((file) => {
-                                        const questionImagePath = path.join(IMAGES_DIR, file);
-                                        fs.unlinkSync(questionImagePath);
-                                        if (c == 0 && q == 0) console.log('question image deleted:', questionImagePath);
-                                    });
-                                } else {  // Check if the question image doesn't exist
-                                    if (c == 0 && q == 0) console.log('question image not null');
-                                    // Create a new name for the image
-                                    const questionImagePath = path.join(IMAGES_DIR, `QI_${p}_${c}_${q}.${question.questionImageType}`);
-                                    if (question.questionImage.includes('data:image/')) {
-                                        const questionImageData = question.questionImage.replace(/^data:image\/\w+;base64,/, '');
-                                        await fs.promises.writeFile(questionImagePath, Buffer.from(questionImageData, 'base64'))
-                                            .then(() => {
-                                                console.log('Question image saved successfully:', questionImagePath);
-                                            })
-                                            .catch((err) => {
-                                                console.error('Error saving question image:', err);
-                                            });
-                                    }
-                                    else { // if the new directory does not have the image, copy it from the old location
-                                        const oldImagePath = path.join(BOARDS_DIR, boardData.meta.title, 'images', question.questionImage.split('/').pop());
-                                        await fs.promises.copyFile(oldImagePath, questionImagePath)
-                                            .then(() => {
-                                                console.log('Question image copied successfully:', questionImagePath);
-                                            })
-                                            .catch((err) => {
-                                                console.error('Error copying question image:', err);
-                                            });
-
-                                    }
-                                    question.questionImage = process.env.NODE_ENV === 'development'
-                                        ? `../boards/${boardTitle.value}/images/QI_${p}_${c}_${q}.${question.questionImageType}`
-                                        : `../../../boards/${boardTitle.value}/images/QI_${p}_${c}_${q}.${question.questionImageType}`;
-
-                                    const questionImageBaseName = `QI_${p}_${c}_${q}`;
-                                    const files = fs.readdirSync(IMAGES_DIR);
-                                    let matchingFiles = files.filter((file) => file.startsWith(questionImageBaseName + '.'));
-
-                                    matchingFiles = matchingFiles.filter((file) => file !== `${questionImageBaseName}.${question.questionImageType}`);
-
-                                    matchingFiles.forEach((file) => {
-                                        const questionImagePath = path.join(IMAGES_DIR, file);
-                                        fs.unlinkSync(questionImagePath);
-                                    });
-
-                                }
-                                if (question.answerImage === null) {  // Check if the answer image exists
-                                    const answerImageBaseName = `AI_${p}_${c}_${q}`;
-                                    const files = fs.readdirSync(IMAGES_DIR);
-                                    const matchingFiles = files.filter((file) => file.startsWith(answerImageBaseName + '.'));
-
-                                    matchingFiles.forEach((file) => {
-                                        const answerImagePath = path.join(IMAGES_DIR, file);
-                                        fs.unlinkSync(answerImagePath);
-                                    });
-                                } else {  // Check if the answer image doesn't exist
-                                    // Create a new name for the image
-                                    const answerImagePath = path.join(IMAGES_DIR, `AI_${p}_${c}_${q}.${question.answerImageType}`);
-                                    if (question.answerImage.includes('data:image/')) {
-                                        const answerImageData = question.answerImage.replace(/^data:image\/\w+;base64,/, '');
-                                        await fs.promises.writeFile(answerImagePath, Buffer.from(answerImageData, 'base64'));
-                                    }
-                                    else { // if the new directory does not have the image, copy it from the old location
-                                        const oldImagePath = path.join(BOARDS_DIR, boardData.meta.title, 'images', question.answerImage.split('/').pop());
-                                        await fs.promises.copyFile(oldImagePath, answerImagePath)
-                                            .then(() => {
-                                                console.log('Answer image copied successfully:', answerImagePath);
-                                            })
-                                            .catch((err) => {
-                                                console.error('Error copying answer image:', err);
-                                            });
-                                    }
-                                    question.answerImage = process.env.NODE_ENV === 'development'
-                                        ? `../boards/${boardTitle.value}/images/AI_${p}_${c}_${q}.${question.answerImageType}`
-                                        : `../../../boards/${boardTitle.value}/images/AI_${p}_${c}_${q}.${question.answerImageType}`;
-
-                                    const answerImageBaseName = `AI_${p}_${c}_${q}`;
-                                    const files = fs.readdirSync(IMAGES_DIR);
-                                    let matchingFiles = files.filter((file) => file.startsWith(answerImageBaseName + '.'));
-                                    matchingFiles = matchingFiles.filter((file) => file !== `${answerImageBaseName}.${question.answerImageType}`);
-                                    matchingFiles.forEach((file) => {
-                                        const answerImagePath = path.join(IMAGES_DIR, file);
-                                        fs.unlinkSync(answerImagePath);
-                                    });
-                                }
-                            })
-                        )
-                    )
-                )
-            )
-        );
-
         boardData.meta.title = boardTitle.value;
         boardData.meta.description = descriptionInput.value;
         boardData.meta.lastEdited = formattedDate;
 
         // write the boardData to the file
         await fs.promises.writeFile(
-            path.join(BOARDS_DIR, boardTitle.value, `${boardTitle.value}.pjb`),
+            path.join(BOARDS_DIR, `${boardTitle.value}.pjb`),
             JSON.stringify(boardData, null, 4)
         );
 
@@ -477,12 +350,14 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'boardEditor.html' + '?board=' + `${boardTitle.value}.pjb`;
     }
 
+    // Cancel button functionality (closes the save window)
     finalCancelButton.addEventListener('click', function() {
         descriptionInput.value = boardData.meta.description;
         saveBoardWindow.style.display = 'none';
         boardCover.style.display = 'none';
     });
 
+    // Custom confirm function
     function customConfirm(message, yesText, noText, removeCover = true) {
         return new Promise((resolve) => {
             confirmText.textContent = message;
@@ -525,6 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Delete button functionality (deletes the board)
     deleteButton.addEventListener('click', function() {
         let confirmText = 'Are you sure you want to delete this board?';
         let yesText = 'Yes';
@@ -537,10 +413,10 @@ document.addEventListener('DOMContentLoaded', function() {
         customConfirm(confirmText, yesText, noText)
             .then((confirmed) => {
                 if (confirmed) {
-                    fs.rm(`./boards/${boardTitle.value}`, { recursive: true, force: true }, (err) => {
+                    fs.rm(`./boards/${boardData.meta.title}`, { recursive: true, force: true }, (err) => {
                         if (err) {
                             console.error('Error deleting board:', err);
-                            alert('Error deleting board!\nMake sure the board "' + boardTitle.value + '" exists.');
+                            alert('Error deleting board!\nMake sure the board "' + boardData.meta.title + '" exists.');
                         } else {
                             window.location.href = 'boardList.html';
                         }
@@ -549,6 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
+    // Previous and next board page button functionality
     previousPageButton.addEventListener('click', function() {
         if (currentPage > 0) {
             currentPage--;
@@ -571,6 +448,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Question editor inputs
+    priceInput.addEventListener('input', function() {
+        let numericValue = priceInput.value.replace(/[^0-9]/g, ''); // Keep only numeric characters
+        priceInput.value = numericValue ? `$${numericValue}` : ''; // Add '$' only if there's a value
+        changesMade = true;
+    });
+
     questionImage.addEventListener('click', function() {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -581,7 +465,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     questionImage.src = e.target.result; // Update the image preview
-                    questionImageType = file.type.split('/')[1]; // Store the image path in a variable
                 };
                 reader.readAsDataURL(file);
             }
@@ -599,7 +482,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     answerImage.src = e.target.result; // Update the image preview
-                    answerImageType = file.type.split('/')[1]; // Store the image path in a variable
                 };
                 reader.readAsDataURL(file);
             }
@@ -609,19 +491,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     removeQuestionImageButton.addEventListener('click', function() {
         questionImage.src = '../images/add_picture.png';
-        questionImageType = 'png';
     });
 
     removeAnswerImageButton.addEventListener('click', function() {
         answerImage.src = '../images/add_picture.png';
-        answerImageType = 'png';
     });
 
     saveQuestionButton.addEventListener('click', function() {
         changesMade = true;
+
+        // Get the values from the inputs
         const questionText = questionInput.value.trim();
         const answerText = answerInput.value.trim();
-        const price = priceInput.value.trim().replace('$', '').replace(/^0+$/, '0').replace(/^0+(?!$)/, '');
+        const price = priceInput.value.trim().replace('$', '').replace(/^0+$/, '0').replace(/^0+(?!$)/, '');  // Remove leading zeros
         const dailyDouble = dailyDoubleCheckbox.checked;
         const questionImageSrc = questionImage.src;
         const answerImageSrc = answerImage.src;
@@ -631,30 +513,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let question = boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex];
 
+        // Set the question data
         question.content = questionText;
         question.answer = answerText;
         question.price = price;
         question.dailyDouble = dailyDouble;
-        if (questionImageSrc.includes('add_picture.png')) {
-            question.questionImage = null;
-            question.questionImageType = null;
-        }
-        else {
-            question.questionImage = questionImageSrc;
-            question.questionImageType = questionImageType;
-        }
-
-        if (answerImageSrc.includes('add_picture.png')) {
-            question.answerImage = null;
-            question.answerImageType = null;
-        }
-        else {
-            question.answerImage = answerImageSrc;
-            question.answerImageType = answerImageType;
-        }
+        question.questionImageData = questionImageSrc.includes('add_picture.png') ? null : questionImageSrc;
+        question.answerImageData = answerImageSrc.includes('add_picture.png') ? null : answerImageSrc;
 
         // console.log(currentPage, categoryIndex, questionIndex);
 
+        // Update the question in the board data
         boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex] = question;
 
         // console.log(boardData.pages[0].categories[0].questions[0].questionImage);
@@ -665,20 +534,13 @@ document.addEventListener('DOMContentLoaded', function() {
         updateQuestionPrices(boardData);
     });
 
+    // Cancel button functionality (closes the question editor without saving)
     cancelQuestionButton.addEventListener('click', function() {
-        const categoryIndex = localStorage.getItem('editingQuestion').split('-')[0];
-        const questionIndex = localStorage.getItem('editingQuestion').split('-')[1];
-        let question = boardData.pages[currentPage].categories[categoryIndex].questions[questionIndex];
-        questionInput.value = question.content;
-        answerInput.value = question.answer;
-        priceInput.value = question.price;
-        dailyDoubleCheckbox.checked = question.dailyDouble;
-        questionImage.src = question.questionImage || '../images/add_picture.png';
-        answerImage.src = question.answerImage || '../images/add_picture.png';
         questionEditor.style.display = 'none';
         boardCover.style.display = 'none';
     });
 
+    // Escape key functionality
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             if (boardCover.style.display === 'none') {
@@ -711,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     window.addEventListener('load', function() {
-        document.getElementById('loadingScreen').style.display = 'none';
+        loadingScreen.style.display = 'none';
     });
 
 });

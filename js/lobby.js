@@ -101,68 +101,57 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    fs.readdir(boardsPath, (err, directories) => {
+    fs.readdir(boardsPath, (err, files) => {
         if (err) {
-            console.error('Error reading games directory:', err);
+            console.error('Error reading boards directory:', err);
             return;
         }
-
-        // Filter directories and check for .pjb files inside them
-        const boardPromises = directories.map((directory) => {
-            const boardPath = path.join(boardsPath, directory, `${directory}.pjb`);
-            return new Promise((resolve) => {
-                fs.access(boardPath, fs.constants.F_OK, (err) => {
-                    if (!err) {
-                        resolve(directory); // Directory is valid if the .pjb file exists
-                    } else {
-                        resolve(null); // Skip invalid directories
-                    }
-                });
-            });
-        });
-
-        Promise.all(boardPromises).then((validBoards) => {
-            boards = validBoards.filter(Boolean); // Remove null values
-
-            if (!boards.includes(selectedBoard.replace(".pjb", ""))) {
-                selectedBoard = "none.pjb";
-                localStorage.setItem('selectedBoard', selectedBoard);
-                if (language === 'lt') {
-                    dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
-                } else {
-                    dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
-                }
+    
+        // Filter files to include only .pjb files
+        let boards = files.filter((file) => file.endsWith('.pjb'));
+    
+        // Remove unwanted files like "exampleBoardData.pjb"
+        boards = boards.filter((board) => board !== 'exampleBoardData.pjb');
+    
+        // Check if the selected board exists
+        if (!boards.includes(selectedBoard)) {
+            selectedBoard = "none.pjb";
+            localStorage.setItem('selectedBoard', selectedBoard);
+            if (language === 'lt') {
+                dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
+            } else {
+                dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
             }
-
-            boards = boards.filter(board => board !== "exampleBoardData");
-
-            if (boards.length === 0) {
-                if (language === 'lt') {
-                    dropdownMenu.textContent = "Lentu nerasta";
-                } else {
-                    dropdownMenu.textContent = "No boards found";
-                }
-                return;
+        }
+    
+        // Check if there are no boards
+        if (boards.length === 0) {
+            if (language === 'lt') {
+                dropdownMenu.textContent = "Lentu nerasta";
+            } else {
+                dropdownMenu.textContent = "No boards found";
             }
-
-            // Populate the dropdown menu with the .pjb files
-            boards.forEach(board => {
-                const boardOption = document.createElement('p');
-                boardOption.textContent = board;
-                boardOption.addEventListener('click', () => {
-                    if (language === 'lt') {
-                        dropdownButton.textContent = "Pasirinkta lenta:\n" + board;
-                    } else {
-                        dropdownButton.textContent = "Selected board:\n" + board;
-                    }
-                    dropdownMenu.classList.toggle('show');
-                    localStorage.setItem('selectedBoard', `${board}.pjb`);
-                    selectedBoard = `${board}/${board}.pjb`;
-                    // send selected board to host
-                    ipcRenderer.send('selectedBoard', selectedBoard);
-                });
-                dropdownMenu.appendChild(boardOption);
+            return;
+        }
+    
+        // Populate the dropdown menu with the .pjb files
+        boards.forEach((board) => {
+            const boardName = board.replace('.pjb', ''); // Remove the .pjb extension for display
+            const boardOption = document.createElement('p');
+            boardOption.textContent = boardName;
+            boardOption.addEventListener('click', () => {
+                if (language === 'lt') {
+                    dropdownButton.textContent = "Pasirinkta lenta:\n" + boardName;
+                } else {
+                    dropdownButton.textContent = "Selected board:\n" + boardName;
+                }
+                dropdownMenu.classList.toggle('show');
+                localStorage.setItem('selectedBoard', board);
+                selectedBoard = board;
+                // Send selected board to host
+                ipcRenderer.send('selectedBoard', selectedBoard);
             });
+            dropdownMenu.appendChild(boardOption);
         });
     });
     

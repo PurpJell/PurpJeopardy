@@ -163,11 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (process.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, `../boards/${selectedBoard.replace('.pjb', '')}/${selectedBoard}`);
+            filePath = path.join(__dirname, `../boards/${selectedBoard}`);
         } else {
             // Production mode: Use the boards folder in the same directory as the .exe file
             const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-            filePath = path.join(exeDir, `boards/${selectedBoard.replace('.pjb', '')}/${selectedBoard}`);
+            filePath = path.join(exeDir, `boards/${selectedBoard}`);
         }
     
         fetch(filePath)
@@ -217,9 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.setAttribute('data-price', category.questions[questionIndex].price);
                 questionDiv.setAttribute('content', category.questions[questionIndex].content);
                 questionDiv.setAttribute('answer', category.questions[questionIndex].answer);
-                const questionImage = category.questions[questionIndex].questionImage || null;
+                const questionImage = category.questions[questionIndex].questionImageData || null;
                 questionDiv.setAttribute('questionImage', questionImage);
-                const answerImage = category.questions[questionIndex].answerImage || null;
+                const answerImage = category.questions[questionIndex].answerImageData || null;
                 questionDiv.setAttribute('answerImage', answerImage);
                 const isDailyDouble = category.questions[questionIndex].dailyDouble || false;
                 questionDiv.setAttribute('dailyDouble', isDailyDouble);
@@ -431,9 +431,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Retrieve server data from localStorage
     ipcRenderer.on('retrieveGameData', function(event) {
-        serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
-        servercurrentPageID = localStorage.getItem('currentPageID') || 1;
-        serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
+        let serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
+        let servercurrentPageID = localStorage.getItem('currentPageID') || 1;
+        let serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
         ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: servercurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
