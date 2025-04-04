@@ -161,15 +161,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderBoard() {
         let filePath;
 
-        if (process.env.NODE_ENV === 'development') {
-            // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, `../boards/${selectedBoard}`);
-        } else {
-            // Production mode: Use the boards folder in appData/Roaming
-            const boardsDir = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
-            filePath = path.join(boardsDir, selectedBoard);
-        }
-    
+        // Production mode: Use the boards folder in appData/Roaming
+        const boardsDir = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
+        filePath = path.join(boardsDir, selectedBoard);
+
         fetch(filePath)
             .then(response => {
                 if (!response.ok) {

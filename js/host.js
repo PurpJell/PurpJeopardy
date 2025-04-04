@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 handlePlayerAdded(message.data);
             } else if (message.type === 'gameData') {
                 players = [];
-                players_ = message.data.playerData;
+                let players_ = message.data.playerData;
                 currentPageID = message.data.currentPageID;
                 localStorage.setItem('currentPageID', currentPageID);
                 selectedBoard = message.data.selectedBoard;
@@ -68,7 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(`../boards/${selectedBoard}`)
+        filePath = "../boards/" + selectedBoard;
+
+        fetch(filePath)
             .then(response => response.json())
             .then(boardData_ => {
                 boardData = boardData_;

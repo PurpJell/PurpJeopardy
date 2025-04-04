@@ -80,14 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownMenu.classList.toggle('show');
     });
 
-    // Fetch boards from the games directory
-    if (process.env.NODE_ENV === 'development') {
-        // Development mode: Use the boards folder in the project directory
-        boardsPath = path.join(__dirname, '../boards');
-    } else {
-        // Production mode: Use the boards folder in appData/Roaming
-        boardsPath = ipcRenderer.sendSync('get-boards-dir');
-    }
+    const boardsPath = ipcRenderer.sendSync('get-boards-dir');
 
     // Ensure the boards folder exists
     if (!fs.existsSync(boardsPath)) {

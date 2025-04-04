@@ -34,7 +34,7 @@
       "fonts/**/*",
       {
         "from": "boards/exampleBoard",
-        "to": "html/boards"
+        "to": "html/boards/exampleBoard"
       }
     ],
     "win": {

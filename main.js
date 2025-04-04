@@ -4,6 +4,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const fs = require('fs');
+const os = require('os');
+const { execSync } = require('child_process');
+const { get } = require('http');
 
 const serverApp = express();
 const port = 3000;
@@ -12,12 +15,70 @@ let hostSocket = null;
 const playerSockets = new Set();
 
 ipcMain.on('get-boards-dir', (event) => {
-    const boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
+
+    let boardsDir = getBoardsDir();
+    
+    event.returnValue = boardsDir;
+});
+
+function getBoardsDir() {
+    let boardsDir;
+    if (process.env.NODE_ENV === 'development') {
+        // Development mode: Use the boards folder in the project directory
+        boardsDir = path.join(__dirname, `boards`);
+    } else {
+        // Production mode: Use the boards folder in appData/Roaming
+        boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
+    }
+
     if (!fs.existsSync(boardsDir)) {
         fs.mkdirSync(boardsDir, { recursive: true });
     }
-    event.returnValue = boardsDir;
-});
+    return boardsDir;
+}
+
+// Function to get the local IP address of an adapter with 'LAN' in its name
+function getLocalIPAddress() {
+    try {
+        // Execute the ipconfig command and parse its output
+        const output = execSync('ipconfig', { encoding: 'utf8' });
+        const lines = output.split('\n');
+
+        let currentAdapter = null;
+        let currentIP = null;
+
+        for (let line of lines) {
+            line = line.trim();
+
+            // Detect the adapter name
+            if (line.includes('adapter ') && line.includes('LAN')) {
+                currentAdapter = line.split('adapter ')[1]?.replace(':', '').trim();
+                currentIP = null; // Reset current IP for the new adapter
+            }
+            else if (line.includes('adapter ') && !line.includes('LAN')) {
+                currentAdapter = null; // Reset current adapter if not LAN
+            }
+
+            // Detect the IPv4 address for the current adapter
+            if (currentAdapter && line.includes('IPv4 Address')) {
+                const ipMatch = line.split(':')[1].trim();
+                if (ipMatch) {
+                    currentIP = ipMatch;
+                    return currentIP; // Return the first valid IP address
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error retrieving LAN adapters using ipconfig:', error.message);
+    }
+
+    return '127.0.0.1'; // Fallback to localhost if no matching IP is found
+}
+
+// Automatically set the IP_ADDRESS environment variable
+process.env.IP_ADDRESS = getLocalIPAddress();
+console.log(`IP Address set to: ${process.env.IP_ADDRESS}`);
+
 
 function createBoardsFolder() {
     // Determine the directory where the .exe file is located
@@ -58,6 +119,7 @@ function createWindow() {
     // Configure body-parser to handle larger payloads
     serverApp.use(bodyParser.json({ limit: '10mb' }));
     serverApp.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+    serverApp.use('/boards', express.static(getBoardsDir()));
 
     // Serve static files from the 'public' directory
     serverApp.use(express.static(path.join(__dirname, '')));
@@ -174,6 +236,10 @@ function createWindow() {
                 playerSockets.forEach(playerSocket => {
                     playerSocket.send(JSON.stringify({ type: 'disableBuzzer' }));
                 });
+            } else if (parsedMessage.type === 'getBoardsDir') {
+                let boardsDir = getBoardsDir();
+                console.log("Boards dir:", boardsDir);
+                hostSocket.send(JSON.stringify({ type: 'boardsDir', data: boardsDir }));
             }
         });
 
@@ -201,7 +267,7 @@ function createWindow() {
                     data: {
                         playerData: players,
                         currentPageID: currentPageID_,
-                        selectedBoard: selectedBoard
+                        selectedBoard: selectedBoard,
                     } 
                 }
             ));
@@ -216,7 +282,7 @@ function createWindow() {
     });
 
     serverApp.listen(port, () => {
-        console.log(`Server listening at http://localhost:${port}`);
+        console.log(`Server listening at ${process.env.IP_ADDRESS}:${port}`);
     });
 }
 

@@ -58,17 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let changesMade = false;
     const invalidChars = /[\\/:*?"<>|]/g;
 
-    let BOARDS_DIR; // boards/...
-
-    if (process.env.NODE_ENV === 'development') {
-        // Development mode: Use the boards folder in the project directory
-        BOARDS_DIR = path.join(__dirname, '../boards');
-    }
-    else {
-        // Production mode: Use the boards folder in appData/Roaming
-        BOARDS_DIR = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
-    }
-
+    const BOARDS_DIR = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -111,10 +101,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (process.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, '../boards/exampleBoard/exampleBoardData.pjb');  // NOTE THAT THIS MUST BE ONE FOLDER DEEPER THAN THE OTHER BOARDS
+            filePath = path.join(__dirname, '../boards/exampleBoard/exampleBoardData.pjb');
         } else {
             // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
-            filePath = path.join(__dirname, 'boards/exampleBoardData.pjb');
+            filePath = path.join(__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
         }
 
         // Read the file using fs (fetch won't work with local files in production)
