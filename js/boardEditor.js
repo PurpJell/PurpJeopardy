@@ -65,9 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
         BOARDS_DIR = path.join(__dirname, '../boards');
     }
     else {
-        // Production mode: Use the boards folder in the same directory as the .exe file
-        const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-        BOARDS_DIR = path.join(exeDir, 'boards');
+        // Production mode: Use the boards folder in appData/Roaming
+        BOARDS_DIR = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
     }
 
 
@@ -92,16 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }    
     else {
 
-        let filePath;
-
-        if (process.env.NODE_ENV === 'development') {
-            // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, `../boards/${passedBoard}`);
-        } else {
-            // Production mode: Use the boards folder in the same directory as the .exe file
-            const exeDir = ipcRenderer.sendSync('get-exe-dir'); // Synchronous IPC call to get the exe directory
-            filePath = path.join(exeDir, `boards/${passedBoard}`);
-        }
+        let filePath = BOARDS_DIR + '/' + passedBoard;
 
         // Load the board data from the passed parameter
         fetch(filePath)
@@ -121,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (process.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, '../boards/exampleBoardData.pjb');
+            filePath = path.join(__dirname, '../boards/exampleBoard/exampleBoardData.pjb');  // NOTE THAT THIS MUST BE ONE FOLDER DEEPER THAN THE OTHER BOARDS
         } else {
             // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
             filePath = path.join(__dirname, 'boards/exampleBoardData.pjb');

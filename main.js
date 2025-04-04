@@ -11,25 +11,28 @@ const port = 3000;
 let hostSocket = null;
 const playerSockets = new Set();
 
-ipcMain.on('get-exe-dir', (event) => {
-    event.returnValue = path.dirname(app.getPath('exe'));
+ipcMain.on('get-boards-dir', (event) => {
+    const boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
+    if (!fs.existsSync(boardsDir)) {
+        fs.mkdirSync(boardsDir, { recursive: true });
+    }
+    event.returnValue = boardsDir;
 });
 
 function createBoardsFolder() {
     // Determine the directory where the .exe file is located
-    const exeDir = path.dirname(app.getPath('exe'));
-    const boardsPath = path.join(exeDir, 'boards');
+    const boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
 
     // Check if the "boards" folder exists, and create it if it doesn't
-    if (!fs.existsSync(boardsPath)) {
+    if (!fs.existsSync(boardsDir)) {
         try {
-            fs.mkdirSync(boardsPath, { recursive: true });
-            console.log(`Boards folder created at: ${boardsPath}`);
+            fs.mkdirSync(boardsDir, { recursive: true });
+            console.log(`Boards folder created at: ${boardsDir}`);
         } catch (error) {
             console.error(`Error creating boards folder: ${error.message}`);
         }
     } else {
-        console.log(`Boards folder already exists at: ${boardsPath}`);
+        console.log(`Boards folder already exists at: ${boardsDir}`);
     }
 }
 
@@ -42,6 +45,7 @@ function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 1920,
         height: 1080,
+        fullscreen: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,

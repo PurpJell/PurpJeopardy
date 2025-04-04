@@ -85,9 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Development mode: Use the boards folder in the project directory
         boardsPath = path.join(__dirname, '../boards');
     } else {
-        // Production mode: Use the boards folder in the same directory as the .exe file
-        const exeDir = ipcRenderer.sendSync('get-exe-dir');
-        boardsPath = path.join(exeDir, 'boards'); 
+        // Production mode: Use the boards folder in appData/Roaming
+        boardsPath = ipcRenderer.sendSync('get-boards-dir');
     }
 
     // Ensure the boards folder exists
