@@ -1,11 +1,11 @@
 @font-face {
-    font-family: 'Mono Polz';
-    src: url('../fonts/Mono Polz.ttf') format('truetype');
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Naturaly';
-    src: url('../fonts/Naturaly.otf') format('opentype');
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
 }
 
 body {
@@ -27,7 +27,7 @@ body {
     border-radius: 50%;
     background: linear-gradient(to bottom, #ff4d4d, #af1212);
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
     color: white;
     cursor: pointer;
     position: relative;
@@ -88,12 +88,12 @@ body {
     font-size: 10.5vw;
     margin-top: 2.5vw;
     text-align: center;
-    font-family: 'Naturaly';
+    font-family: 'Chewy';
 }
 
 .player-score {
     height: 20.5vw;
     text-align: center;
     font-size: 12vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
 }

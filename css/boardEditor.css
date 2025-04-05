@@ -1,11 +1,21 @@
 @font-face {
-    font-family: 'Mono Polz';
-    src: url("../fonts/Mono Polz.ttf") format("truetype");
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Naturaly';
-    src: url("../fonts/Naturaly.otf") format("opentype");
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 .confirm-window {
@@ -14,8 +24,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    width: 30%;
-    height: 25%;
+    width: 32%;
+    height: 32%;
     margin-top: 35vh;
     margin-left: 34%;
     background: linear-gradient(180deg, #00a3cc 20%, #007a41 80%);
@@ -30,21 +40,24 @@
     height: 60%;
     text-align: center;
     font-size: 2.5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
+    font-weight: 400;
+    line-height: 1.2;
     color: #000000;
     margin-top: 2vh;
 }
 
 .confirm-button-container {
+    margin-top: 1vh;
     display: flex;
     justify-content: center;
     gap: 2vw;
 }
 
 .confirm-yes-button {
-    width: 7vw;
+    width: 7.2vw;
     height: 7vh;
-    font-size: 2.5vw;
+    font-size: 2.3vw;
     text-align: center;
     border-style: solid;
     border-width: 0.3vw;
@@ -53,9 +66,9 @@
 }
 
 .confirm-no-button {
-    width: 7vw;
+    width: 7.2vw;
     height: 7vh;
-    font-size: 2.5vw;
+    font-size: 2.3vw;
     text-align: center;
     border-style: solid;
     border-width: 0.3vw;
@@ -83,7 +96,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
 }
 
 .top-bar {
@@ -114,7 +127,8 @@ button {
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
-    font-family: 'Naturaly';
+    font-family: 'Atma';
+    font-weight: 900;
     text-align: center;
     color: white;
     text-shadow: 
@@ -127,7 +141,7 @@ button {
 }
 
 .back-button {
-    width: 20vh;
+    width: 13vw;
     margin-left: 4vw;
     font-size: 1.8vw;
     height: 8vh;
@@ -142,7 +156,8 @@ button {
     text-align: center;
     width: 50vw;
     margin-left: 9vw;
-    font-family: 'Mono Polz';
+    font-family: 'WinkySans';
+    font-weight: 700;
     background: none;
     border: none;
     color: white;
@@ -163,7 +178,7 @@ button {
 
 .save-button {
     width: 15vh;
-    margin-left: 5vw;
+    margin-left: 3vw;
     font-size: 1.8vw;
     height: 8vh;
     background: linear-gradient(150deg, #00a524, #005207);
@@ -204,7 +219,7 @@ button {
 
 .description-label {
     font-size: 2.5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: #000000;
     margin-top: 2vh;
 }
@@ -214,7 +229,8 @@ button {
     height: 40%;
     margin-top: 0vh;
     font-size: 1.6vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
+    font-weight: 400;
     text-align: center;
     color: #000000;
     border-style: solid;
@@ -320,14 +336,15 @@ button {
 }
 
 .category {
+    width: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
     text-align: center;
     font-weight: bold;
-    font-size: 1.6vw;
-    font-family: 'Impact';
+    font-size: 2vw;
+    font-family: 'Atma';
     color: #c9b824;
     padding-top: 0.3vh;
     padding-bottom: 2.2vh;
@@ -380,7 +397,7 @@ button {
     width: 20%;
     text-align: center;
     font-size: 3.1vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
     color: #ffe600;
     border-top-width: 0.2vh;
     border-right-width: 0.2vw;
@@ -446,8 +463,9 @@ button {
 .question-editor input, .question-editor textarea {
     position: relative;
     margin-left: 2vw;
-    font-size: 2vw;
-    font-family: 'Mono Polz';
+    font-size: 1.85vw;
+    font-family: 'Chewy';
+    line-height: 1.2;
     text-align: center;
     color: #000000;
     border-style: solid;
@@ -473,12 +491,12 @@ button {
     display: flex;
     align-items: start;
     height: 6vh;
-    margin-top: 3vh;
+    margin-top: 1.5vh;
 }
 
 .daily-double-text {
     font-size: 3.5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: #000000;
     text-align: center;
     margin-left: 1vw;
@@ -489,16 +507,16 @@ button {
     width: 3vw;
     height: 3vw;
     margin-left: 0;
-    margin-top: 1vh;
+    margin-top: 2vh;
     cursor: pointer;
 }
 
 .question-editor button {
     width: 10vw;
-    height: 6vh;
+    height: 7vh;
     padding-left: 2%;
     padding-right: 2%;
-    font-size: 2vw;
+    font-size: 2.2vw;
     text-align: center;
     border-style: solid;
 }
@@ -510,14 +528,14 @@ button {
 
 .save-question-button {
     position: absolute;
-    right: 11.5vw;
-    margin-top: 1.2vh;
+    right: 13vw;
+    margin-top: 2.5vh;
 }
 
 .cancel-question-button{
     position: absolute;
-    right: 1vw;
-    margin-top: 1.2vh;
+    right: 2vw;
+    margin-top: 2.5vh;
 }
 
 .question-input {

@@ -1,11 +1,11 @@
 @font-face {
-    font-family: 'Naturaly';
-    src: url('../fonts/Naturaly.otf') format('opentype');
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Mono Polz';
-    src: url('../fonts/Mono Polz.ttf') format('truetype');
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
 }
 
 body {
@@ -19,7 +19,8 @@ body {
 }
 
 h1 {
-    font-family: 'Naturaly';
+    font-family: "Chewy";
+    font-weight: 400;
     font-size: 8vw;
     color: rgb(43, 196, 243);
     margin: 0;
@@ -60,60 +61,48 @@ h1 {
     }
 }
 
-.play-button {
+button {
     width: 20vw;
-    height: 6vw;
-    font-family: 'Naturaly';
-    font-size: 4vw;
-    background: linear-gradient(130deg, #e72e66, #e96485, #e0a195, #8bd6db, #2a87ac, #186c8d);
+    height: 12vh;
+    font-family: 'WinkySans';
+    font-weight: 550;
+    color: white;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     padding: 0.2vw;
     padding-right: 0.7vw;
     margin-top: 2vw;
     text-align: center;
+
+    text-shadow: 
+    -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
+    0px -2px 0 #000, -2px 0px 0 #000, -2px  2px 0 #000,  2px  2px 0 #000,
+    -3px -3px 0 #000,  3px -3px 0 #000,  0px  3px 0 #000,  3px 0px 0 #000,
+    0px -3px 0 #000, -3px 0px 0 #000, -3px  3px 0 #000,  3px  3px 0 #000;
+}
+
+.play-button {
+    font-weight: 500;
+    font-size: 4vw;
+    background: linear-gradient(130deg, #e72e66, #e96485, #e0a195, #8bd6db, #2a87ac, #186c8d);
 }
 
 .create-board-button {
-    width: 20vw;
-    height: 6vw;
-    font-family: 'Naturaly';
-    font-size: 3.4vw;
+    font-weight: 550;
+    font-size: 3vw;
     background: radial-gradient(circle, #4496b6, #063b50);
-    border: 0.3vw solid black;
-    border-radius: 0.6vw;
-    padding: 0.2vw;
-    padding-right: 0.7vw;
-    margin-top: 2vw;
-    text-align: center;
 }
 
 .options-button {
-    width: 20vw;
-    height: 6vw;
-    font-family: 'Naturaly';
+    font-weight: 500;
     font-size: 3.4vw;
     background: radial-gradient(circle, #4496b6, #063b50);
-    border: 0.3vw solid black;
-    border-radius: 0.6vw;
-    padding: 0.2vw;
-    padding-right: 0.7vw;
-    margin-top: 2vw;
-    text-align: center;
 }
 
 .exit-button {
-    width: 20vw;
-    height: 6vw;
-    font-family: 'Naturaly';
+    font-weight: 500;
     font-size: 3.4vw;
     background: radial-gradient(circle, #f80303, #640404);
-    border: 0.3vw solid black;
-    border-radius: 0.6vw;
-    padding: 0.2vw;
-    padding-right: 0.7vw;
-    margin-top: 2vw;
-    text-align: center;
 }
 
 button {

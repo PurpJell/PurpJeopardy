@@ -1,11 +1,21 @@
 @font-face {
-    font-family: 'Mono Polz';
-    src: url("../fonts/Mono Polz.ttf") format("truetype");
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Naturaly';
-    src: url("../fonts/Naturaly.otf") format("opentype");
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 body {
@@ -28,7 +38,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
 }
 
 .top-bar {
@@ -59,7 +69,7 @@ button {
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
-    font-family: 'Naturaly';
+    font-family: 'Atma';
     text-align: center;
     color: white;
     text-shadow: 
@@ -72,7 +82,7 @@ button {
 }
 
 .back-button {
-    width: 20vh;
+    width: 13vw;
     margin-left: 4vw;
     font-size: 2vw;
     height: 8vh;
@@ -86,6 +96,7 @@ button {
     width: 25vh;
     margin-left: 8vw;
     font-size: 2.3vw;
+    line-height: 1.2;
     height: 13vh;
     background: linear-gradient(150deg, #00a524, #005207);
     display: flex;
@@ -98,7 +109,8 @@ button {
     height: 6vh;
     margin-right: 3vw;
     font-size: 2vw;
-    font-family: 'Naturaly';
+    font-family: 'WinkySans';
+    font-weight: 700;
     background-color: #0b2f70;
     color: white;
     border: solid 0.3vw;
@@ -119,7 +131,7 @@ button {
 .no-boards {
     margin-top: 30vh;
     font-size: 6vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
     color: white;
     text-align: center;
     display: none;
@@ -161,7 +173,8 @@ button {
     transition: background-color 0.1s;
     cursor: pointer;
 
-    font-family: 'Mono Polz';
+    font-family: 'WinkySans';
+    font-weight: 700;
     font-size: 2vw;
     color: white;
 
@@ -188,6 +201,7 @@ button {
 .board-description {
     white-space: normal;
     overflow-wrap: break-word;
+    line-height: 1.1;
     width: 30%;
     height: 90%;
     margin-top: 3vh;

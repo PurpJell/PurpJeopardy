@@ -1,11 +1,21 @@
 @font-face {
-    font-family: 'Naturaly';
-    src: url('../fonts/Naturaly.otf') format('opentype');
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Mono Polz';
-    src: url('../fonts/Mono Polz.ttf') format('truetype');
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 body {
@@ -28,7 +38,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
 }
 
 .ip-container {
@@ -48,9 +58,10 @@ body {
 
 h1 {
     margin-top: 0.5vw;
-    margin-bottom: 0.5vw;
-    font-size: 4.5vw;
-    font-family: 'Naturaly';
+    margin-bottom: -1.5vh;
+    font-size: 4.1vw;
+    font-family: 'Atma';
+    font-weight: 600;
     color: white;
     text-align: center;
     text-shadow: 
@@ -76,9 +87,9 @@ h1 {
     width: 25%;
     margin-top: 0;
     margin-bottom: 0.5vw;
-    margin-left: 40%;
-    font-size: 3.1vw;
-    font-family: 'Naturaly';
+    margin-left: 39%;
+    font-size: 2.7vw;
+    font-family: 'Lilita';
     color: white;
     text-shadow: 
         -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
@@ -96,7 +107,8 @@ button {
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
-    font-family: 'Naturaly';
+    font-family: 'WinkySans';
+    font-weight: 700;
     text-align: center;
     color: white;
     text-shadow: 
@@ -112,9 +124,10 @@ button {
     width: 8%;
     height: 70%;
     margin-top: 0vw;
-    margin-left: 1%;
+    margin-left: 2%;
     margin-right: auto;
     margin-bottom: 0.5vw;
+    padding-bottom: 1.5vh;
 }
 
 .dropdown {
@@ -135,7 +148,7 @@ button {
     border-radius: 0.6vw;
     padding: 0.5vw;
     color: white;
-    font-family: 'Naturaly';
+    font-family: 'WinkySans';
     font-size: 1.2vw;
     z-index: 1;
 }
@@ -240,9 +253,10 @@ button {
 .player-name {
     flex-grow: 1;
     padding-top: 5vw;
-    font-size: 4vw;
+    font-size: 4.4vw;
     text-align: center;
-    font-family: 'Naturaly';
+    font-family: 'Chewy';
+    font-weight: 300;
     color: white;
     text-shadow: 
         -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
@@ -274,13 +288,13 @@ button {
     padding-bottom: 0.5vw;
     
     border: 0.5vw solid;
-    border-color: #917b00 #917b00 #917b00 #917b00;
+    border-color: #7a6800 #7a6800 #7a6800 #7a6800;
     border-radius: 0.8vw;
 
     background-color: #e7bd00;
-    font-size: 4.5vw;
+    font-size: 3.8vw;
     color: white;
-    font-family: 'Naturaly';
+    font-family: 'Lilita';
 
     z-index: 1;
 }
@@ -298,10 +312,10 @@ svg {
     stroke-linejoin : round;
 }
 
-tspan.slash {
+/* tspan.slash {
     font-size: 5.0vw;
     stroke-width: 3.5px;
-}
+} */
 
 .visuals-container {
     position: fixed;

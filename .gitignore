@@ -1,6 +1,5 @@
 node_modules/
 build/
-fonts/*
 boards/*
 !boards/exampleBoard/
 !boards/exampleBoard/exampleBoardData.pjb

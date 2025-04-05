@@ -1,17 +1,26 @@
 @font-face {
-    font-family: 'Mono Polz';
-    src: url("../fonts/Mono Polz.ttf") format("truetype");
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Naturaly';
-    src: url("../fonts/Naturaly.otf") format("opentype");
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 body {
-    background: linear-gradient(130deg, #845dfa, #261952);
-    width: 100%;
-    height: 95vh;
+    background: linear-gradient(130deg, #9470ff, #b0a1ff, #6a38ff);
+    width: 98%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,6 +35,7 @@ body {
     margin-top: 0;
     gap: 1vw;
     padding: 2vw;
+    height: 90vh;
 }
 
 .player-card {
@@ -55,7 +65,7 @@ body {
     font-size: 9vw;
     margin-top: 10vw;
     text-align: center;
-    font-family: 'Naturaly';
+    font-family: 'Chewy';
     white-space: normal;
     overflow-wrap: break-word;
 }
@@ -83,23 +93,27 @@ body {
 .start-game-button {
     width: 60vw;
     height: 10vh;
-    margin-top: 4vh;
+    margin-top: 2vh;
     margin-bottom: 3vh;
     background-color: #372863;
     border: 1.2vw solid;
     border-color: rgb(51, 8, 100) rgb(38, 9, 70) rgb(38, 9, 70) rgb(51, 8, 100);
     border-radius: 1vw;
     font-size: 5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
     left: 40%;
     transition: background-color 0.1s, border-color 0.1s;
 }
 
+.board-view {
+    padding-top: 3vh;
+}
+
 label {
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'WinkySans';
     color: rgb(242, 231, 255);
 }
 
@@ -109,7 +123,7 @@ select {
     margin-top: 1vh;
     margin-bottom: 1vh;
     font-size: 7vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
     text-align: center;
     color: rgb(242, 231, 255);
     background-color: #372863;
@@ -120,60 +134,45 @@ select {
     transition: background-color 0.1s, border-color 0.1s;
 }
 
-.open-question-button {
+button {
     width: 55vw;
     height: 13vh;
     margin-top: 3vh;
-    background-color: #aa0baf;
     border: 1vw solid;
     border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
+}
+
+.open-question-button {
+    background-color: #aa0baf;
 }
 
 .next-page-button {
-    width: 55vw;
-    height: 13vh;
-    margin-top: 3vh;
     background-color: #7500ac;
-    border: 1vw solid;
-    border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
-    border-radius: 0.6vw;
-    font-size: 8vw;
-    font-family: 'Mono Polz';
-    color: rgb(242, 231, 255);
-    cursor: pointer;
 }
 
 .reset-board-button {
-    width: 55vw;
-    height: 13vh;
-    margin-top: 3vh;
     background-color: #ac0000;
-    border: 1vw solid;
-    border-color: rgb(78, 28, 134) rgb(45, 12, 82) rgb(45, 12, 82) rgb(78, 28, 134);
-    border-radius: 0.6vw;
-    font-size: 8vw;
-    font-family: 'Mono Polz';
-    color: rgb(242, 231, 255);
-    cursor: pointer;
+    margin-bottom: 11vh;
 }
 
 h1 {
-    margin-top: 1.5vh;
+    margin-top: 0.5vh;
     margin-bottom: 0.1vh;
     font-size: 8vw;
-    font-family: 'Naturaly';
+    font-family: 'Atma';
+    line-height: 1.2;
     text-align: center;
 }
 
 .question {
     margin-top: 0.1vh;
     font-size: 7vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
     color: rgb(202, 176, 226);
     margin-bottom: 1.5vh;
     text-align: center;
@@ -183,8 +182,8 @@ h1 {
 .answer {
     margin-top: 0.1vh;
     font-size: 7vw;
-    font-family: 'Mono Polz';
-    color: rgb(83, 0, 160);
+    font-family: 'Chewy';
+    color: #a23eff;
     margin-bottom: 1.5vh;
     text-align: center;
     justify-content: center;
@@ -192,6 +191,7 @@ h1 {
 
 .player-list-2 {
     display: flex;
+    width: 100%;
     flex-direction: column;
     gap: 1vw;
     align-items: center;
@@ -200,10 +200,9 @@ h1 {
 
 .player-container {
     display: flex;
+    width: 90%;
     gap: 1vw;
     padding: 1vh;
-
-    width: 110%;
     height: 12vh;
 }
 
@@ -215,7 +214,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
     color: rgb(242, 231, 255);
     cursor: pointer;
     transition: background-color 0.1s;
@@ -223,7 +222,7 @@ h1 {
 
 .player-card-2 {
     height: 100%;
-    width: 60%;
+    width: 80%;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     padding: 0.6vw;
@@ -259,7 +258,7 @@ h1 {
     font-size: 8vw;
     margin-top: 3vw;
     text-align: center;
-    font-family: 'Naturaly';
+    font-family: 'Chewy';
     line-height: 6vw;
     overflow-wrap: break-word;
 }
@@ -268,7 +267,7 @@ h1 {
     height: 20.5vw;
     font-size: 7vw;
     text-align: center;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
     margin-top: 1vw;
 }
 
@@ -280,7 +279,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
     color: rgb(242, 231, 255);
     cursor: pointer;
     transition: background-color 0.1s;
@@ -294,7 +293,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -307,7 +306,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -320,7 +319,7 @@ h1 {
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
@@ -329,22 +328,22 @@ h1 {
     width: 70%;
     height: 10vh;
     margin-top: 1vh;
+    margin-bottom: 5vh;
     background-color: #470049;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
     font-size: 8vw;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
     color: rgb(242, 231, 255);
     cursor: pointer;
 }
 
 .question-view {
-    background: linear-gradient(130deg, #845dfa, #261952);
+    background: linear-gradient(110deg, #0058ff, #000000);
     width: 96vw;
-    height: 130vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     gap: 1vw;
 }

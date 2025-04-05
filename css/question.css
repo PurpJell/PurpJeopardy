@@ -1,6 +1,16 @@
 @font-face {
-    font-family: 'Mono Polz';
-    src: url("../fonts/Mono Polz.ttf") format('truetype');
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 body {
@@ -28,7 +38,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
 }
 
 .title {
@@ -36,10 +46,12 @@ body {
 }
 
 h1 {
-    margin-top: 1.5vw;
-    margin-bottom: 0.1vw;
-    font-size: 4vw;
-    font-family: 'Impact';
+    margin-top: 1.2vh;
+    margin-bottom: 0;
+    font-size: 5vw;
+    font-family: 'Atma';
+    font-weight: 900;
+    line-height: 1.2;
 }
 
 .price-container {
@@ -49,16 +61,16 @@ h1 {
 }
 
 h2 {
-    margin-top: 0.1vw;
-    font-size: 4vw;
-    font-family: 'Mono Polz';
+    margin-top: 0;
+    font-size: 4.5vw;
+    font-family: 'Chewy';
     color: #cab0e2;
     margin-bottom: 1.5vw;
 }
 
 .price-multiplier {
     font-size: 3.5vw;
-    font-family: 'Mono';
+    font-family: 'Atma';
     color: #8510b8;
     margin-left: 0.5vw;
     text-shadow: 
@@ -90,7 +102,6 @@ h2 {
     background-color: white;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
-    /* font-family: 'Mono Polz'; */
     font-family: 'Ink Free';
     font-weight: bold;
     font-size: 3.5vw;
@@ -139,7 +150,7 @@ h2 {
     width: 2vw;
     margin-left: 4vw;
     font-size: 10vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
 }
 
 @keyframes fadeUp {
@@ -156,7 +167,7 @@ h2 {
 .score-change {
     position: absolute;
     font-size: 2.5vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
     animation: fadeUp 1s ease-out forwards;
     pointer-events: none;
 }

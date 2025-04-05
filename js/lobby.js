@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let randomIcons = ["../images/rocket.png", "../images/alien.png", "../images/moon.png", "../images/astronaut.png"]
 
     let hideIpAddress = true;
-    ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
+    ipAddress.textContent = "***************";
 
     hideButton.addEventListener('click', function() {
         if (hideIpAddress) {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hideButton.textContent = 'Hide';
             }
         } else {
-            ipAddress.textContent = "xxx.xxx.xxx.xxx:xxxx";
+            ipAddress.textContent = "***************";
             hideIpAddress = true;
             if (language === 'lt') {
                 hideButton.textContent = 'Rodyti';
@@ -347,9 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
             playerName.innerHTML = `<b>${playerData_.name}</b>`;
 
             if (playerData_.name.length < 6) {
-                playerName.style.fontSize = '6vw';
-            } else if (playerData_.name.length < 11) {
-                playerName.style.fontSize = '5.4vw';
+                playerName.style.fontSize = '5vw';
             }
             
             playerInfo.appendChild(playerName);

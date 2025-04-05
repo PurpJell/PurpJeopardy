@@ -1,11 +1,16 @@
 @font-face {
-    font-family: 'Naturaly';
-    src: url('../fonts/Naturaly.otf') format('opentype');
+    font-family: 'Chewy';
+    src: url('../fonts/Chewy-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Mono Polz';
-    src: url('../fonts/Mono Polz.ttf') format('truetype');
+    font-family: 'Lilita';
+    src: url('../fonts/LilitaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Atma';
+    src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
 body {
@@ -28,7 +33,7 @@ body {
     align-items: center;
     z-index: 1000;
     font-size: 15vw;
-    font-family: 'Mono Polz';
+    font-family: 'Lilita';
 }
 
 .back-to-title-window {
@@ -59,7 +64,9 @@ body {
     width: 70%;
     font-size: 6vw;
     text-align: center;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
+    font-weight: 400;
+    line-height: 1.2;
     color: white;
     text-shadow: 
         -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
@@ -84,7 +91,8 @@ body {
 .button-container button {
     width: 11.5vw;
     height: 5.8vw;
-    font-family: 'Naturaly';
+    font-family: 'Lilita';
+    font-weight: 400;
     font-size: 4.2vw;
     border: 0.4vw solid black;
     border-radius: 0.6vw;
@@ -98,7 +106,7 @@ body {
 }
 
 svg{
-    font: 4.9vw 'Mono Polz';
+    font: 4.9vw 'Lilita';
 }
 
 .svg-text {
@@ -170,7 +178,8 @@ svg{
     padding-top: 0.5vh;
     margin-left: -0.2vw;
     text-align: center;
-    font-family: 'Naturaly';
+    font-family: 'Chewy';
+    font-weight: 400;
     margin-left: -0.6vw;
 }
 
@@ -184,7 +193,8 @@ svg{
     padding-top: 1.5vh;
     text-align: center;
     font-size: 2.7vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
+    font-weight: 400;
     margin-left: -0.8vw;
 }
 
@@ -267,8 +277,8 @@ svg{
     flex: 1;
     text-align: center;
     font-weight: bold;
-    font-size: 1.6vw;
-    font-family: 'Impact';
+    font-size: 2vw;
+    font-family: 'Atma';
     color: #c9b824;
     padding-top: 0.3vh;
     padding-bottom: 2.2vh;
@@ -323,7 +333,8 @@ svg{
     justify-content: center;
     align-items: center;
     font-size: 3.1vw;
-    font-family: 'Mono Polz';
+    font-family: 'Chewy';
+    font-weight: 400;
     color: #ffe600;
     border-top-width: 0.2vh;
     border-right-width: 0.2vw;
@@ -366,9 +377,11 @@ svg{
     justify-content: center;
     align-items: center;
     z-index: 100;
-    font-size: 4vw;
+    font-size: 4.5vw;
     text-align: center;
-    font-family: 'Mono Polz';
+    font-family: 'Atma';
+    font-weight: 400;
+    color: white;
     border: solid 0.8vw;
     border-color: #160f31 #0d081d #080513 #120c2b;
 }
