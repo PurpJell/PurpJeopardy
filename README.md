@@ -25,25 +25,25 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 
 1. **Download the newest release:**
 
-    *link here*
+    *Add link here*.
 
 2. **Install the program:**
 
-    run PurpJeopardy Setup `<version_number>`.exe
+    Run `PurpJeopardy Setup <version_number>.exe`.
 
 3. **Launch the game:**
 
-    The game should be located in your specified install location (AppData/Local/Programs/PurpJeopardy by default) or launch the game via desktop shortcut
+    The game should be located in your specified install location (AppData/Local/Programs/PurpJeopardy by default) or launch the game via desktop shortcut.
 
 4. **Connect as a player:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.
-    \**note that every device has to be connected to the same network to be able to connect to the game*
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.  
+    \**note that every device has to be connected to the same network to be able to connect to the game*  
     \**also note that the ip address can be found in the lobby screen after pressing the play button in the app*
 
 5. **Connect as a host:**
 
-    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.
+    On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.  
     \**note that every device has to be connected to the same network to be able to connect to the game*
 
 
@@ -105,3 +105,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Electron](https://www.electronjs.org/)
 - [Express](https://expressjs.com/)
 - [WebSocket](https://www.npmjs.com/package/ws)
+- [Atma](https://fonts.google.com/specimen/Atma)
+- [Chewy](https://fonts.google.com/specimen/Chewy)
+- [Winky Sans](https://fonts.google.com/specimen/Winky+Sans)
+- [Lilita One](https://fonts.google.com/specimen/Lilita+One)
