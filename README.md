@@ -105,6 +105,9 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - [Electron](https://www.electronjs.org/)
 - [Express](https://expressjs.com/)
 - [WebSocket](https://www.npmjs.com/package/ws)
+
+This project uses the following fonts:
+
 - [Atma](https://fonts.google.com/specimen/Atma)
 - [Chewy](https://fonts.google.com/specimen/Chewy)
 - [Winky Sans](https://fonts.google.com/specimen/Winky+Sans)
