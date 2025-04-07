@@ -35,8 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const answerInput = document.getElementById('answerInput');
     const questionImage = document.getElementById('questionImage');
     const removeQuestionImageButton = document.getElementById('removeQuestionImageButton');
+    const downloadQuestionImageButton = document.getElementById('downloadQuestionImageButton');
     const answerImage = document.getElementById('answerImage');
     const removeAnswerImageButton = document.getElementById('removeAnswerImageButton');
+    const downloadAnswerImageButton = document.getElementById('downloadAnswerImageButton');
     const saveQuestionButton = document.getElementById('saveQuestionButton');
     const cancelQuestionButton = document.getElementById('cancelQuestionButton');
 
@@ -485,8 +487,57 @@ document.addEventListener('DOMContentLoaded', function() {
         questionImage.src = '../images/add_picture.png';
     });
 
+    downloadQuestionImageButton.addEventListener('click', async function() {
+
+        let questionImageSrc = questionImage.src;
+        if (questionImageSrc.includes('add_picture.png')) {
+            alert('No image to download!');
+            return;
+        }
+
+        let downloadsDir = ipcRenderer.sendSync('get-downloads-dir');
+        // Rename file to QI_yyyy_mm-dd_hh-mm-ss.png
+        let fileType = questionImageSrc.split(';')[0].split('/')[1];
+        let fileName = "QI_" + new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T','_') + `.${fileType}`;
+        let filePath = path.join(downloadsDir, fileName);
+        const base64Data = questionImageSrc.split(',')[1];
+        const buffer = Buffer.from(base64Data, 'base64');
+        fs.writeFile(filePath, buffer, (err) => {
+            if (err) {
+                console.error('Error saving image:', err);
+                alert('Error saving image');
+            } else {
+                alert('Image saved to Downloads folder');
+            }
+        });
+    });
+
     removeAnswerImageButton.addEventListener('click', function() {
         answerImage.src = '../images/add_picture.png';
+    });
+
+    downloadAnswerImageButton.addEventListener('click', async function() {
+        let answerImageSrc = answerImage.src;
+        if (answerImageSrc.includes('add_picture.png')) {
+            alert('No image to download!');
+            return;
+        }
+
+        let downloadsDir = ipcRenderer.sendSync('get-downloads-dir');
+        // Rename file to AI_yyyy_mm-dd_hh-mm-ss.png
+        let fileType = answerImageSrc.split(';')[0].split('/')[1];
+        let fileName = "AI_" + new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T','_') + `.${fileType}`;
+        let filePath = path.join(downloadsDir, fileName);
+        const base64Data = answerImageSrc.split(',')[1];
+        const buffer = Buffer.from(base64Data, 'base64');
+        fs.writeFile(filePath, buffer, (err) => {
+            if (err) {
+                console.error('Error saving image:', err);
+                alert('Error saving image');
+            } else {
+                alert('Image saved to Downloads folder');
+            }
+        });
     });
 
     saveQuestionButton.addEventListener('click', function() {

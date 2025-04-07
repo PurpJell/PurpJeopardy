@@ -605,10 +605,21 @@ button {
     border-color: #000000;
 }
 
+.image-button-container {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 1vw;
+    margin-top: 2vh;
+}
+
 .remove-image-button {
-    width: 3vw;
-    height: 3vw;
+    width: 2.7vw;
+    height: 2.7vw;
     margin-right: 1vw;
+
+    padding: 0.2vw;
 
     object-fit: cover;
 
@@ -616,6 +627,25 @@ button {
     border-width: 0.2vw;
     border-color: #000000;
     border-radius: 0.6vw;
+
+    background: linear-gradient(150deg, #940000, #5e0000);
+}
+
+.download-image-button {
+    width: 2.7vw;
+    height: 2.7vw;
+    margin-right: 1vw;
+
+    padding: 0.2vw;
+
+    object-fit: cover;
+
+    border-style: solid;
+    border-width: 0.2vw;
+    border-color: #000000;
+    border-radius: 0.6vw;
+
+    background: linear-gradient(150deg, #2cffed, #006086);
 }
 
 *::-webkit-scrollbar {

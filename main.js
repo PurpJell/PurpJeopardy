@@ -21,6 +21,11 @@ ipcMain.on('get-boards-dir', (event) => {
     event.returnValue = boardsDir;
 });
 
+ipcMain.on('get-downloads-dir', (event) => {
+    let downloadDir = app.getPath('downloads');
+    event.returnValue = downloadDir;
+});
+
 function getBoardsDir() {
     let boardsDir;
     if (process.env.NODE_ENV === 'development') {
