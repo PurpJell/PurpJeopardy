@@ -8,6 +8,31 @@
     src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Bangers';
+    src: url('../fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CherryBomb';
+    src: url('../fonts/CherryBombOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Coiny';
+    src: url('../fonts/Coiny-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DynaPuff';
+    src: url('../fonts/DynaPuff-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('../fonts/LuckiestGuy-Regular.ttf') format('truetype');
+}
+
 body {
     background: linear-gradient(180deg, #2e97c1, #1e6785);
     height: 100vh;
@@ -19,8 +44,8 @@ body {
 }
 
 h1 {
-    font-family: "Chewy";
-    font-weight: 400;
+    font-family: "DynaPuff";
+    font-weight: 800;
     font-size: 8vw;
     color: rgb(43, 196, 243);
     margin: 0;
@@ -64,12 +89,12 @@ h1 {
 button {
     width: 20vw;
     height: 12vh;
-    font-family: 'WinkySans';
+    font-family: 'CherryBomb';
     font-weight: 550;
     color: white;
     border: 0.3vw solid black;
     border-radius: 0.6vw;
-    padding: 0.2vw;
+    padding: 0 0 1vw 0.5vw;
     padding-right: 0.7vw;
     margin-top: 2vw;
     text-align: center;

@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
-        createBoardButton.textContent = 'Sukurti lenta';
-        searchBar.placeholder = 'Ieskoti lentu';
+        createBoardButton.textContent = 'Sukurti nauj\u0105 lent\u0105';
+        searchBar.placeholder = 'Ie\u0161koti lent\u0173';
     }
 
     searchBar.focus();
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (boards.length === 0) {
             noBoards.style.display = 'block';
             if (language === 'lt') {
-                noBoards.textContent = "Lentu nerasta";
+                noBoards.textContent = "Lent\u0173 nerasta";
             } else {
                 noBoards.textContent = "No boards found";
             }
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const lastEdited = document.createElement('div');
             lastEdited.className = 'last-edited';
             if (language === 'lt') {
-                lastEdited.textContent = 'Paskutini karta redaguota: ' + metaData.lastEdited;
+                lastEdited.textContent = 'Paskutin\u012F kart\u0105 redaguota: ' + metaData.lastEdited;
             } else {
                 lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
             }
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const description = document.createElement('div');
             description.className = 'board-description';
             if (language === 'lt') {
-                description.textContent = 'Aprasymas: ' + metaData.description;
+                description.textContent = 'Apra\u0161ymas: ' + metaData.description;
             } else
             {
                 description.textContent = 'Description: ' + metaData.description;
@@ -96,12 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 metaData = data.meta;
                 if (language === 'lt') {
-                    lastEdited.textContent = 'Paskutini karta redaguota: ' + metaData.lastEdited;
+                    lastEdited.textContent = 'Paskutin\u012F kart\u0105 redaguota: ' + metaData.lastEdited;
                 } else {
                     lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
                 }
                 if (language === 'lt') {
-                    description.textContent = 'Aprasymas: ' + metaData.description;
+                    description.textContent = 'Apra\u0161ymas: ' + metaData.description;
                 } else
                 {
                     description.textContent = 'Description: ' + metaData.description;
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hiddenBoards === boardCards.length) {
             noBoards.style.display = 'block';
             if (language === 'lt') {
-                noBoards.textContent = "Lentu nerasta";
+                noBoards.textContent = "Lent\u0173 nerasta";
             } else {
                 noBoards.textContent = "No boards found";
             }

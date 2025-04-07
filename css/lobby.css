@@ -18,6 +18,31 @@
     src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Bangers';
+    src: url('../fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CherryBomb';
+    src: url('../fonts/CherryBombOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Coiny';
+    src: url('../fonts/Coiny-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DynaPuff';
+    src: url('../fonts/DynaPuff-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('../fonts/LuckiestGuy-Regular.ttf') format('truetype');
+}
+
 body {
     background: linear-gradient(180deg, #000000, #0b001a, #0f0022, #14002e, #11003f);
     height: 100vh;
@@ -60,7 +85,7 @@ h1 {
     margin-top: 0.5vw;
     margin-bottom: -1.5vh;
     font-size: 4.1vw;
-    font-family: 'Atma';
+    font-family: 'CherryBomb';
     font-weight: 600;
     color: white;
     text-align: center;
@@ -87,8 +112,9 @@ h1 {
     width: 25%;
     margin-top: 0;
     margin-bottom: 0.5vw;
-    margin-left: 39%;
+    margin-left: 37%;
     font-size: 2.7vw;
+    text-align: center;
     font-family: 'Lilita';
     color: white;
     text-shadow: 
@@ -148,7 +174,7 @@ button {
     border-radius: 0.6vw;
     padding: 0.5vw;
     color: white;
-    font-family: 'WinkySans';
+    font-family: 'Bangers';
     font-size: 1.2vw;
     z-index: 1;
 }
@@ -292,9 +318,9 @@ button {
     border-radius: 0.8vw;
 
     background-color: #e7bd00;
-    font-size: 3.8vw;
+    font-size: 3.6vw;
     color: white;
-    font-family: 'Lilita';
+    font-family: 'LuckiestGuy';
 
     z-index: 1;
 }

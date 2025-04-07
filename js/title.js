@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let language = localStorage.getItem('language') || 'en';
 
     if (language === 'lt') {
-        playGameButton.textContent = 'Zaisti';
-        createBoardButton.textContent = 'Sukurti lenta';
+        playGameButton.textContent = '\u017Daisti';
+        createBoardButton.textContent = 'Sukurti lent\u0105';
         optionsButton.textContent = 'Nustatymai';
-        exitGameButton.textContent = 'Iseiti';
+        exitGameButton.textContent = 'I\u0161eiti';
         languageButton.src = '../images/icons/flag_lt.png';
     }
     else {

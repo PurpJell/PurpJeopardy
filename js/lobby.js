@@ -18,15 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (language === 'lt') {
         hideButton.textContent = 'Rodyti';
-        joinGameText.textContent = 'Prisijunkite prie zaidimo';
+        joinGameText.textContent = 'Prisijunkite prie \u017Eaidimo';
         backButton.textContent = 'Atgal';
-        playerCountEnding.textContent = '4 zaideju';
+        playerCountEnding.textContent = '4 \u017Eaid\u0117j\u0173';
     }
 
     let randomIcons = ["../images/rocket.png", "../images/alien.png", "../images/moon.png", "../images/astronaut.png"]
 
     let hideIpAddress = true;
-    ipAddress.textContent = "***************";
+    ipAddress.textContent = "**********";
 
     hideButton.addEventListener('click', function() {
         if (hideIpAddress) {
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
             ipAddress.textContent = process.env.IP_ADDRESS;
             ipAddress.textContent += ':3000';
             if (language === 'lt') {
-                hideButton.textContent = 'Slepti';
+                hideButton.textContent = 'Sl\u0117pti';
             }
             else {
                 hideButton.textContent = 'Hide';
             }
         } else {
-            ipAddress.textContent = "***************";
+            ipAddress.textContent = "**********";
             hideIpAddress = true;
             if (language === 'lt') {
                 hideButton.textContent = 'Rodyti';
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!fs.existsSync(boardsPath)) {
         console.error('Boards folder does not exist:', boardsPath);
         if (language === 'lt') {
-            dropdownMenu.textContent = "Lentu nerasta";
+            dropdownMenu.textContent = "Lent\u0173 nerasta";
         } else {
             dropdownMenu.textContent = "No boards found";
         }
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if there are no boards
         if (boards.length === 0) {
             if (language === 'lt') {
-                dropdownMenu.textContent = "Lentu nerasta";
+                dropdownMenu.textContent = "Lent\u0173 nerasta";
             } else {
                 dropdownMenu.textContent = "No boards found";
             }

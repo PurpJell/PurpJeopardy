@@ -18,6 +18,31 @@
     src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Bangers';
+    src: url('../fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CherryBomb';
+    src: url('../fonts/CherryBombOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Coiny';
+    src: url('../fonts/Coiny-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DynaPuff';
+    src: url('../fonts/DynaPuff-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('../fonts/LuckiestGuy-Regular.ttf') format('truetype');
+}
+
 .confirm-window {
     position: fixed;
     display: none;
@@ -40,8 +65,8 @@
     height: 60%;
     text-align: center;
     font-size: 2.5vw;
-    font-family: 'Atma';
-    font-weight: 400;
+    font-family: 'WinkySans';
+    font-weight: 700;
     line-height: 1.2;
     color: #000000;
     margin-top: 2vh;
@@ -55,7 +80,7 @@
 }
 
 .confirm-yes-button {
-    width: 7.2vw;
+    width: 8.2vw;
     height: 7vh;
     font-size: 2.3vw;
     text-align: center;
@@ -66,7 +91,7 @@
 }
 
 .confirm-no-button {
-    width: 7.2vw;
+    width: 8.2vw;
     height: 7vh;
     font-size: 2.3vw;
     text-align: center;
@@ -127,8 +152,8 @@ button {
     border-radius: 0.6vw;
     cursor: pointer;
     font-size: 2vw;
-    font-family: 'Atma';
-    font-weight: 900;
+    font-family: 'WinkySans';
+    font-weight: 700;
     text-align: center;
     color: white;
     text-shadow: 
@@ -156,8 +181,9 @@ button {
     text-align: center;
     width: 50vw;
     margin-left: 9vw;
-    font-family: 'WinkySans';
+    font-family: 'Bangers';
     font-weight: 700;
+    letter-spacing: 0.2vw;
     background: none;
     border: none;
     color: white;
@@ -229,8 +255,8 @@ button {
     height: 40%;
     margin-top: 0vh;
     font-size: 1.6vw;
-    font-family: 'Chewy';
-    font-weight: 400;
+    font-family: 'Chewy', 'CherryBomb';
+    font-weight: 400, 200;
     text-align: center;
     color: #000000;
     border-style: solid;
@@ -284,7 +310,7 @@ button {
     width: 6vh;
     font-size: 4vw;
     height: 7vh;
-    padding-top: 1vh;
+    padding-bottom: 1.2vh;
     background-color: #0b2f70;
     display: flex;
     justify-content: center;
@@ -298,7 +324,7 @@ button {
     width: 6vh;
     font-size: 4vw;
     height: 7vh;
-    padding-top: 1vh;
+    padding-bottom: 1.2vh;
     background-color: #0b2f70;
     display: flex;
     justify-content: center;
@@ -344,13 +370,17 @@ button {
     text-align: center;
     font-weight: bold;
     font-size: 2vw;
-    font-family: 'Atma';
-    color: #c9b824;
+    font-family: 'LuckiestGuy';
+    color: #e2cf20;
     padding-top: 0.3vh;
     padding-bottom: 2.2vh;
+
+    box-sizing: border-box;
+    overflow-wrap: break-word; /* Ensure text wraps */
+    white-space: pre-wrap; /* Preserve spaces and wrap text */
+
     border-style: solid;
     border-top-width: 0.3vh;
-
     border-right-width: 0.2vw;
     border-left-width: 0.2vw;
     border-color: #000000;
@@ -464,7 +494,8 @@ button {
     position: relative;
     margin-left: 2vw;
     font-size: 1.85vw;
-    font-family: 'Chewy';
+    font-family: 'Chewy', 'CherryBomb';
+    font-weight: 400, 200;
     line-height: 1.2;
     text-align: center;
     color: #000000;
@@ -495,10 +526,13 @@ button {
 }
 
 .daily-double-text {
-    font-size: 3.5vw;
-    font-family: 'Atma';
+    font-size: 2.5vw;
+    font-family: 'LuckiestGuy';
+    font-weight: 400;
+    letter-spacing: -0.1vw;
     color: #000000;
     text-align: center;
+    margin-top: 1.8vh;
     margin-left: 1vw;
     margin-right: -1vw;
 }
@@ -512,7 +546,7 @@ button {
 }
 
 .question-editor button {
-    width: 10vw;
+    width: 12vw;
     height: 7vh;
     padding-left: 2%;
     padding-right: 2%;
@@ -528,7 +562,7 @@ button {
 
 .save-question-button {
     position: absolute;
-    right: 13vw;
+    right: 15vw;
     margin-top: 2.5vh;
 }
 

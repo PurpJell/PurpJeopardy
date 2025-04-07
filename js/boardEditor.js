@@ -56,23 +56,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const language = localStorage.getItem('language') || 'en';
 
     let changesMade = false;
-    const invalidChars = /[\\/:*?"<>|]/g;
+    const invalidChars = /[\\/:*?"<>|\u0105\u010d\u0119\u0117\u012f\u0161\u0173\u016b\u017e\u0104\u010c\u0118\u0116\u012e\u0160\u0172\u016a\u017d\`\'\"\:\;]/g;
 
     const BOARDS_DIR = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
-        saveButton.textContent = 'Issaugoti';
-        deleteButton.textContent = 'Istrinti';
+        saveButton.textContent = 'I\u0161saugoti';
+        deleteButton.textContent = 'I\u0161trinti';
         questionInput.placeholder = 'Klausimas';
         answerInput.placeholder = 'Atsakymas';
-        dailyDoubleText.textContent = 'Dvigubi taskai?';
-        saveQuestionButton.textContent = 'Issaugoti';
-        cancelQuestionButton.textContent = 'Atsaukti';
-        descriptionLabel.textContent = 'Aprasymas';
-        descriptionInput.placeholder = 'Aprasymas';
-        finalSaveButton.textContent = 'Issaugoti';
-        finalCancelButton.textContent = 'Atsaukti';
+        dailyDoubleText.textContent = 'Dvigubi ta\u0161kai?';
+        saveQuestionButton.textContent = 'I\u0161saugoti';
+        cancelQuestionButton.textContent = 'At\u0161aukti';
+        descriptionLabel.textContent = 'Apra\u0161ymas';
+        descriptionInput.placeholder = 'Apra\u0161ymas';
+        finalSaveButton.textContent = 'I\u0161saugoti';
+        finalCancelButton.textContent = 'At\u0161aukti';
     }
 
     // if no board was passed as a parameter, fetch exampleBoardData.pjb
@@ -135,6 +135,13 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryInputs[i].addEventListener('input', function() {
                 boardData.pages[currentPage].categories[i].name = categoryInputs[i].value;
                 changesMade = true;
+                if (categoryInputs[i].value.length > 23)
+                {
+                    categoryInputs[i].style.fontSize = '1.7vw';
+                }
+                else {
+                    categoryInputs[i].style.fontSize = '2vw';
+                }
             });
         });
 
@@ -174,9 +181,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Create the category inputs
     for (let i = 0; i < 5; i++) {
-        const category = document.createElement('input');
+        const category = document.createElement('textarea'); // Use <textarea> instead of <input>
         category.className = 'category';
         category.placeholder = 'Category name';
+        category.maxLength = 30;
+        category.rows = 1;
+        category.style.resize = 'none';
+        category.spellcheck = false;
         categoriesRow.appendChild(category);
     }
 
@@ -216,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let yesText = 'Yes';
             let noText = 'No';
             if (language === 'lt') {
-                confirmText = 'Yra neissaugotu pakeitimu. Ar tikrai norite iseiti?';
+                confirmText = 'Yra nei\u0161saugot\u0173 pakeitim\u0173. Ar tikrai norite i\u0161eiti?';
                 yesText = 'Taip';
                 noText = 'Ne';
             }
@@ -256,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let yesText = 'Yes';
                 let noText = 'No';
                 if (language === 'lt') {
-                    confirmText = 'Lenta su tokiu pavadinimu jau egzistuoja. Ar norite ja perrasyti?';
+                    confirmText = 'Lenta su tokiu pavadinimu jau egzistuoja. Ar norite j\u0105 perra\u0161yti?';
                     yesText = 'Taip';
                     noText = 'Ne';
                 }
@@ -274,8 +285,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 let yesText = 'Delete';
                 let noText = 'Keep';
                 if (language === 'lt') {
-                    confirmText = 'Lentos pavadinimas pasikeite. Ar norite istrinti ar palikti sena lenta?';
-                    yesText = 'Istrinti';
+                    confirmText = 'Lentos pavadinimas pasikeit\u0117. Ar norite i\u0161trinti, ar palikti sen\u0105 lent\u0105?';
+                    yesText = 'I\u0161trinti';
                     noText = 'Palikti';
                 }
                 return await customConfirm(confirmText, yesText, noText, false);
@@ -386,14 +397,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let yesText = 'Yes';
         let noText = 'No';
         if (language === 'lt') {
-            confirmText = 'Ar tikrai norite istrinti sia lenta?';
+            confirmText = 'Ar tikrai norite i\u0161trinti \u0161i\u0105 lent\u0105?';
             yesText = 'Taip';
             noText = 'Ne';
         }
         customConfirm(confirmText, yesText, noText)
             .then((confirmed) => {
                 if (confirmed) {
-                    fs.rm(`./boards/${boardData.meta.title}`, { recursive: true, force: true }, (err) => {
+                    let boardPath = path.join(BOARDS_DIR, `${boardData.meta.title}.pjb`);
+                    fs.rm(boardPath, { recursive: true, force: true }, (err) => {
                         if (err) {
                             console.error('Error deleting board:', err);
                             alert('Error deleting board!\nMake sure the board "' + boardData.meta.title + '" exists.');
@@ -529,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     let yesText = 'Yes';
                     let noText = 'No';
                     if (language === 'lt') {
-                        confirmText = 'Yra neissaugotu pakeitimu. Ar tikrai norite iseiti?';
+                        confirmText = 'Yra nei\u0161saugot\u0173 pakeitim\u0173. Ar tikrai norite i\u0161eiti?';
                         yesText = 'Taip';
                         noText = 'Ne';
                     }

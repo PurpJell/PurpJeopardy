@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let language = localStorage.getItem('language') || 'en';
 
     if (language === 'lt') {
-        backToTitleText.textContent = 'Ar norite grizti i meniu?';
+        backToTitleText.textContent = 'Ar norite gr\u012F\u017Eti \u012F meniu?';
         confirmTitleButton.innerHTML = `
                                         <svg>
                                             <text x="5vw" y="50%" text-anchor="middle" class="svg-text">
@@ -191,6 +191,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
             categoryDiv.textContent = category.name;
+            if (category.name.length > 15) {
+                categoryDiv.style.fontSize = '1.6vw';
+            }
             categoriesContainer.appendChild(categoryDiv);
         });
 

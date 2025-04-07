@@ -112,3 +112,8 @@ This project uses the following fonts:
 - [Chewy](https://fonts.google.com/specimen/Chewy)
 - [Winky Sans](https://fonts.google.com/specimen/Winky+Sans)
 - [Lilita One](https://fonts.google.com/specimen/Lilita+One)
+- [Bangers](https://fonts.google.com/specimen/Bangers)
+- [Cherry Bomb One](https://fonts.google.com/specimen/Cherry+Bomb+One)
+- [Coiny](https://fonts.google.com/specimen/Coiny)
+- [DynaPuff](https://fonts.google.com/specimen/DynaPuff)
+- [LuckiestGuy](https://fonts.google.com/specimen/Luckiest+Guy)

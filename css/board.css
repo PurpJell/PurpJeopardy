@@ -9,8 +9,38 @@
 }
 
 @font-face {
+    font-family: 'WinkySans';
+    src: url('../fonts/WinkySans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'Atma';
     src: url('../fonts/Atma-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bangers';
+    src: url('../fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CherryBomb';
+    src: url('../fonts/CherryBombOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Coiny';
+    src: url('../fonts/Coiny-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DynaPuff';
+    src: url('../fonts/DynaPuff-VariableFont_wdth\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'LuckiestGuy';
+    src: url('../fonts/LuckiestGuy-Regular.ttf') format('truetype');
 }
 
 body {
@@ -61,12 +91,12 @@ body {
 .back-to-title-window p {
     margin-top: 5%;
     margin-bottom: 7.5%;
-    width: 70%;
-    font-size: 6vw;
+    width: 85%;
+    font-size: 5.4vw;
     text-align: center;
-    font-family: 'Atma';
+    font-family: 'Coiny';
     font-weight: 400;
-    line-height: 1.2;
+    line-height: 1;
     color: white;
     text-shadow: 
         -2px -2px 0 #000,  2px -2px 0 #000,  0px  2px 0 #000,  2px 0px 0 #000,
@@ -79,6 +109,8 @@ body {
 }
 
 .button-container {
+    position: absolute;
+    bottom: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,14 +123,10 @@ body {
 .button-container button {
     width: 11.5vw;
     height: 5.8vw;
-    font-family: 'Lilita';
-    font-weight: 400;
-    font-size: 4.2vw;
     border: 0.4vw solid black;
     border-radius: 0.6vw;
     padding-right: 0.7vw;
     cursor: pointer;
-    -webkit-text-stroke: 1px;
 }
 
 .confirm-title-button {
@@ -106,14 +134,15 @@ body {
 }
 
 svg{
-    font: 4.9vw 'Lilita';
+    font: 4.5vw 'WinkySans';
+    font-weight: 400;
 }
 
 .svg-text {
     fill: white;
     font-weight: bolder;
     stroke: black;
-    stroke-width: 1.5px;
+    stroke-width: 0.2vw;
     stroke-linejoin : round;
 }
 
@@ -278,8 +307,8 @@ svg{
     text-align: center;
     font-weight: bold;
     font-size: 2vw;
-    font-family: 'Atma';
-    color: #c9b824;
+    font-family: 'LuckiestGuy';
+    color: #e2cf20;
     padding-top: 0.3vh;
     padding-bottom: 2.2vh;
     border-style: solid;
@@ -377,10 +406,11 @@ svg{
     justify-content: center;
     align-items: center;
     z-index: 100;
-    font-size: 4.5vw;
+    font-size: 4.4vw;
     text-align: center;
-    font-family: 'Atma';
-    font-weight: 400;
+    font-family: 'WinkySans';
+    font-weight: 800;
+    -webkit-text-stroke: 0.2vw black;
     color: white;
     border: solid 0.8vw;
     border-color: #160f31 #0d081d #080513 #120c2b;
