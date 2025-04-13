@@ -13,6 +13,35 @@
     <button class="options-button" id="optionsButton">Options</button>
     <button class="exit-button" id="exitButton">Exit Game</button>
 
+    <div class="cover" id="cover"></div>
+    <div class="options-screen" id="optionsScreen">
+    
+        <h2 id="optionsTitleText">Options</h2>
+        <div class="options-content">
+            <label for="musicVolumeSlider" id="musicVolumeText">Music Volume:</label>
+            <input type="range" id="musicVolumeSlider" min="0" max="100" value="100">
+            <label for="soundEffectsVolumeSlider" id="soundEffectsVolumeText">Sound Effects Volume:</label>
+            <input type="range" id="soundEffectsVolumeSlider" min="0" max="100" value="100">
+            <label for="dropdown" id="ipAddressText">IP Address:</label>
+            <div class="dropdown">
+                <button class="dropdown-button" id="dropdownButton">127.0.0.1</button>
+                <div class="dropdown-menu" id="dropdownMenu"></div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="save-options-button" id="saveOptionsButton">Save</button>
+            <button class="cancel-options-button" id="cancelOptionsButton">Cancel</button>
+        </div>
+    </div>
+
+    <div class="confirm-window" id="confirmWindow">
+        <label class="confirm-text" id="confirmText">Are you sure you want to delete this board?</label>
+        <div class="confirm-button-container">
+            <button class="confirm-yes-button" id="confirmYesButton">Yes</button>
+            <button class="confirm-no-button" id="confirmNoButton">No</button>
+        </div>
+    </div>
+
     <div class="language-container">
         <img src="../images/icons/flag_en.png" class="flag" id="languageButton">
     </div>

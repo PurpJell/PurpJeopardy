@@ -4,9 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const fs = require('fs');
-const os = require('os');
 const { execSync } = require('child_process');
-const { get } = require('http');
 
 const serverApp = express();
 const port = 3000;
@@ -26,14 +24,34 @@ ipcMain.on('get-downloads-dir', (event) => {
     event.returnValue = downloadDir;
 });
 
+ipcMain.on('set-config-ip', (event, ipAddress) => {
+    const configPath = path.join(app.getPath('userData'), 'config.json');
+    const config = { ipAddress: ipAddress };
+
+    // Write the configuration to the file
+    fs.writeFileSync(configPath, JSON.stringify(config), 'utf8');
+    app.relaunch();
+    app.exit(0);
+});
+
+ipcMain.on('get-ip-list', (event) => {
+    const ips = localIPs;
+    event.returnValue = localIPs;
+});
+
+ipcMain.on('get-ip-address', (event) => {
+    const ipAddress = process.env.IP_ADDRESS;
+    event.returnValue = ipAddress;
+});
+
 function getBoardsDir() {
     let boardsDir;
     if (process.env.NODE_ENV === 'development') {
         // Development mode: Use the boards folder in the project directory
         boardsDir = path.join(__dirname, `boards`);
     } else {
-        // Production mode: Use the boards folder in appData/Roaming
-        boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
+        // Production mode: Use the boards folder in appData/Roaming/PurpJeopardy
+        boardsDir = path.join(app.getPath('userData'), 'boards');
     }
 
     if (!fs.existsSync(boardsDir)) {
@@ -42,8 +60,32 @@ function getBoardsDir() {
     return boardsDir;
 }
 
+function getAllIPs() {
+    try {
+        const output = execSync('ipconfig', { encoding: 'utf8' });
+        const lines = output.split('\n');
+
+        let IPs = [];
+
+        for (let line of lines) {
+            line = line.trim();
+            if (line.includes('IPv4 Address')) {
+                const ipMatch = line.split(':')[1].trim();
+                if (ipMatch && !IPs.includes(ipMatch)) {
+                    IPs.push(ipMatch);
+                }
+            }
+        }
+
+        return IPs;
+    }
+    catch (error) {
+        console.error('Error retrieving IP addresses using ipconfig:', error.message);
+    }
+}
+
 // Function to get the local IP address of an adapter with 'LAN' in its name
-function getLocalIPAddress() {
+function getExpectedIPAddress() {
     try {
         // Execute the ipconfig command and parse its output
         const output = execSync('ipconfig', { encoding: 'utf8' });
@@ -80,14 +122,57 @@ function getLocalIPAddress() {
     return '127.0.0.1'; // Fallback to localhost if no matching IP is found
 }
 
-// Automatically set the IP_ADDRESS environment variable
-process.env.IP_ADDRESS = getLocalIPAddress();
-console.log(`IP Address set to: ${process.env.IP_ADDRESS}`);
+function getConfigIP () {
+    const configPath = path.join(app.getPath('userData'), 'config.json');
+    if (fs.existsSync(configPath)) {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        return config.ipAddress || null;
+    }
+    return null;
+}
 
+let localIPs = getAllIPs();
+let IP_ADDRESS = getConfigIP();
+
+
+if (IP_ADDRESS === null) {  // No IP address in config
+    IP_ADDRESS = getExpectedIPAddress();
+    if (!checkIPvalidity(IP_ADDRESS)) {
+        console.log("Expected IP Address is not valid, using default IP Address");
+    }
+}
+else {  // IP address in config
+    if (!checkIPvalidity(IP_ADDRESS)) {  // IP address in config is not valid
+        console.log("IP Address from config is not valid, trying expected IP Address");
+        IP_ADDRESS = getExpectedIPAddress();  // Try to get the expected IP address
+        if (!checkIPvalidity(IP_ADDRESS)) {
+            console.log("Expected IP Address is not valid, using default IP Address");
+        }
+    }
+}
+
+// Check if the IP address is valid and set it in the environment variable
+// If not valid, set it to the first local IP address or localhost
+function checkIPvalidity(ipAddress)
+{
+    if (localIPs.includes(ipAddress)) {
+        process.env.IP_ADDRESS = ipAddress;
+        return true;
+    }
+    else if (localIPs.length > 0) {
+        process.env.IP_ADDRESS = localIPs[0];
+    }
+    else {
+        process.env.IP_ADDRESS = '127.0.0.1';
+    }
+    return false;
+}
+
+console.log(`IP Address set to: ${process.env.IP_ADDRESS}`);
 
 function createBoardsFolder() {
     // Determine the directory where the .exe file is located
-    const boardsDir = path.join(app.getPath('appData'), 'PurpJeopardy', 'boards');
+    const boardsDir = path.join(app.getPath('userData'), 'boards');
 
     // Check if the "boards" folder exists, and create it if it doesn't
     if (!fs.existsSync(boardsDir)) {

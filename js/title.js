@@ -1,12 +1,31 @@
+const { ipcRenderer } = require('electron');
+
 document.addEventListener('DOMContentLoaded', function() {
-    // const bubbleContainer = document.getElementById('bubbles');
     const playGameButton = document.getElementById('playButton');
     const createBoardButton = document.getElementById('createBoardButton');
     const optionsButton = document.getElementById('optionsButton');
     const exitGameButton = document.getElementById('exitButton');
     const languageButton = document.getElementById('languageButton');
 
+    const cover = document.getElementById('cover');
+    const optionsScreen = document.getElementById('optionsScreen');
+    const optionsTitleText = document.getElementById('optionsTitleText');
+    const musicVolumeText = document.getElementById('musicVolumeText');
+    const musicVolumeSlider = document.getElementById('musicVolumeSlider');
+    const soundEffectsVolumeText = document.getElementById('soundEffectsVolumeText');
+    const soundEffectsVolumeSlider = document.getElementById('soundEffectsVolumeSlider');
+    const ipAddressText = document.getElementById('ipAddressText');
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const saveOptionsButton = document.getElementById('saveOptionsButton');
+    const cancelOptionsButton = document.getElementById('cancelOptionsButton');
+
     let language = localStorage.getItem('language') || 'en';
+    let musicVolume = localStorage.getItem('musicVolume') || 100;
+    let soundEffectsVolume = localStorage.getItem('soundEffectsVolume') || 100;
+    let ipAddress = ipcRenderer.sendSync('get-ip-address');
+    localStorage.setItem('ipAddress', ipAddress);
+
 
     if (language === 'lt') {
         playGameButton.textContent = '\u017Daisti';
@@ -14,6 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
         optionsButton.textContent = 'Nustatymai';
         exitGameButton.textContent = 'I\u0161eiti';
         languageButton.src = '../images/icons/flag_lt.png';
+        optionsTitleText.textContent = 'Nustatymai';
+        musicVolumeText.textContent = 'Muzikos garsumas';
+        soundEffectsVolumeText.textContent = 'Efekt\u0173 garsumas';
+        ipAddressText.textContent = 'IP adresas';
+        saveOptionsButton.textContent = 'I\u0161saugoti';
+        cancelOptionsButton.textContent = 'At\u0161aukti';
     }
     else {
         languageButton.src = '../images/icons/flag_en.png';
@@ -225,6 +250,112 @@ document.addEventListener('DOMContentLoaded', function() {
     createBoardButton.addEventListener('click', () => {
         window.location.href = 'boardList.html';
     });
+
+    let localIPs;
+
+    optionsButton.addEventListener('click', () => {
+
+        musicVolumeSlider.value = musicVolume;
+        soundEffectsVolumeSlider.value = soundEffectsVolume;
+        dropdownButton.textContent = ipAddress;
+
+        if (!localIPs) {
+            localIPs = ipcRenderer.sendSync('get-ip-list');
+
+            let ipList = localIPs.map(ip => {
+                const option = document.createElement('option');
+                option.value = ip;
+                option.textContent = ip;
+                return option;
+            });
+
+            ipList.forEach(ip => {
+                const dropdownOption = document.createElement('div');
+                dropdownOption.textContent = ip.value;
+                dropdownOption.className = 'dropdown-option';
+                dropdownOption.addEventListener('click', () => {
+                    dropdownButton.textContent = ip.value;
+                    dropdownMenu.style.display = 'none';
+                });
+                dropdownMenu.appendChild(dropdownOption);
+            });
+        }
+
+        if (optionsScreen.style.display === 'flex') {
+            optionsScreen.style.display = 'none';
+            cover.style.display = 'none';
+        } else {
+            optionsScreen.style.display = 'flex';
+            cover.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (event.target !== dropdownButton && event.target !== dropdownMenu) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
+    dropdownButton.addEventListener('click', () => {
+        if (dropdownMenu.style.display === 'flex') {
+            dropdownMenu.style.display = 'none';
+        } else {
+            dropdownMenu.style.display = 'flex';
+        }
+    });
+
+    saveOptionsButton.addEventListener('click', () => {
+        musicVolume = musicVolumeSlider.value;
+        soundEffectsVolume = soundEffectsVolumeSlider.value;
+        ipAddress = dropdownButton.textContent;
+
+        let previousIP = localStorage.getItem('ipAddress');
+
+        if (previousIP !== ipAddress) {
+            let question = 'Changing the IP address will restart the game. Do you want to continue?';
+            let yesText = 'Yes';
+            let noText = 'No';
+            if (language === 'lt') {
+                question = 'Kei\u010Diant IP adres\u0105 reikia perkrauti \u017Eaidim\u0105. Ar tikrai norite t\u0119sti?';
+                yesText = 'Taip';
+                noText = 'Ne';
+            }
+
+            customConfirm(question, yesText, noText, false).then((result) => {
+                if (!result) {
+                    return;
+                }
+                else {
+                    localStorage.setItem('musicVolume', musicVolume);
+                    localStorage.setItem('soundEffectsVolume', soundEffectsVolume);
+                    localStorage.setItem('ipAddress', ipAddress);
+    
+                    optionsScreen.style.display = 'none';
+                    cover.style.display = 'none';
+                    ipcRenderer.send('set-config-ip', ipAddress);
+                }
+            });
+        }
+        else {
+            localStorage.setItem('musicVolume', musicVolume);
+            localStorage.setItem('soundEffectsVolume', soundEffectsVolume);
+            localStorage.setItem('ipAddress', ipAddress);
+    
+            optionsScreen.style.display = 'none';
+            cover.style.display = 'none';
+        }
+
+    });
+
+    cancelOptionsButton.addEventListener('click', () => {
+
+        musicVolume = localStorage.getItem('musicVolume') || 100;
+        soundEffectsVolume = localStorage.getItem('soundEffectsVolume') || 100;
+        ipAddress = localStorage.getItem('ipAddress');
+
+        optionsScreen.style.display = 'none';
+        cover.style.display = 'none';
+    });
     
     exitGameButton.addEventListener('click', () => {
         window.close();
@@ -240,5 +371,47 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('language', language);
         location.reload();
     });
+
+    function customConfirm(message, yesText, noText, removeCover = true) {
+        return new Promise((resolve) => {
+            confirmText.textContent = message;
+            confirmYesButton.textContent = yesText;
+            confirmNoButton.textContent = noText;
+            confirmWindow.style.display = 'flex';
+            cover.style.display = 'block';
+            cover.style.zIndex = 4;
+    
+            function handleYesClick() {
+                cleanup();
+                resolve(true); // Resolve the promise with `true` for "Yes"
+            }
+    
+            function handleNoClick() {
+                cleanup();
+                resolve(false); // Resolve the promise with `false` for "No"
+            }
+    
+            function handleEscapeKey(event) {
+                if (event.key === 'Escape') {
+                    cleanup();
+                    resolve(false); // Treat Escape as a "No"
+                }
+            }
+    
+            confirmYesButton.addEventListener('click', handleYesClick);
+            confirmNoButton.addEventListener('click', handleNoClick);
+            document.addEventListener('keydown', handleEscapeKey);
+    
+            // Cleanup function to remove event listeners and hide the confirm window
+            function cleanup() {
+                confirmYesButton.removeEventListener('click', handleYesClick);
+                confirmNoButton.removeEventListener('click', handleNoClick);
+                document.removeEventListener('keydown', handleEscapeKey);
+                confirmWindow.style.display = 'none';
+                if (removeCover) cover.style.display = 'none';
+                cover.style.zIndex = 2;
+            }
+        });
+    }
     
 });
