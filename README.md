@@ -15,21 +15,23 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 - Language selection between English and Lithuanian
 - Real-time updates using WebSockets
 - CSS and JavaScript animations
+- Automated and easily changeable IP address settings
 
 ## Upcoming Features
 
 - Sound effects and music
-- Reconnecting mid-game
+- Reconnecting mid-game as a player
 
 ## Usage for general users
 
 1. **Download the newest release:**
 
-    *Add link here*.
+    Download `PurpJeopardy.Setup.1.1.0.exe`, `PurpJeopardy.Setup.1.1.0.exe.blockmap` and `latest.yml` from
+    [Releases](https://github.com/PurpJell/PurpJeopardy/releases)
 
 2. **Install the program:**
 
-    Run `PurpJeopardy Setup <version_number>.exe`.
+    Run `PurpJeopardy.Setup.1.1.0.exe`.
 
 3. **Launch the game:**
 
