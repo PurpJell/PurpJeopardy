@@ -26,12 +26,12 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 
 1. **Download the newest release:**
 
-    Download `PurpJeopardy.Setup.1.1.0.exe`, `PurpJeopardy.Setup.1.1.0.exe.blockmap` and `latest.yml` from
-    [Releases](https://github.com/PurpJell/PurpJeopardy/releases)
+    Download `PurpJeopardy.Setup.<version_number>.exe`, `PurpJeopardy.Setup.<version_number>.exe.blockmap` and `latest.yml` from
+    [Releases](https://github.com/PurpJell/PurpJeopardy/releases/latest)
 
 2. **Install the program:**
 
-    Run `PurpJeopardy.Setup.1.1.0.exe`.
+    Run `PurpJeopardy.Setup.<version_number>.exe`.
 
 3. **Launch the game:**
 
