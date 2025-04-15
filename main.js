@@ -24,6 +24,17 @@ ipcMain.on('get-downloads-dir', (event) => {
     event.returnValue = downloadDir;
 });
 
+serverApp.get('/get-playlist', (req, res) => {
+    const directory = `./audio/${req.query.directory}`;
+
+    if (!fs.existsSync(directory)) {
+        return res.status(404).json({ error: 'Directory not found' });
+    }
+
+    const files = fs.readdirSync(directory).map(file => path.join(directory, file));
+    res.json(files);
+});
+
 ipcMain.on('set-config-ip', (event, ipAddress) => {
     const configPath = path.join(app.getPath('userData'), 'config.json');
     const config = { ipAddress: ipAddress };
@@ -207,6 +218,13 @@ function createWindow() {
 
     mainWindow.loadFile('./html/title.html');
 
+    mainWindow.on('closed', () => {
+        if (musicWindow) {
+            musicWindow.close(); // Close the music window
+            musicWindow = null; // Set it to null
+        }
+    });
+
     // Configure body-parser to handle larger payloads
     serverApp.use(bodyParser.json({ limit: '10mb' }));
     serverApp.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
@@ -379,8 +397,51 @@ function createWindow() {
     return mainWindow;
 }
 
+function createMusicWindow() {
+    musicWindow = new BrowserWindow({
+        show: false, // Hidden window
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            sandbox: false
+        }
+    });
+
+    musicWindow.loadFile('./html/music.html'); // A simple HTML file for music playback
+    musicWindow.on('closed', () => {
+        musicWindow = null;
+    });
+}
+
+ipcMain.on('play-music', (event, { src, volume, loop }) => {
+    if (musicWindow) {
+        musicWindow.webContents.send('play', { src, volume, loop });
+    }
+});
+
+ipcMain.on('set-music-volume', (event, { volume }) => {
+    if (musicWindow) {
+        musicWindow.webContents.send('setVolume', { volume });
+    }
+});
+
+ipcMain.on('stop-music', () => {
+    if (musicWindow) {
+        musicWindow.webContents.send('stop');
+    }
+});
+
+ipcMain.on('play-list', (event, { directory, volume }) => {
+    if (musicWindow) {
+        musicWindow.webContents.send('playlist', { directory, volume });
+    }
+});
+
 app.whenReady().then(() => {
     mainWindow = createWindow(); // Assign the created window to mainWindow
+    createMusicWindow(); // Create the music window
 
     mainWindow.webContents.once('did-finish-load', () => {
         mainWindow.webContents.send('restartMusic'); // Send the 'restartMusic' message

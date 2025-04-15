@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let language = localStorage.getItem('language') || 'en';
 
-    let musicTimestamp = localStorage.getItem('musicTimestamp') || 0;
-    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, musicTimestamp);
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, true);
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -84,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 boardCard.appendChild(description);
 
                 boardCard.addEventListener('click', function() {
-                    localStorage.setItem('musicTimestamp', 0);
                     window.location.href = `boardEditor.html?board=${boardFile}`;
                 });
 
@@ -112,13 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     backButton.addEventListener('click', function() {
-        const currentTime = window.musicManager.getCurrentTime();
-        localStorage.setItem('musicTimestamp', currentTime);
         window.location.href = 'title.html';
     });
 
     createBoardButton.addEventListener('click', function() {
-        localStorage.setItem('musicTimestamp', 0);
         window.location.href = 'boardEditor.html';
     });
 
@@ -152,8 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
-            const currentTime = window.musicManager.getCurrentTime();
-            localStorage.setItem('musicTimestamp', currentTime);
             window.location.href = 'title.html';
         }
     });
@@ -163,9 +156,4 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('loadingScreen').style.display = 'none';
     });
 
-});
-
-window.addEventListener('beforeunload', () => {
-    const currentTime = window.musicManager.getCurrentTime();
-    localStorage.setItem('musicTimestamp', currentTime);
 });

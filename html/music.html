@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music</title>
+</head>
+<body>
+    <script>
+        let backgroundMusic;
+        let playlist = [];
+        let currentTrackIndex = 0;
+        let musicVolume = 1; // Default volume
+
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Function to play the next track in the playlist
+        function playNextTrack() {
+            if (currentTrackIndex < playlist.length) {
+                const track = playlist[currentTrackIndex];
+                if (backgroundMusic) backgroundMusic.pause();
+                backgroundMusic = new Audio(track);
+                backgroundMusic.loop = false;
+                backgroundMusic.volume = musicVolume || 1; // Default volume
+                backgroundMusic.play();
+
+                backgroundMusic.onended = () => {
+                    currentTrackIndex++;
+                    playNextTrack(); // Play the next track when the current one ends
+                };
+            } else {  // If all tracks have been played, shuffle and start over
+                shuffleArray(playlist); // Shuffle the playlist when all tracks have been played
+                currentTrackIndex = 0; // Reset the index
+                playNextTrack(); // Start playing from the beginning
+            }
+        }
+
+        window.addEventListener('message', async (event) => {
+            const { type, data } = event.data;
+
+            if (type === 'play') {
+                if (!backgroundMusic || backgroundMusic.src !== data.src) {
+                    if (backgroundMusic) backgroundMusic.pause();
+                    backgroundMusic = new Audio(data.src);
+                    backgroundMusic.loop = data.loop || false;
+                    backgroundMusic.volume = data.volume || 1;
+                    backgroundMusic.play();
+                } else {
+                    backgroundMusic.play();
+                }
+            } else if (type === 'pause') {
+                if (backgroundMusic) backgroundMusic.pause();
+            } else if (type === 'setVolume') {
+                if (backgroundMusic) backgroundMusic.volume = data.volume;
+                musicVolume = data.volume; // Update the global volume variable
+            } else if (type === 'stop') {
+                if (backgroundMusic) {
+                    backgroundMusic.pause();
+                    backgroundMusic = null;
+                }
+            } else if (type === 'play-list') {
+                // Fetch the list of songs from the directory
+                const response = await fetch(`/get-playlist?directory=${encodeURIComponent(data.directory)}`);
+                const files = await response.json();
+
+                musicVolume = data.volume || 1; // Set the volume from the data received
+
+                // Filter audio files and shuffle the playlist
+                playlist = files.filter(file => file.endsWith('.mp3'));
+                shuffleArray(playlist);
+
+                // Reset the current track index and start playing
+                currentTrackIndex = 0;
+                playNextTrack();
+            }
+        });
+    </script>
+</body>
+</html>

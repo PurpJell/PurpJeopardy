@@ -1,3 +1,4 @@
+const { dir } = require('console');
 const { contextBridge, ipcRenderer } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -39,38 +40,18 @@ contextBridge.exposeInMainWorld('electron', {
     }
 });
 
-let backgroundMusic;
-
 contextBridge.exposeInMainWorld('musicManager', {
-    playMusic: (src, volume = 1, startTime = 0) => {
-        if (!backgroundMusic) {
-            backgroundMusic = new Audio(src);
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = volume;
-            backgroundMusic.currentTime = startTime; // Start from the saved timestamp
-            backgroundMusic.play();
-        } else if (backgroundMusic.src !== src) {
-            backgroundMusic.pause();
-            backgroundMusic = new Audio(src);
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = volume;
-            backgroundMusic.currentTime = startTime; // Start from the saved timestamp
-            backgroundMusic.play();
-        }
+    playMusic: (src, volume = 1, loop = false) => {
+        ipcRenderer.send('play-music', { src, volume, loop });
     },
     setVolume: (volume) => {
-        if (backgroundMusic) {
-            backgroundMusic.volume = volume;
-        }
+        ipcRenderer.send('set-music-volume', { volume });
     },
     stopMusic: () => {
-        if (backgroundMusic) {
-            backgroundMusic.pause();
-            backgroundMusic = null;
-        }
+        ipcRenderer.send('stop-music');
     },
-    getCurrentTime: () => {
-        return backgroundMusic ? backgroundMusic.currentTime : 0; // Return the current timestamp
+    playlist: (directory = "game", volume = 1) => {
+        ipcRenderer.send('playlist', { directory, volume });
     }
 });
 

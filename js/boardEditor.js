@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let boardData;
     let currentPage = 0;
 
+    let musicVolume = localStorage.getItem('musicVolume') || 1;
+    window.musicManager.playlist('editor', musicVolume / 100 || 1);
+
     boardCover.style.display = 'none'; // Set initial display to none for Escape key functionality
     
     // Get the current URL's query string
