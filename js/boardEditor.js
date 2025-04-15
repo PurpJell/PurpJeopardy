@@ -1,7 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-const { ipcRenderer } = require('electron');
-
 document.addEventListener('DOMContentLoaded', function() {
 
     const loadingScreen = document.getElementById('loadingScreen');
@@ -60,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let changesMade = false;
     const invalidChars = /[\\/:*?"<>|\u0105\u010d\u0119\u0117\u012f\u0161\u0173\u016b\u017e\u0104\u010c\u0118\u0116\u012e\u0160\u0172\u016a\u017d\`\'\"\:\;]/g;
 
-    const BOARDS_DIR = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
+    const BOARDS_DIR = window.electron.ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
+
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -101,28 +98,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchDefaultBoardData() {
         let filePath;
 
-        if (process.env.NODE_ENV === 'development') {
+        if (window.env.NODE_ENV === 'development') {
             // Development mode: Use the boards folder in the project directory
-            filePath = path.join(__dirname, '../boards/exampleBoard/exampleBoardData.pjb');
+            filePath = window.fileSystem.joinPath(window.appPaths.__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
         } else {
             // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
-            filePath = path.join(__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
+            filePath = window.fileSystem.joinPath(window.appPaths.__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
         }
 
-        // Read the file using fs (fetch won't work with local files in production)
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
+        // Read the file using window.fileSystem
+        window.fileSystem.readFile(filePath, 'utf8')
+            .then((data) => {
+                try {
+                    const boardData = JSON.parse(data);
+                    loadBoardData(boardData);
+                } catch (parseError) {
+                    console.error('Error parsing default board data:', parseError);
+                }
+            })
+            .catch((err) => {
                 console.error('Error reading default board data:', err);
-                return;
-            }
-
-            try {
-                const boardData = JSON.parse(data);
-                loadBoardData(boardData);
-            } catch (parseError) {
-                console.error('Error parsing default board data:', parseError);
-            }
-        });
+            });
     }        
 
     // Load the board data into the editor
@@ -259,11 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle the saving of the board
     async function handleFinalSave() {
 
-        let currentBoardFile = path.join(BOARDS_DIR, `${boardTitle.value}.pjb`);
-        let exampleBoardFile = path.join(BOARDS_DIR, 'New Board.pjb');
+        let currentBoardFile = window.fileSystem.joinPath(BOARDS_DIR, `${boardTitle.value}.pjb`);
+        let exampleBoardFile = window.fileSystem.joinPath(BOARDS_DIR, 'New Board.pjb');
 
         // Overwrite the board if it already exists?
-        if (fs.existsSync(currentBoardFile)) {
+        if (window.fileSystem.existsSync(currentBoardFile)) {
             let confirmed = await async function() {
                 let confirmText = 'A board with this name already exists. Do you want to overwrite it?';
                 let yesText = 'Yes';
@@ -281,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Delete the old board folder if it exists after detecting a rename?
-        if (boardData.meta.title !== boardTitle.value && !(boardData.meta.title === 'New Board' && !fs.existsSync(exampleBoardFile))) {
+        if (boardData.meta.title !== boardTitle.value && !(boardData.meta.title === 'New Board' && !window.fileSystem.existsSync(exampleBoardFile))) {
             let confirmed = await async function() {
                 let confirmText = 'The board name has changed. Do you want to delete or keep the old board folder?';
                 let yesText = 'Delete';
@@ -294,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return await customConfirm(confirmText, yesText, noText, false);
             }();
             if (confirmed) {
-                fs.rmSync(path.join(BOARDS_DIR, `${boardData.meta.title}.pjb`), { force: true });
+                window.fileSystem.rmSync(window.fileSystem.joinPath(BOARDS_DIR, `${boardData.meta.title}.pjb`), { force: true });
             }
         }
 
@@ -329,8 +325,8 @@ document.addEventListener('DOMContentLoaded', function() {
         boardData.meta.lastEdited = formattedDate;
 
         // write the boardData to the file
-        await fs.promises.writeFile(
-            path.join(BOARDS_DIR, `${boardTitle.value}.pjb`),
+        await window.fileSystem.writeFile(
+            window.fileSystem.joinPath(BOARDS_DIR, `${boardTitle.value}.pjb`),
             JSON.stringify(boardData, null, 4)
         );
 
@@ -406,15 +402,17 @@ document.addEventListener('DOMContentLoaded', function() {
         customConfirm(confirmText, yesText, noText)
             .then((confirmed) => {
                 if (confirmed) {
-                    let boardPath = path.join(BOARDS_DIR, `${boardData.meta.title}.pjb`);
-                    fs.rm(boardPath, { recursive: true, force: true }, (err) => {
-                        if (err) {
+                    let boardPath = window.fileSystem.joinPath(BOARDS_DIR, `${boardData.meta.title}.pjb`);
+                    window.fileSystem.rm(boardPath, { recursive: true, force: true })
+                        .then(() => {
+                            // Successfully deleted the board
+                            window.location.href = 'boardList.html';
+                        })
+                        .catch((err) => {
+                            // Handle the error
                             console.error('Error deleting board:', err);
                             alert('Error deleting board!\nMake sure the board "' + boardData.meta.title + '" exists.');
-                        } else {
-                            window.location.href = 'boardList.html';
-                        }
-                    });
+                        });
                 }
             });
     });
@@ -495,21 +493,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        let downloadsDir = ipcRenderer.sendSync('get-downloads-dir');
+        let downloadsDir = window.electron.ipcRenderer.sendSync('get-downloads-dir');
         // Rename file to QI_yyyy_mm-dd_hh-mm-ss.png
         let fileType = questionImageSrc.split(';')[0].split('/')[1];
         let fileName = "QI_" + new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T','_') + `.${fileType}`;
-        let filePath = path.join(downloadsDir, fileName);
+        let filePath = window.fileSystem.joinPath(downloadsDir, fileName);
         const base64Data = questionImageSrc.split(',')[1];
-        const buffer = Buffer.from(base64Data, 'base64');
-        fs.writeFile(filePath, buffer, (err) => {
-            if (err) {
+        const buffer = window.nodeUtils.Buffer(base64Data, 'base64');
+        window.fileSystem.writeFile(filePath, buffer)
+            .then(() => {
+                alert('Image saved to Downloads folder');
+            })
+            .catch((err) => {
                 console.error('Error saving image:', err);
                 alert('Error saving image');
-            } else {
-                alert('Image saved to Downloads folder');
-            }
-        });
+            });
     });
 
     removeAnswerImageButton.addEventListener('click', function() {
@@ -523,14 +521,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        let downloadsDir = ipcRenderer.sendSync('get-downloads-dir');
+        let downloadsDir = window.electron.ipcRenderer.sendSync('get-downloads-dir');
         // Rename file to AI_yyyy_mm-dd_hh-mm-ss.png
         let fileType = answerImageSrc.split(';')[0].split('/')[1];
         let fileName = "AI_" + new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T','_') + `.${fileType}`;
-        let filePath = path.join(downloadsDir, fileName);
+        let filePath = window.fileSystem.joinPath(downloadsDir, fileName);
         const base64Data = answerImageSrc.split(',')[1];
         const buffer = Buffer.from(base64Data, 'base64');
-        fs.writeFile(filePath, buffer, (err) => {
+        window.fileSystem.writeFile(filePath, buffer, (err) => {
             if (err) {
                 console.error('Error saving image:', err);
                 alert('Error saving image');

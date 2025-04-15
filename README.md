@@ -41,7 +41,7 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.  
     \**note that every device has to be connected to the same network to be able to connect to the game*  
-    \**also note that the ip address can be found in the lobby screen after pressing the play button in the app*
+    \**also note that the ip address can be found in the lobby screen after pressing the play button in the app and changed in the settings*
 
 5. **Connect as a host:**
 
@@ -94,13 +94,9 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
     npm run build
     ```
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
 ## License
 
-This project is licensed under a Custom License. See the LICENSE file for details.
+This project is licensed under a Custom License. See the [LICENSE](./LICENSE) file for details.
 
 ## Acknowledgements
 
@@ -119,3 +115,30 @@ This project uses the following fonts:
 - [Coiny](https://fonts.google.com/specimen/Coiny)
 - [DynaPuff](https://fonts.google.com/specimen/DynaPuff)
 - [LuckiestGuy](https://fonts.google.com/specimen/Luckiest+Guy)
+
+[View the licenses](./fonts/licenses/).
+
+This project uses the following music tracks:
+
+- "Gimme All I Want (Instrumental)" by Anthem of Rain licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/anthem-of-rain/freedom/gimme-all-i-want-instrumental/).
+- "City Line" by Beat Mekanik licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/beat-mekanik/single/city-line/).
+- "Mastermath" by Beat Mekanik licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/beat-mekanik/single/mastermath/).
+- "Game" by Chad Crouch licensed under CC BY-NC 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/Chad_Crouch/Jams/Game_1525/).
+- "Proton Beat" by Gangi licensed under CC BY 3.0. Source: [Free Music Archive](https://freemusicarchive.org/music/Gangi/Bonus_Beat_Blast_2011/22_gangi-proton_beat/).
+- "Abducted" by HoliznaCC0 licensed under CC0 1.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznacc0/beats-from-the-crypt/abducted/).
+- "Dream Pop" by HoliznaCC0 licensed under CC0 1.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznacc0/only-in-the-milky-way-part-3/dream-pop/).
+- "Dreamers" by HoliznaCC0 licensed under CC0 1.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznacc0/forager/dreamers/).
+- "Thoughts Growing Mold" by HoliznaCC0 licensed under CC0 1.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznacc0/forager-pt-2/thoughts-growing-mold/).
+- "Lost In The Rythm" by HoliznaCC0 licensed under CC0 1.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznacc0/lost/lost-in-the-rythm/).
+- "Peaking Through The Curtain Inst" by HoliznaRAPS licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznaraps/peaking-through-the-curtain/peaking-through-the-curtain-inst/).
+- "PTSD (Instrumental)" by HoliznaRAPS licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/holiznaraps/ptsd/ptsd-instrumental-2/).
+- "Dollar Theatre" by Jalen Warshawsky licensed under CC BY 3.0. Source: [Free Music Archive](https://freemusicarchive.org/music/Jalen_Warshawsky/Bonus_Beat_Blast_2011/31_jalen_warshawsky-dollar_theatre/).
+- "Bird" by James Pants licensed under CC BY 3.0. Source: [Free Music Archive](https://freemusicarchive.org/music/James_Pants/Bonus_Beat_Blast_2011/33_james_pants-bird/).
+- "Fate" by Masteredit licensed under CC BY-SA 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/masteredit/golden-scorpion/fate-1/).
+- "Final Judgement" by Masteredit licensed under CC BY-SA 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/masteredit/golden-scorpion/final-judgement/).
+- "International" by Masteredit licensed under CC BY-SA 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/masteredit/golden-scorpion/international/).
+- "Sixth Floor" by Paweł Feszczuk licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/pawel-feszczuk/walking-next-to-the-playing-piano/sixth-floor/).
+- "Sunny Walk" by Paweł Feszczuk licensed under CC BY 4.0. Source: [Free Music Archive](https://freemusicarchive.org/music/pawel-feszczuk/walking-next-to-the-playing-piano/sunny-walk/).
+- "Duckbag" by Wake licensed under CC BY 3.0. Source: [Free Music Archive](https://freemusicarchive.org/music/Wake/Bonus_Beat_Blast_2011/67_wake-duckbag/).
+
+[View the licenses](./audio/licenses/).

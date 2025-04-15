@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 document.addEventListener('DOMContentLoaded', function() {
     // Retrieve parameters from localStorage
     const categoryName = localStorage.getItem('category');
@@ -95,14 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Retrieve server data from localStorage
-    ipcRenderer.on('retrieveGameData', function(event) {
+    window.electron.ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
         serverCurrentPageID = localStorage.getItem('currentPageID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
+        window.electron.ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
-    ipcRenderer.on('buzzIn', function(event, playerData_) {
+    window.electron.ipcRenderer.on('buzzIn', function(event, playerData_) {
         // Add player to the buzzer queue
         if (playerData_ && !contestantsThatAnswered.includes(playerData_.name) && !buzzerQueue.includes(playerData_.name))
         {
@@ -111,13 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
         else return;
 
         if (answererQID === -1) {
-            ipcRenderer.send('buzzInResponse');
+            window.electron.ipcRenderer.send('buzzInResponse');
             return;
         }
 
     });
 
-    ipcRenderer.on('correctAnswer', function(event, data) {
+    window.electron.ipcRenderer.on('correctAnswer', function(event, data) {
         const playerIndex = playerData.findIndex(player => player.name === data.name);
         const questionPrice = data.price;
         playerData[playerIndex].score += parseInt(questionPrice);
@@ -126,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // showScoreChange(event, `+${questionPrice}`);
     });
 
-    ipcRenderer.on('incorrectAnswer', function(event, data) {
+    window.electron.ipcRenderer.on('incorrectAnswer', function(event, data) {
         // Update the score of the player who answered incorrectly
         const playerIndex = playerData.findIndex(player => player.name === data.name);
         const questionPrice = data.price;
@@ -136,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // showScoreChange(event, `-${questionPrice}`);
     });
 
-    ipcRenderer.on('startTimer', function() {
+    window.electron.ipcRenderer.on('startTimer', function() {
         const timer = document.querySelector('.timer');
 
         let timeLeft = 30;
@@ -149,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     });
 
-    ipcRenderer.on('nextAnswerer', function() {
+    window.electron.ipcRenderer.on('nextAnswerer', function() {
         let lastPlayer_;
         let currentPlayer_;
 
@@ -182,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         renderPlayerCards();
-        ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
+        window.electron.ipcRenderer.send('nextAnswererResponse', { currentPlayer: currentPlayer_, lastPlayer: lastPlayer_ });
 
     });
 
-    ipcRenderer.on('revealAnswer', function() {
+    window.electron.ipcRenderer.on('revealAnswer', function() {
         if (answerImage !== "null") {
             questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
         } else {
@@ -198,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    ipcRenderer.on('backToBoard', function() {
+    window.electron.ipcRenderer.on('backToBoard', function() {
         buzzerQueue = [];
         contestantsThatAnswered = [];
         answererQID = -1;

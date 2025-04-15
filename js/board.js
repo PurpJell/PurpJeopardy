@@ -1,6 +1,3 @@
-const { ipcRenderer } = require('electron');
-const path = require('path');
-
 document.addEventListener('DOMContentLoaded', function() {
     const topBar = document.getElementById('topBar');
     const board = document.querySelector('.board');
@@ -162,8 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let filePath;
 
         // Production mode: Use the boards folder in appData/Roaming
-        const boardsDir = ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
-        filePath = path.join(boardsDir, selectedBoard);
+        const boardsDir = window.electron.ipcRenderer.sendSync('get-boards-dir'); // Synchronous IPC call to get the boards directory
+        filePath = window.fileSystem.joinPath(boardsDir, selectedBoard);
 
         fetch(filePath)
             .then(response => {
@@ -428,14 +425,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Retrieve server data from localStorage
-    ipcRenderer.on('retrieveGameData', function(event) {
+    window.electron.ipcRenderer.on('retrieveGameData', function(event) {
         let serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
         let servercurrentPageID = localStorage.getItem('currentPageID') || 1;
         let serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: servercurrentPageID, selectedBoard: serverSelectedBoard });
+        window.electron.ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: servercurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
-    ipcRenderer.on('openQuestion', function(event, data) {
+    window.electron.ipcRenderer.on('openQuestion', function(event, data) {
         const category = data.category;
         const price = data.price;
         const questionKey = `${category}-${price}`;
@@ -459,14 +456,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle request to go to the next page
-    ipcRenderer.on('nextPage', function() {
+    window.electron.ipcRenderer.on('nextPage', function() {
         localStorage.removeItem('clickedQuestions');
         localStorage.setItem('currentPageID', parseInt(currentPageID) + 1);
         window.location.reload();
     });
 
     // Handle request to reset the board
-    ipcRenderer.on('resetBoard', function() {
+    window.electron.ipcRenderer.on('resetBoard', function() {
         clickedQuestions = [];
         localStorage.removeItem('clickedQuestions');
         currentPageID = localStorage.getItem('currentPageID') || 1;

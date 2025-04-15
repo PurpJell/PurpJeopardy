@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 document.addEventListener('DOMContentLoaded', function() {
     const playGameButton = document.getElementById('playButton');
     const createBoardButton = document.getElementById('createBoardButton');
@@ -23,9 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let language = localStorage.getItem('language') || 'en';
     let musicVolume = localStorage.getItem('musicVolume') || 100;
     let soundEffectsVolume = localStorage.getItem('soundEffectsVolume') || 100;
-    let ipAddress = ipcRenderer.sendSync('get-ip-address');
+    let ipAddress = window.electron.ipcRenderer.sendSync('get-ip-address');
     localStorage.setItem('ipAddress', ipAddress);
 
+    let musicTimestamp = parseFloat(localStorage.getItem('musicTimestamp')) || 0;
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, musicTimestamp);
 
     if (language === 'lt') {
         playGameButton.textContent = '\u017Daisti';
@@ -244,10 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
     spawnHook();
     
     playGameButton.addEventListener('click', () => {
+        const currentTime = window.musicManager.getCurrentTime();
+        localStorage.setItem('musicTimestamp', currentTime);
         window.location.href = 'lobby.html';
     });
 
     createBoardButton.addEventListener('click', () => {
+        const currentTime = window.musicManager.getCurrentTime();
+        localStorage.setItem('musicTimestamp', currentTime);
         window.location.href = 'boardList.html';
     });
 
@@ -260,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownButton.textContent = ipAddress;
 
         if (!localIPs) {
-            localIPs = ipcRenderer.sendSync('get-ip-list');
+            localIPs = window.electron.ipcRenderer.sendSync('get-ip-list');
 
             let ipList = localIPs.map(ip => {
                 const option = document.createElement('option');
@@ -288,6 +292,10 @@ document.addEventListener('DOMContentLoaded', function() {
             optionsScreen.style.display = 'flex';
             cover.style.display = 'block';
         }
+    });
+
+    musicVolumeSlider.addEventListener('input', () => {
+        window.musicManager.setVolume(musicVolumeSlider.value / 100);
     });
 
     document.addEventListener('click', (event) => {
@@ -332,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
                     optionsScreen.style.display = 'none';
                     cover.style.display = 'none';
-                    ipcRenderer.send('set-config-ip', ipAddress);
+                    window.electron.ipcRenderer.send('set-config-ip', ipAddress);
                 }
             });
         }
@@ -352,6 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
         musicVolume = localStorage.getItem('musicVolume') || 100;
         soundEffectsVolume = localStorage.getItem('soundEffectsVolume') || 100;
         ipAddress = localStorage.getItem('ipAddress');
+
+        window.musicManager.setVolume(musicVolume / 100);
 
         optionsScreen.style.display = 'none';
         cover.style.display = 'none';
@@ -413,5 +423,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    window.electron.ipcRenderer.on('restartMusic', () => {
+        localStorage.setItem('musicTimestamp', 0);
+        window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, 0);
+    })
     
 });

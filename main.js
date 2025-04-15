@@ -134,7 +134,6 @@ function getConfigIP () {
 let localIPs = getAllIPs();
 let IP_ADDRESS = getConfigIP();
 
-
 if (IP_ADDRESS === null) {  // No IP address in config
     IP_ADDRESS = getExpectedIPAddress();
     if (!checkIPvalidity(IP_ADDRESS)) {
@@ -199,8 +198,10 @@ function createWindow() {
         fullscreen: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true,
-            contextIsolation: false
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false,
+            sandbox: false
         }
     });
 
@@ -374,10 +375,16 @@ function createWindow() {
     serverApp.listen(port, () => {
         console.log(`Server listening at ${process.env.IP_ADDRESS}:${port}`);
     });
+
+    return mainWindow;
 }
 
 app.whenReady().then(() => {
-    createWindow();
+    mainWindow = createWindow(); // Assign the created window to mainWindow
+
+    mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.webContents.send('restartMusic'); // Send the 'restartMusic' message
+    });
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

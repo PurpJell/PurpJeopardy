@@ -1,7 +1,3 @@
-const { ipcRenderer } = require('electron');
-const fs = require('fs');
-const path = require('path');
-
 document.addEventListener('DOMContentLoaded', function() {
     const ipAddress = document.getElementById('ipAddress');
     const joinGameText = document.getElementById('joinGameText');
@@ -15,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     selectedBoard = localStorage.getItem('selectedBoard') || "exampleBoardData.pjb";
     language = localStorage.getItem('language') || 'en';
+
+    let musicTimestamp = localStorage.getItem('musicTimestamp') || 0;
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, musicTimestamp);
 
     if (language === 'lt') {
         hideButton.textContent = 'Rodyti';
@@ -80,10 +79,10 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdownMenu.classList.toggle('show');
     });
 
-    const boardsPath = ipcRenderer.sendSync('get-boards-dir');
+    const boardsPath = window.electron.ipcRenderer.sendSync('get-boards-dir');
 
     // Ensure the boards folder exists
-    if (!fs.existsSync(boardsPath)) {
+    if (!window.fileSystem.existsSync(boardsPath)) {
         console.error('Boards folder does not exist:', boardsPath);
         if (language === 'lt') {
             dropdownMenu.textContent = "Lent\u0173 nerasta";
@@ -93,59 +92,56 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    fs.readdir(boardsPath, (err, files) => {
-        if (err) {
-            console.error('Error reading boards directory:', err);
-            return;
-        }
+    window.fileSystem.readdir(boardsPath)
+        .then((files) => {
     
-        // Filter files to include only .pjb files
-        let boards = files.filter((file) => file.endsWith('.pjb'));
-    
-        // Remove unwanted files like "exampleBoardData.pjb"
-        boards = boards.filter((board) => board !== 'exampleBoardData.pjb');
-    
-        // Check if the selected board exists
-        if (!boards.includes(selectedBoard)) {
-            selectedBoard = "none.pjb";
-            localStorage.setItem('selectedBoard', selectedBoard);
-            if (language === 'lt') {
-                dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
-            } else {
-                dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
-            }
-        }
-    
-        // Check if there are no boards
-        if (boards.length === 0) {
-            if (language === 'lt') {
-                dropdownMenu.textContent = "Lent\u0173 nerasta";
-            } else {
-                dropdownMenu.textContent = "No boards found";
-            }
-            return;
-        }
-    
-        // Populate the dropdown menu with the .pjb files
-        boards.forEach((board) => {
-            const boardName = board.replace('.pjb', ''); // Remove the .pjb extension for display
-            const boardOption = document.createElement('p');
-            boardOption.textContent = boardName;
-            boardOption.addEventListener('click', () => {
+            // Filter files to include only .pjb files
+            let boards = files.filter((file) => file.endsWith('.pjb'));
+        
+            // Remove unwanted files like "exampleBoardData.pjb"
+            boards = boards.filter((board) => board !== 'exampleBoardData.pjb');
+        
+            // Check if the selected board exists
+            if (!boards.includes(selectedBoard)) {
+                selectedBoard = "none.pjb";
+                localStorage.setItem('selectedBoard', selectedBoard);
                 if (language === 'lt') {
-                    dropdownButton.textContent = "Pasirinkta lenta:\n" + boardName;
+                    dropdownButton.textContent = "Pasirinkta lenta: " + selectedBoard.replace(".pjb", "");
                 } else {
-                    dropdownButton.textContent = "Selected board:\n" + boardName;
+                    dropdownButton.textContent = "Selected board: " + selectedBoard.replace(".pjb", "");
                 }
-                dropdownMenu.classList.toggle('show');
-                localStorage.setItem('selectedBoard', board);
-                selectedBoard = board;
-                // Send selected board to host
-                ipcRenderer.send('selectedBoard', selectedBoard);
+            }
+        
+            // Check if there are no boards
+            if (boards.length === 0) {
+                if (language === 'lt') {
+                    dropdownMenu.textContent = "Lent\u0173 nerasta";
+                } else {
+                    dropdownMenu.textContent = "No boards found";
+                }
+                return;
+            }
+        
+            // Populate the dropdown menu with the .pjb files
+            boards.forEach((board) => {
+                const boardName = board.replace('.pjb', ''); // Remove the .pjb extension for display
+                const boardOption = document.createElement('p');
+                boardOption.textContent = boardName;
+                boardOption.addEventListener('click', () => {
+                    if (language === 'lt') {
+                        dropdownButton.textContent = "Pasirinkta lenta:\n" + boardName;
+                    } else {
+                        dropdownButton.textContent = "Selected board:\n" + boardName;
+                    }
+                    dropdownMenu.classList.toggle('show');
+                    localStorage.setItem('selectedBoard', board);
+                    selectedBoard = board;
+                    // Send selected board to host
+                    window.electron.ipcRenderer.send('selectedBoard', selectedBoard);
+                });
+                dropdownMenu.appendChild(boardOption);
             });
-            dropdownMenu.appendChild(boardOption);
         });
-    });
     
     addShineAnimation();
 
@@ -302,18 +298,20 @@ document.addEventListener('DOMContentLoaded', function() {
     renderPlayerList();
 
     backButton.addEventListener('click', function() {
+        const currentTime = window.musicManager.getCurrentTime();
+        localStorage.setItem('musicTimestamp', currentTime);
         window.location.href = 'title.html';
     });
 
     // Retrieve server data from localStorage
-    ipcRenderer.on('retrieveGameData', function(event) {
+    window.electron.ipcRenderer.on('retrieveGameData', function(event) {
         serverPlayerData = JSON.parse(localStorage.getItem('playerData')) || [];
         serverCurrentPageID = localStorage.getItem('currentPageID') || 1;
         serverSelectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';
-        ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
+        window.electron.ipcRenderer.send('retrieveGameDataResponse', { players: serverPlayerData, currentPageID: serverCurrentPageID, selectedBoard: serverSelectedBoard });
     });
 
-    ipcRenderer.on('addPlayer', function(event, playerData_) {
+    window.electron.ipcRenderer.on('addPlayer', function(event, playerData_) {
         if (playerData.length < 4) {
 
             const icon = document.createElement('img');
@@ -390,13 +388,13 @@ document.addEventListener('DOMContentLoaded', function() {
             renderPlayerList();
 
             playerCount.textContent = `${playerData.length}`;
-            ipcRenderer.send('addPlayerResponse', { success: true, message: 'Player added successfully' });
+            window.electron.ipcRenderer.send('addPlayerResponse', { success: true, message: 'Player added successfully' });
         } else {
-            ipcRenderer.send('addPlayerResponse', { success: false, message: 'Player limit reached' });
+            window.electron.ipcRenderer.send('addPlayerResponse', { success: false, message: 'Player limit reached' });
         }
     });
 
-    ipcRenderer.on('removePlayer', function(event, playerName_) {
+    window.electron.ipcRenderer.on('removePlayer', function(event, playerName_) {
         playerData = playerData.filter(player => player.name !== playerName_);
         randomIcons.push(playerCards.find(playerCard => playerCard.querySelector('.player-name').textContent === playerName_).querySelector('.player-icon').src);
         playerCards = playerCards.filter(playerCard => playerCard.querySelector('.player-name').textContent !== playerName_);
@@ -409,14 +407,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    ipcRenderer.on('startGame', function(event) {
+    window.electron.ipcRenderer.on('startGame', function(event) {
+        localStorage.setItem('musicTimestamp', 0);
         window.location.href = 'board.html';
     });
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
+            const currentTime = window.musicManager.getCurrentTime();
+            localStorage.setItem('musicTimestamp', currentTime);
             window.location.href = 'title.html';
         } else if (event.key === 'Enter') {
+            localStorage.setItem('musicTimestamp', 0);
             window.location.href = 'board.html';
         }
     });

@@ -1,7 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-const { ipcRenderer } = require('electron');
-
 document.addEventListener('DOMContentLoaded', function() {
 
     const backButton = document.getElementById('backButton');
@@ -11,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const boardList = document.getElementById('boardList');
 
     let language = localStorage.getItem('language') || 'en';
+
+    let musicTimestamp = localStorage.getItem('musicTimestamp') || 0;
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, musicTimestamp);
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -22,101 +21,104 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let boards = [];
 
-    const boardsPath = ipcRenderer.sendSync('get-boards-dir');
+    const boardsPath = window.electron.ipcRenderer.sendSync('get-boards-dir');
 
     // Get the list of .pjb files in the boards directory
-    fs.readdir(boardsPath, (err, files) => {
-        if (err) {
-            console.error('Error reading boards directory:', err);
-            return;
-        }
+    window.fileSystem.readdir(boardsPath)
+        .then((files) => {
+
+            console.log("Files in boards directory:", files);
     
-        // Filter files to include only .pjb files
-        const boardFiles = files.filter((file) => file.endsWith('.pjb'));
-    
-        // Remove unwanted files like "exampleBoardData.pjb"
-        boards = boardFiles.filter((board) => board !== 'exampleBoardData.pjb'); // Exclude specific files
+            // Filter files to include only .pjb files
+            const boardFiles = files.filter((file) => file.endsWith('.pjb'));
+        
+            // Remove unwanted files like "exampleBoardData.pjb"
+            boards = boardFiles.filter((board) => board !== 'exampleBoardData.pjb'); // Exclude specific files
 
-        console.log("Filtered boards:", boards);
+            console.log("Filtered boards:", boards);
 
-        // Check if there are no boards
-        if (boards.length === 0) {
-            noBoards.style.display = 'block';
-            if (language === 'lt') {
-                noBoards.textContent = "Lent\u0173 nerasta";
-            } else {
-                noBoards.textContent = "No boards found";
+            // Check if there are no boards
+            if (boards.length === 0) {
+                noBoards.style.display = 'block';
+                if (language === 'lt') {
+                    noBoards.textContent = "Lent\u0173 nerasta";
+                } else {
+                    noBoards.textContent = "No boards found";
+                }
+                return;
             }
-            return;
-        }
 
-        // Populate the list with the .pjb files
-        boards.forEach(boardFile => {
-            console.log("Board file:", boardFile);
-            const boardCard = document.createElement('div');
-            boardCard.className = 'board-card';
-            const leftContainer = document.createElement('div');
-            leftContainer.className = 'left-container';
-            const title = document.createElement('div');
-            title.className = 'board-title';
-            title.textContent = boardFile.replace('.pjb', '');
-            leftContainer.appendChild(title);
+            // Populate the list with the .pjb files
+            boards.forEach(boardFile => {
+                console.log("Board file:", boardFile);
+                const boardCard = document.createElement('div');
+                boardCard.className = 'board-card';
+                const leftContainer = document.createElement('div');
+                leftContainer.className = 'left-container';
+                const title = document.createElement('div');
+                title.className = 'board-title';
+                title.textContent = boardFile.replace('.pjb', '');
+                leftContainer.appendChild(title);
 
-            let metaData = {};
+                let metaData = {};
 
-            const lastEdited = document.createElement('div');
-            lastEdited.className = 'last-edited';
-            if (language === 'lt') {
-                lastEdited.textContent = 'Paskutin\u012F kart\u0105 redaguota: ' + metaData.lastEdited;
-            } else {
-                lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
-            }
-            leftContainer.appendChild(lastEdited);
-
-            boardCard.appendChild(leftContainer);
-
-            const description = document.createElement('div');
-            description.className = 'board-description';
-            if (language === 'lt') {
-                description.textContent = 'Apra\u0161ymas: ' + metaData.description;
-            } else
-            {
-                description.textContent = 'Description: ' + metaData.description;
-            }
-            boardCard.appendChild(description);
-
-            boardCard.addEventListener('click', function() {
-                window.location.href = `boardEditor.html?board=${boardFile}`;
-            });
-
-            boardList.appendChild(boardCard);
-
-            fetch(`${boardsPath}/${boardFile}`)
-            .then(response => response.json())
-            .then(data => {
-                metaData = data.meta;
+                const lastEdited = document.createElement('div');
+                lastEdited.className = 'last-edited';
                 if (language === 'lt') {
                     lastEdited.textContent = 'Paskutin\u012F kart\u0105 redaguota: ' + metaData.lastEdited;
                 } else {
                     lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
                 }
+                leftContainer.appendChild(lastEdited);
+
+                boardCard.appendChild(leftContainer);
+
+                const description = document.createElement('div');
+                description.className = 'board-description';
                 if (language === 'lt') {
                     description.textContent = 'Apra\u0161ymas: ' + metaData.description;
                 } else
                 {
                     description.textContent = 'Description: ' + metaData.description;
                 }
-            })    
-            .catch(error => console.error('Error fetching default board data:', error, boardFile));
-        });
+                boardCard.appendChild(description);
+
+                boardCard.addEventListener('click', function() {
+                    localStorage.setItem('musicTimestamp', 0);
+                    window.location.href = `boardEditor.html?board=${boardFile}`;
+                });
+
+                boardList.appendChild(boardCard);
+
+                fetch(`${boardsPath}/${boardFile}`)
+                .then(response => response.json())
+                .then(data => {
+                    metaData = data.meta;
+                    if (language === 'lt') {
+                        lastEdited.textContent = 'Paskutin\u012F kart\u0105 redaguota: ' + metaData.lastEdited;
+                    } else {
+                        lastEdited.textContent = 'Last edited: ' + metaData.lastEdited;
+                    }
+                    if (language === 'lt') {
+                        description.textContent = 'Apra\u0161ymas: ' + metaData.description;
+                    } else
+                    {
+                        description.textContent = 'Description: ' + metaData.description;
+                    }
+                })    
+                .catch(error => console.error('Error fetching default board data:', error, boardFile));
+            });
     
-    });
+        });
 
     backButton.addEventListener('click', function() {
+        const currentTime = window.musicManager.getCurrentTime();
+        localStorage.setItem('musicTimestamp', currentTime);
         window.location.href = 'title.html';
     });
 
     createBoardButton.addEventListener('click', function() {
+        localStorage.setItem('musicTimestamp', 0);
         window.location.href = 'boardEditor.html';
     });
 
@@ -150,6 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
+            const currentTime = window.musicManager.getCurrentTime();
+            localStorage.setItem('musicTimestamp', currentTime);
             window.location.href = 'title.html';
         }
     });
@@ -159,4 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('loadingScreen').style.display = 'none';
     });
 
+});
+
+window.addEventListener('beforeunload', () => {
+    const currentTime = window.musicManager.getCurrentTime();
+    localStorage.setItem('musicTimestamp', currentTime);
 });
