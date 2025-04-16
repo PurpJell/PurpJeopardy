@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let language = localStorage.getItem('language') || 'en';
 
-    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, true);
+    let musicVolume = localStorage.getItem('musicVolume') || 100;
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100, true);
 
     if (language === 'lt') {
         backButton.textContent = 'Atgal';
@@ -83,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 boardCard.appendChild(description);
 
                 boardCard.addEventListener('click', function() {
+                    window.musicManager.playlist('editor', musicVolume / 100 || 1);
                     window.location.href = `boardEditor.html?board=${boardFile}`;
                 });
 
@@ -114,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     createBoardButton.addEventListener('click', function() {
+        window.musicManager.playlist('editor', musicVolume / 100 || 1);
         window.location.href = 'boardEditor.html';
     });
 

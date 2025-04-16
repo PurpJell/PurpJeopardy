@@ -3,6 +3,7 @@
 PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSockets. It allows multiple players to join and participate in a quiz game hosted on a local network.
 
 Note that this game is hosted localy over LAN, therefore all the participants have to be in close proximity to play!
+Also note that the application was built for the Chrome browser, using other browsers may cause unexpected issues.
 
 ## Features
 
@@ -13,13 +14,14 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 - Easy-to-use board builder
 - Score tracking
 - Language selection between English and Lithuanian
+- Background music
 - Real-time updates using WebSockets
 - CSS and JavaScript animations
 - Automated and easily changeable IP address settings
 
 ## Upcoming Features
 
-- Sound effects and music
+- Sound effects
 - Reconnecting mid-game as a player
 
 ## Usage for general users
@@ -35,15 +37,19 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
 
 3. **Launch the game:**
 
-    The game should be located in your specified install location (AppData/Local/Programs/PurpJeopardy by default) or launch the game via desktop shortcut.
+    Launch the game that should be located in your specified install location (AppData/Local/Programs/PurpJeopardy by default) or you can launch it via desktop shortcut.
 
-4. **Connect as a player:**
+4. **Create a lobby:**
+
+    Press the Play button in the app to create a lobby so that players can join.
+
+5. **Connect as a player:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/` to join as a player.  
     \**note that every device has to be connected to the same network to be able to connect to the game*  
     \**also note that the ip address can be found in the lobby screen after pressing the play button in the app and changed in the settings*
 
-5. **Connect as a host:**
+6. **Connect as a host:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.  
     \**note that every device has to be connected to the same network to be able to connect to the game*
@@ -78,7 +84,11 @@ Note that this game is hosted localy over LAN, therefore all the participants ha
     npm start
     ```
 
-2. **Open the host interface:**
+2. **Create a lobby:**
+
+    Press the Play button in the app to create a lobby so that players can join.
+
+3. **Open the host interface:**
 
     On your mobile device open your browser and navigate to `http://<your_ip_address>:3000/host`.  
     \**note that every device has to be connected to the same network*

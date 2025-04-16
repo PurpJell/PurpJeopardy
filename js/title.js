@@ -418,9 +418,5 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    window.electron.ipcRenderer.on('restartMusic', () => {
-        window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
-    })
     
 });

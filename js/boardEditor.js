@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 0;
 
     let musicVolume = localStorage.getItem('musicVolume') || 1;
-    window.musicManager.playlist('editor', musicVolume / 100 || 1);
 
     boardCover.style.display = 'none'; // Set initial display to none for Escape key functionality
     
@@ -99,15 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }        
     
     function fetchDefaultBoardData() {
-        let filePath;
-
-        if (window.env.NODE_ENV === 'development') {
-            // Development mode: Use the boards folder in the project directory
-            filePath = window.fileSystem.joinPath(window.appPaths.__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
-        } else {
-            // Production mode: Use __dirname to locate the bundled boards folder inside app.asar
-            filePath = window.fileSystem.joinPath(window.appPaths.__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
-        }
+        let filePath = window.fileSystem.joinPath(window.appPaths.__dirname, 'boards/exampleBoard/exampleBoardData.pjb');
 
         // Read the file using window.fileSystem
         window.fileSystem.readFile(filePath, 'utf8')
@@ -235,11 +226,13 @@ document.addEventListener('DOMContentLoaded', function() {
             customConfirm(confirmText, yesText, noText)
                 .then((confirmed) => {
                     if (confirmed) {
+                        window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
                         window.location.href = 'boardList.html';
                     }
                 });
         }
         else {
+            window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
             window.location.href = 'boardList.html';
         }
     });
@@ -409,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.fileSystem.rm(boardPath, { recursive: true, force: true })
                         .then(() => {
                             // Successfully deleted the board
+                            window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
                             window.location.href = 'boardList.html';
                         })
                         .catch((err) => {
@@ -600,11 +594,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     customConfirm(confirmText, yesText, noText)
                         .then((confirmed) => {
                             if (confirmed) {
+                                window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
                                 window.location.href = 'boardList.html';
                             }
                         });
                 }
                 else {
+                    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume / 100 || 1, true);
                     window.location.href = 'boardList.html';
                 }
             }

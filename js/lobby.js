@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     selectedBoard = localStorage.getItem('selectedBoard') || "exampleBoardData.pjb";
     language = localStorage.getItem('language') || 'en';
 
-    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', localStorage.getItem('musicVolume') / 100 || 1, true);
+    let musicVolume = localStorage.getItem('musicVolume') || 100;
+    window.musicManager.playMusic('../audio/menu/Chad Crouch - Game.mp3', musicVolume || 1, true);
 
     if (language === 'lt') {
         hideButton.textContent = 'Rodyti';
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     hideButton.addEventListener('click', function() {
         if (hideIpAddress) {
             hideIpAddress = false;
-            ipAddress.textContent = process.env.IP_ADDRESS;
+            ipAddress.textContent = window.electron.ipcRenderer.sendSync('get-ip-address');
             ipAddress.textContent += ':3000';
             if (language === 'lt') {
                 hideButton.textContent = 'Sl\u0117pti';
@@ -405,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     window.electron.ipcRenderer.on('startGame', function(event) {
+        window.musicManager.playlist('game', musicVolume / 100 || 1);
         window.location.href = 'board.html';
     });
 
@@ -412,6 +414,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.key === 'Escape') {
             window.location.href = 'title.html';
         } else if (event.key === 'Enter') {
+            window.musicManager.playlist('game', musicVolume / 100 || 1);
+            window.location.href = 'board.html';
             window.location.href = 'board.html';
         }
     });

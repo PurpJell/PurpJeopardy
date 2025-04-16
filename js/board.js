@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     animationContainer.style.height = '100vh';
     animationContainer.style.overflow = 'hidden';
 
-    let musicVolume = localStorage.getItem('musicVolume') || 100;
-    window.musicManager.playlist('game', musicVolume / 100 || 1);
-
     document.body.appendChild(animationContainer);
 
     const selectedBoard = localStorage.getItem('selectedBoard') || 'none.pjb';

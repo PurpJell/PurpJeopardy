@@ -10,6 +10,7 @@
         let playlist = [];
         let currentTrackIndex = 0;
         let musicVolume = 1; // Default volume
+        let playingPlaylist = false;
 
         // Function to shuffle an array
         function shuffleArray(array) {
@@ -20,64 +21,72 @@
         }
 
         // Function to play the next track in the playlist
-        function playNextTrack() {
+        async function playNextTrack() {
+            if (playlist.length === 0) {
+                console.error('Playlist is empty. Cannot play tracks.');
+                return false; // Exit if the playlist is empty
+            }
+
             if (currentTrackIndex < playlist.length) {
                 const track = playlist[currentTrackIndex];
+
                 if (backgroundMusic) backgroundMusic.pause();
                 backgroundMusic = new Audio(track);
                 backgroundMusic.loop = false;
                 backgroundMusic.volume = musicVolume || 1; // Default volume
                 backgroundMusic.play();
 
-                backgroundMusic.onended = () => {
-                    currentTrackIndex++;
-                    playNextTrack(); // Play the next track when the current one ends
-                };
-            } else {  // If all tracks have been played, shuffle and start over
+                // Return a Promise that resolves when the track ends
+                return new Promise(resolve => {
+                    backgroundMusic.onended = () => {
+                        currentTrackIndex++;
+                        resolve(true); // Resolve the Promise to play the next track
+                    };
+                });
+            } else {
+                // If all tracks have been played, shuffle and start over
                 shuffleArray(playlist); // Shuffle the playlist when all tracks have been played
                 currentTrackIndex = 0; // Reset the index
-                playNextTrack(); // Start playing from the beginning
+                return true; // Start playing from the beginning
             }
         }
 
-        window.addEventListener('message', async (event) => {
-            const { type, data } = event.data;
-
-            if (type === 'play') {
-                if (!backgroundMusic || backgroundMusic.src !== data.src) {
-                    if (backgroundMusic) backgroundMusic.pause();
-                    backgroundMusic = new Audio(data.src);
-                    backgroundMusic.loop = data.loop || false;
-                    backgroundMusic.volume = data.volume || 1;
-                    backgroundMusic.play();
-                } else {
-                    backgroundMusic.play();
-                }
-            } else if (type === 'pause') {
+        window.electron.ipcRenderer.on('play', (event, data) => {
+            playingPlaylist = false; // Reset the playlist flag
+            let songName = data.src.split('/')[3].replace(/ /g, '%20'); // Extract the song name from the path
+            if (!backgroundMusic || !backgroundMusic.src.includes(songName)) {
                 if (backgroundMusic) backgroundMusic.pause();
-            } else if (type === 'setVolume') {
-                if (backgroundMusic) backgroundMusic.volume = data.volume;
-                musicVolume = data.volume; // Update the global volume variable
-            } else if (type === 'stop') {
-                if (backgroundMusic) {
-                    backgroundMusic.pause();
-                    backgroundMusic = null;
-                }
-            } else if (type === 'play-list') {
-                // Fetch the list of songs from the directory
-                const response = await fetch(`/get-playlist?directory=${encodeURIComponent(data.directory)}`);
-                const files = await response.json();
-
-                musicVolume = data.volume || 1; // Set the volume from the data received
-
-                // Filter audio files and shuffle the playlist
-                playlist = files.filter(file => file.endsWith('.mp3'));
-                shuffleArray(playlist);
-
-                // Reset the current track index and start playing
-                currentTrackIndex = 0;
-                playNextTrack();
+                backgroundMusic = new Audio(data.src);
+                backgroundMusic.loop = data.loop || false;
+                backgroundMusic.volume = data.volume || 1;
+                backgroundMusic.play();
             }
+        });
+
+        window.electron.ipcRenderer.on('setVolume', (event, data) => {
+            if (backgroundMusic) backgroundMusic.volume = data.volume;
+            musicVolume = data.volume; // Update the global volume variable
+        });
+
+        window.electron.ipcRenderer.on('stop', () => {
+            if (backgroundMusic) {
+                backgroundMusic.pause();
+                backgroundMusic = null;
+            }
+        });
+
+        window.electron.ipcRenderer.on('playlist', async (event, data) => {
+            playingPlaylist = true; // Set the playlist flag to true
+            // Fetch the list of songs from the directory
+            playlist = data.files || [];
+            musicVolume = data.volume || 1; // Set the volume from the data received
+
+            shuffleArray(playlist);
+
+            // Reset the current track index and start playing
+            currentTrackIndex = 0;
+            while(await playNextTrack() && playingPlaylist) {
+            };
         });
     </script>
 </body>

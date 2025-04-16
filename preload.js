@@ -36,7 +36,8 @@ contextBridge.exposeInMainWorld('electron', {
         send: (channel, data) => ipcRenderer.send(channel, data),
         sendSync: (channel, data) => ipcRenderer.sendSync(channel, data),
         on: (channel, listener) => ipcRenderer.on(channel, listener),
-        once: (channel, listener) => ipcRenderer.once(channel, listener)
+        once: (channel, listener) => ipcRenderer.once(channel, listener),
+        invoke: (channel, data) => ipcRenderer.invoke(channel, data)
     }
 });
 
@@ -51,7 +52,7 @@ contextBridge.exposeInMainWorld('musicManager', {
         ipcRenderer.send('stop-music');
     },
     playlist: (directory = "game", volume = 1) => {
-        ipcRenderer.send('playlist', { directory, volume });
+        ipcRenderer.send('play-list', { directory, volume });
     }
 });
 

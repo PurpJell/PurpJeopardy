@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const { get } = require('http');
 
 const serverApp = express();
 const port = 3000;
@@ -24,16 +25,28 @@ ipcMain.on('get-downloads-dir', (event) => {
     event.returnValue = downloadDir;
 });
 
-serverApp.get('/get-playlist', (req, res) => {
-    const directory = `./audio/${req.query.directory}`;
+function getPlaylist(directory) {
+    try {
+        let playlistDir;
+        if (process.env.NODE_ENV === 'development') {
+            // Development mode: Use the boards folder in the project directory
+            playlistDir = path.join(__dirname, 'audio', directory);
+        } else {
+            // Production mode: Use the boards folder in appData/Roaming/PurpJeopardy
+            playlistDir = path.join(__dirname, 'audio', directory);
+        }
+        let files = fs.readdirSync(playlistDir);
+        files = files
+            .filter(file => file.endsWith('.mp3'))
+            .map(file => path.join(playlistDir, file)); // Convert to full paths
 
-    if (!fs.existsSync(directory)) {
-        return res.status(404).json({ error: 'Directory not found' });
+        return files;
+
+    } catch (error) {
+        console.error('Error reading directory:', error);
+        return [];
     }
-
-    const files = fs.readdirSync(directory).map(file => path.join(directory, file));
-    res.json(files);
-});
+}
 
 ipcMain.on('set-config-ip', (event, ipAddress) => {
     const configPath = path.join(app.getPath('userData'), 'config.json');
@@ -435,17 +448,14 @@ ipcMain.on('stop-music', () => {
 
 ipcMain.on('play-list', (event, { directory, volume }) => {
     if (musicWindow) {
-        musicWindow.webContents.send('playlist', { directory, volume });
+        files = getPlaylist(directory);
+        musicWindow.webContents.send('playlist', { files, volume });
     }
 });
 
 app.whenReady().then(() => {
     mainWindow = createWindow(); // Assign the created window to mainWindow
     createMusicWindow(); // Create the music window
-
-    mainWindow.webContents.once('did-finish-load', () => {
-        mainWindow.webContents.send('restartMusic'); // Send the 'restartMusic' message
-    });
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

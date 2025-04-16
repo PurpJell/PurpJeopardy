@@ -479,7 +479,7 @@ svg{
 
 @keyframes fall {
     0% {
-        top: -200px;
+        top: -90px;
     }
     100% {
         top: 110vh;
