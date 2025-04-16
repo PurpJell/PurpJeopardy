@@ -29,7 +29,7 @@ Also note that the application was built for the Chrome browser, using other bro
 1. **Download the newest release:**
 
     Download `PurpJeopardy.Setup.<version_number>.exe`, `PurpJeopardy.Setup.<version_number>.exe.blockmap` and `latest.yml` from
-    [Releases](https://github.com/PurpJell/PurpJeopardy/releases/latest)
+    [Latest release](https://github.com/PurpJell/PurpJeopardy/releases/latest).
 
 2. **Install the program:**
 
