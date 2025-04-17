@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let fileName = "AI_" + new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T','_') + `.${fileType}`;
         let filePath = window.fileSystem.joinPath(downloadsDir, fileName);
         const base64Data = answerImageSrc.split(',')[1];
-        const buffer = Buffer.from(base64Data, 'base64');
+        const buffer = window.nodeUtils.Buffer(base64Data, 'base64');
         window.fileSystem.writeFile(filePath, buffer, (err) => {
             if (err) {
                 console.error('Error saving image:', err);
