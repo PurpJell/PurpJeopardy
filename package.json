@@ -33,10 +33,7 @@
       "images/**/*",
       "fonts/**/*",
       "audio/**/*",
-      {
-        "from": "boards/exampleBoard",
-        "to": "html/boards/exampleBoard"
-      }
+      "boards/exampleBoard"
     ],
     "win": {
       "target": "nsis",
