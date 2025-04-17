@@ -33,7 +33,8 @@ Also note that the application was built for the Chrome browser, using other bro
 
 2. **Install the program:**
 
-    Run `PurpJeopardy.Setup.<version_number>.exe`.
+    Run `PurpJeopardy.Setup.<version_number>.exe`.  
+    \**if you get a windows alert, click `more info` and `run anyway`*
 
 3. **Launch the game:**
 
