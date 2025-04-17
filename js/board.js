@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clickedQuestions.push(questionKey);
             localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
         }
-        const question = document.querySelector(`.question[data-category="${category}"][data-price="$${price}"]`);
+        const question = document.querySelector(`.question[data-category="${category}"][data-price="${price}"]`);
         if (question) {
             // question.textContent = '';
             localStorage.setItem('category', currentPage.categories[category - 1].name);
