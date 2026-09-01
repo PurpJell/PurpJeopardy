@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+	color-scheme: light;
+	--bg: #f4f7fb;
+	--panel: rgba(255, 255, 255, 0.86);
+	--panel-border: rgba(30, 41, 59, 0.12);
+	--text: #182230;
+	--muted: #5c6b7f;
+	--accent: #1d4ed8;
+	--accent-dark: #163ea8;
+	--shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	padding: 48px 20px 64px;
+	font-family: 'Inter', sans-serif;
+	color: var(--text);
+	background:
+		radial-gradient(circle at top left, rgba(29, 78, 216, 0.10), transparent 34%),
+		radial-gradient(circle at top right, rgba(14, 165, 233, 0.10), transparent 28%),
+		linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+}
+
+body > * {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+    justify-content: center;
+    text-align: center;
+}
+
+h1 {
+	margin: 0 0 10px;
+	font-size: clamp(2rem, 4vw, 3.25rem);
+	line-height: 1.05;
+	letter-spacing: -0.04em;
+}
+
+h2 {
+	margin: 50px 0 10px;
+	font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+	line-height: 1.2;
+}
+
+h3 {
+	margin: 28px 0 8px;
+	font-size: 1.05rem;
+	line-height: 1.25;
+}
+
+p {
+	margin: 0 0 14px;
+	font-size: 1rem;
+	line-height: 1.7;
+	color: var(--muted);
+}
+
+button {
+	align-items: center;
+	justify-content: center;
+    margin-left: 40%;
+    margin-bottom: 10vh;
+    width: 20%;
+	padding: 0;
+	border: 0;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+	box-shadow: 0 12px 28px rgba(29, 78, 216, 0.24);
+	overflow: hidden;
+}
+
+button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 16px 32px rgba(29, 78, 216, 0.28);
+}
+
+button:active {
+	transform: translateY(0);
+}
+
+button a {
+	display: inline-block;
+	padding: 14px 22px;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+}
+
+img {
+	display: block;
+	width: auto;
+	max-width: 860px;
+	margin: 16px auto 16px;
+	border-radius: 18px;
+	border: 1px solid var(--panel-border);
+	background: var(--panel);
+	box-shadow: var(--shadow);
+	padding: 10px;
+	object-fit: contain;
+}
+
+.section {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.section img {
+    margin: 16px 0px 28px;
+}
+
+.download-button-img {
+    height: 14vh;
+}
+
+.installer-img {
+    height: 40vh;
+}
+
+.windows-warning-img {
+    height: 35vh;
+}
+
+.windows-warning2-img {
+    height: 35vh;
+}
+
+.installation-wizard-img {
+    height: 35vh;
+}
+
+.launch-game-img {
+    height: 45vh;
+}
+
+h1:first-of-type {
+	padding-top: 4px;
+}
+
+@media (max-width: 640px) {
+	body {
+		padding: 28px 14px 52px;
+	}
+
+	button a {
+		padding: 13px 18px;
+	}
+
+	img {
+		border-radius: 14px;
+		padding: 8px;
+		margin-bottom: 24px;
+	}
+}

@@ -1,5 +1,7 @@
 # PurpJeopardy
 
+[DOWNLOAD PURPJEOPARDY](https://purpjell.github.io/PurpJeopardy/)
+
 PurpJeopardy is an interactive quiz game built with Electron, Express, and WebSockets. It allows multiple players to join and participate in a quiz game hosted on a local network.
 
 Note that this game is hosted localy over LAN, therefore all the participants have to be in close proximity to play!
@@ -28,12 +30,12 @@ Also note that the application was built for the Chrome browser, using other bro
 
 1. **Download the newest release:**
 
-    Download `PurpJeopardy.Setup.<version_number>.exe`, `PurpJeopardy.Setup.<version_number>.exe.blockmap` and `latest.yml` from
+    Download `PurpJeopardy.Setup.exe` from
     [Latest release](https://github.com/PurpJell/PurpJeopardy/releases/latest).
 
 2. **Install the program:**
 
-    Run `PurpJeopardy.Setup.<version_number>.exe`.  
+    Run `PurpJeopardy.Setup.exe`.  
     \**if you get a windows alert, click `more info` and `run anyway`*
 
 3. **Launch the game:**

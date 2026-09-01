@@ -20,7 +20,7 @@
   "build": {
     "appId": "purpjeopardy.game",
     "productName": "PurpJeopardy",
-    "artifactName": "${productName} Setup.${ext}",
+    "artifactName": "${productName}.Setup.${ext}",
     "directories": {
       "output": "build"
     },
