@@ -1,6 +1,6 @@
 {
   "name": "purpjeopardy",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A fun jeopardy game application.",
   "author": "PurpJell",
   "main": "main.js",
@@ -20,6 +20,7 @@
   "build": {
     "appId": "purpjeopardy.game",
     "productName": "PurpJeopardy",
+    "artifactName": "${productName} Setup.${ext}",
     "directories": {
       "output": "build"
     },

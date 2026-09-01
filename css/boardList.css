@@ -76,7 +76,6 @@ body {
     padding-top: 1vh;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
     
     background: linear-gradient(180deg, #52d7ff, #004777);
@@ -118,9 +117,21 @@ button {
     align-items: center;
 }
 
+.open-boards-folder-button {
+    width: 10vw;
+    margin-left: 2vw;
+    font-size: 1.5vw;
+    line-height: 1.2;
+    height: 8vh;
+    background: linear-gradient(150deg, #00a524, #005207);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .create-board-button {
     width: 25vh;
-    margin-left: 8vw;
+    margin-left: 13vw;
     font-size: 2.3vw;
     line-height: 1.2;
     height: 13vh;
@@ -133,7 +144,7 @@ button {
 .search-bar {
     width: 20vw;
     height: 6vh;
-    margin-right: 3vw;
+    margin-left: 18vw;
     font-size: 2vw;
     font-family: 'WinkySans';
     font-weight: 700;

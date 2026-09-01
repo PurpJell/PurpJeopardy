@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let buzzerQueue = [];
     let contestantsThatAnswered = [];
     let answererQID = -1;
+    let activeTimerInterval = null;
 
     // Function to render player cards
     function renderPlayerCards() {
@@ -59,6 +60,16 @@ document.addEventListener('DOMContentLoaded', function() {
             playerPicture.appendChild(img);
             playerCard.appendChild(playerPicture);
             bottomBar.appendChild(playerCard);
+
+            playerCard.addEventListener('click', (e) => {
+                const subtract = e.shiftKey; // Check if Shift key is held down
+                // Give points to the player when their card is clicked
+                const questionPrice = parseInt(localStorage.getItem('price')) || 0;
+                playerData[index].score += subtract ? -questionPrice : questionPrice;
+                localStorage.setItem('playerData', JSON.stringify(playerData));
+                renderPlayerCards();
+                // showScoreChange(event, `+${questionPrice}`);
+            });
         });
     }
 
@@ -76,6 +87,40 @@ document.addEventListener('DOMContentLoaded', function() {
         scoreChange.addEventListener('animationend', () => {
             scoreChange.remove();
         });
+    }
+
+    function revealAnswer() {
+        if (answerImage !== "null") {
+            questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
+        } else {
+            if (language === 'lt') {
+                questionCard.textContent = answer;
+            } else {
+                questionCard.textContent = answer;
+            }
+        }
+    }
+
+    function startTimer() {
+        const timer = document.querySelector('.timer');
+        if (!timer) return;
+
+        if (activeTimerInterval !== null) {
+            clearInterval(activeTimerInterval);
+            activeTimerInterval = null;
+        }
+
+        let timeLeft = 30;
+        timer.textContent = timeLeft;
+
+        activeTimerInterval = setInterval(() => {
+            timeLeft--;
+            timer.textContent = timeLeft;
+            if (timeLeft === 0) {
+                clearInterval(activeTimerInterval);
+                activeTimerInterval = null;
+            }
+        }, 1000);
     }
     
     // Preload images
@@ -135,16 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     window.electron.ipcRenderer.on('startTimer', function() {
-        const timer = document.querySelector('.timer');
-
-        let timeLeft = 30;
-        const countdown = setInterval(() => {
-            timeLeft--;
-            timer.textContent = timeLeft;
-            if (timeLeft === 0) {
-                clearInterval(countdown);
-            }
-        }, 1000);
+        startTimer();
     });
 
     window.electron.ipcRenderer.on('nextAnswerer', function() {
@@ -185,15 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     window.electron.ipcRenderer.on('revealAnswer', function() {
-        if (answerImage !== "null") {
-            questionCard.innerHTML = `<img src="${answerImage}" alt="Answer Image" class="answer-image">`;
-        } else {
-            if (language === 'lt') {
-                questionCard.textContent = 'Atsakymas: ' + answer;
-            } else {
-                questionCard.textContent = 'Answer: ' + answer;
-            }
-        }
+        revealAnswer();
     });
 
     window.electron.ipcRenderer.on('backToBoard', function() {
@@ -209,6 +237,10 @@ document.addEventListener('DOMContentLoaded', function() {
             contestantsThatAnswered = [];
             answererQID = -1;
             window.location.href = 'board.html';
+        } else if (event.key === 'r' || event.key === 'R') {
+            revealAnswer();
+        } else if (event.key === 't' || event.key === 'T') {
+            startTimer();
         }
     });
 

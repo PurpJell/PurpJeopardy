@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const backButton = document.getElementById('backButton');
     const createBoardButton = document.getElementById('createBoardButton');
+    const openBoardsFolderButton = document.getElementById('openBoardsFolderButton');
     const searchBar = document.getElementById('searchBar');
     const noBoards = document.getElementById('noBoards');
     const boardList = document.getElementById('boardList');
@@ -113,6 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     backButton.addEventListener('click', function() {
         window.location.href = 'title.html';
+    });
+
+    openBoardsFolderButton.addEventListener('click', function() {
+        // Open the boards directory in the system's file explorer
+        window.electron.ipcRenderer.send('open-boards-folder');
     });
 
     createBoardButton.addEventListener('click', function() {

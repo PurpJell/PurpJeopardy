@@ -505,7 +505,7 @@ button {
 }
 
 .question-editor input::placeholder, .question-editor textarea::placeholder {
-    color: #000000;
+    color: #afafaf;
 }
 
 .question-editor input:focus, .question-editor textarea:focus {
@@ -519,7 +519,7 @@ button {
 }
 
 .daily-double-container {
-    display: flex;
+    display: none; /* Hide the daily double container until implemented */
     align-items: start;
     height: 6vh;
     margin-top: 1.5vh;

@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
         backToTitleText.textContent = 'Ar norite gr\u012F\u017Eti \u012F meniu?';
         confirmTitleButton.innerHTML = `
                                         <svg>
-                                            <text x="5vw" y="50%" text-anchor="middle" class="svg-text">
+                                            <text x="5vw" y="65%" text-anchor="middle" class="svg-text">
                                                 Taip
                                             </text>
                                         </svg>`;
         cancelTitleButton.innerHTML = `
                                         <svg>
-                                            <text x="5vw" y="50%" text-anchor="middle" class="svg-text">
+                                            <text x="5vw" y="65%" text-anchor="middle" class="svg-text">
                                                 Ne
                                             </text>
                                         </svg>`;
@@ -204,11 +204,16 @@ document.addEventListener('DOMContentLoaded', function() {
         currentPage.categories[0].questions.forEach((_, questionIndex) => {
             const questionsRow = document.createElement('div');
             questionsRow.className = 'questions-row';
+            const rowId = questionIndex + 1;
 
             currentPage.categories.forEach((category, categoryIndex) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
-                questionDiv.setAttribute('data-category', categoryIndex + 1);
+                const columnId = categoryIndex + 1;
+                questionDiv.setAttribute('data-category', columnId);
+                questionDiv.setAttribute('data-column-id', columnId);
+                questionDiv.setAttribute('data-row-id', rowId);
+                questionDiv.setAttribute('data-question-id', `${rowId}-${columnId}`);
                 questionDiv.setAttribute('data-price', category.questions[questionIndex].price);
                 questionDiv.setAttribute('content', category.questions[questionIndex].content);
                 questionDiv.setAttribute('answer', category.questions[questionIndex].answer);
@@ -218,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 questionDiv.setAttribute('answerImage', answerImage);
                 const isDailyDouble = category.questions[questionIndex].dailyDouble || false;
                 questionDiv.setAttribute('dailyDouble', isDailyDouble);
-                const questionKey = `${categoryIndex + 1}-${category.questions[questionIndex].price}`.replace('$', '');
+                const questionKey = `${rowId}-${columnId}`;
                 questionDiv.textContent = '$' + category.questions[questionIndex].price;
                 if (clickedQuestions.includes(questionKey)) {
                     questionDiv.classList.add('clicked');
@@ -232,9 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 questionDiv.addEventListener('click', function() {
-
-                    price = category.questions[questionIndex].price;
-                    category = questionKey.split('-')[0];
+                    const categoryId = columnId;
                     
                     if (!clickedQuestions.includes(questionKey)) {
                         clickedQuestions.push(questionKey);
@@ -243,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const question = questionDiv;
                     if (question) {
                         // question.textContent = '';
-                        localStorage.setItem('category', currentPage.categories[category - 1].name);
+                        localStorage.setItem('category', currentPage.categories[categoryId - 1].name);
                         localStorage.setItem('price', question.getAttribute('data-price'));
                         localStorage.setItem('content', question.getAttribute('content'));
                         localStorage.setItem('answer', question.getAttribute('answer'));
@@ -434,13 +437,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.electron.ipcRenderer.on('openQuestion', function(event, data) {
         const category = data.category;
-        const price = data.price;
-        const questionKey = `${category}-${price}`;
+        const rowId = data.rowId;
+        const questionKey = `${rowId}-${category}`;
         if (!clickedQuestions.includes(questionKey)) {
             clickedQuestions.push(questionKey);
             localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
         }
-        const question = document.querySelector(`.question[data-category="${category}"][data-price="${price}"]`);
+        const question = document.querySelector(`.question[data-column-id="${category}"][data-row-id="${rowId}"]`);
         if (question) {
             // question.textContent = '';
             localStorage.setItem('category', currentPage.categories[category - 1].name);

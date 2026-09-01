@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let socket;
 
     let categories = [];
-    let prices = [];
+    let rowIds = [];
 
     fetch('/get-ip-address')
         .then(response => response.json())
@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(boardData_ => {
                 boardData = boardData_;
                 categories = [];
-                prices = [];
+                rowIds = [];
                 currentPage = boardData.pages[currentPageID - 1];
                 currentPage.categories.forEach(category => {
                     categories.push(category.name);
                 });
-                currentPage.categories[0].questions.forEach(question => {
-                    prices.push(question.price);
+                currentPage.categories[0].questions.forEach((_, index) => {
+                    rowIds.push(index + 1);
                 });
                 if (state === 'board') {
                     changeToBoardView();
@@ -148,16 +148,16 @@ document.addEventListener('DOMContentLoaded', function() {
             <label for="categorySelect">Select Category:</label>
             <select id="categorySelect"></select>
 
-            <label for="priceSelect">Select Price:</label>
-            <select id="priceSelect"></select>
+            <label for="rowSelect">Select Row:</label>
+            <select id="rowSelect"></select>
         `;
         document.body.className = 'board-view';
 
         const categorySelect = document.getElementById('categorySelect');
-        const priceSelect = document.getElementById('priceSelect');
+        const rowSelect = document.getElementById('rowSelect');
 
         populateCategories();
-        populatePrices();
+        populateRows();
 
         // Populate dropdown with categories and prices
         function populateCategories() {
@@ -170,13 +170,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        function populatePrices() {
-            priceSelect.innerHTML = ''; // Clear existing options
-            prices.forEach(price => {
+        function populateRows() {
+            rowSelect.innerHTML = ''; // Clear existing options
+            rowIds.forEach(rowId => {
                 const option = document.createElement('option');
-                option.value = price.replace('$', '');
-                option.textContent = price;
-                priceSelect.appendChild(option);
+                option.value = rowId;
+                option.textContent = rowId;
+                rowSelect.appendChild(option);
             });
         }
         
@@ -188,12 +188,16 @@ document.addEventListener('DOMContentLoaded', function() {
         openQuestionButton.addEventListener('click', function() {
             const categoryName = currentPage.categories[categorySelect.value - 1].name;
             const category = categorySelect.value;
-            const price = priceSelect.value;
-            socket.send(JSON.stringify({ type: 'openQuestion', data: { category, price } }));
+            const rowId = rowSelect.value;
+            socket.send(JSON.stringify({ type: 'openQuestion', data: { category, rowId } }));
             localStorage.setItem('categoryName', JSON.stringify(categoryName));
-            localStorage.setItem('questionPrice', JSON.stringify(price));
             
-            const selectedQuestion = currentPage.categories[category - 1].questions.find(q => q.price === `${price}`);
+            const selectedQuestion = currentPage.categories[category - 1].questions[parseInt(rowId, 10) - 1];
+            if (!selectedQuestion) {
+                return;
+            }
+            localStorage.setItem('questionPrice', JSON.stringify(selectedQuestion.price));
+            
             const questionContent = selectedQuestion.content;
             localStorage.setItem('questionContent', JSON.stringify(questionContent));
             const answer = selectedQuestion.answer;

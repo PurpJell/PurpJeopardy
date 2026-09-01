@@ -202,8 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 localStorage.setItem('editingQuestion', `${j}-${i}`);
 
-                questionInput.value = boardData.pages[currentPage].categories[j].questions[i].content || 'Question';
-                answerInput.value = boardData.pages[currentPage].categories[j].questions[i].answer || 'Answer';
+                questionInput.value = boardData.pages[currentPage].categories[j].questions[i].content || '';
+                answerInput.value = boardData.pages[currentPage].categories[j].questions[i].answer || '';
                 priceInput.value = '$' + boardData.pages[currentPage].categories[j].questions[i].price || '$0';
                 dailyDoubleCheckbox.checked = boardData.pages[currentPage].categories[j].questions[i].dailyDouble || false;
                 questionImage.src = boardData.pages[currentPage].categories[j].questions[i].questionImageData || '../images/add_picture.png';

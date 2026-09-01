@@ -25,6 +25,12 @@ ipcMain.on('get-downloads-dir', (event) => {
     event.returnValue = downloadDir;
 });
 
+ipcMain.on('open-boards-folder', (event) => {
+    const boardsDir = getBoardsDir();
+    // Open the boards directory in the system's file explorer
+    require('electron').shell.openPath(boardsDir);
+});
+
 function getPlaylist(directory) {
     try {
         let playlistDir;
